@@ -1,0 +1,172 @@
+{
+	"_id": { "$oid": "68924de5fce3bd775eb6fac9" },
+	"post_id": { "$oid": "6835c787ea9fcdb37b58a9ef" },
+	"parent_id": null,
+	"comment": {
+		"type": "doc",
+		"content": [
+			{
+				"type": "paragraph",
+				"content": [
+					{
+						"type": "text",
+						"text": "Balancing protection and user experience isn’t easy. Here are CAPTCHA-free options that work."
+					}
+				]
+			},
+			{ "type": "paragraph" },
+			{
+				"type": "heading",
+				"attrs": { "level": { "$numberInt": "1" } },
+				"content": [
+					{
+						"type": "text",
+						"text": "1. Understand Your Website Needs Before Choosing a Plan"
+					}
+				]
+			},
+			{
+				"type": "heading",
+				"attrs": { "level": { "$numberInt": "2" } },
+				"content": [
+					{
+						"type": "text",
+						"text": "Before selecting a hosting service, ask yourself a few key questions:"
+					}
+				]
+			},
+			{
+				"type": "bulletList",
+				"content": [
+					{
+						"type": "listItem",
+						"attrs": { "color": null },
+						"content": [
+							{
+								"type": "paragraph",
+								"content": [
+									{
+										"type": "text",
+										"text": "What type of website are you building (blog, eCommerce, portfolio)?"
+									}
+								]
+							}
+						]
+					},
+					{
+						"type": "listItem",
+						"attrs": { "color": null },
+						"content": [
+							{
+								"type": "paragraph",
+								"content": [
+									{
+										"type": "text",
+										"text": "What type of website are you building (blog, eCommerce, portfolio)?"
+									}
+								]
+							}
+						]
+					},
+					{
+						"type": "listItem",
+						"attrs": { "color": null },
+						"content": [
+							{
+								"type": "paragraph",
+								"content": [
+									{
+										"type": "text",
+										"text": "What type of website are you building (blog, eCommerce, portfolio)?"
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			{ "type": "heading", "attrs": { "level": { "$numberInt": "1" } } },
+			{
+				"type": "heading",
+				"attrs": { "level": { "$numberInt": "1" } },
+				"content": [{ "type": "text", "text": "Conclusion:" }]
+			},
+			{
+				"type": "paragraph",
+				"content": [
+					{
+						"type": "text",
+						"text": "The right hosting plan should balance performance, cost, scalability, and support. Don’t just go for the cheapest option—choose a host that aligns with your growth and gives you peace of mind. With these tips, you’ll be better equipped to make a decision that supports your website’s long-term success."
+					}
+				]
+			},
+			{ "type": "paragraph" },
+			{
+				"type": "codeBlock",
+				"attrs": { "language": null },
+				"content": [{ "type": "text", "text": "Love" }]
+			},
+			{
+				"type": "paragraph",
+				"content": [
+					{
+						"type": "text",
+						"marks": [{ "type": "textStyle", "attrs": { "color": "#0AA0EA" } }],
+						"text": "let's just see how this works"
+					}
+				]
+			},
+			{
+				"type": "paragraph",
+				"content": [
+					{
+						"type": "text",
+						"marks": [{ "type": "strike" }],
+						"text": "striketrough"
+					}
+				]
+			},
+			{
+				"type": "blockquote",
+				"content": [
+					{
+						"type": "paragraph",
+						"content": [{ "type": "text", "text": "loveeeee mmmmee" }]
+					}
+				]
+			},
+			{
+				"type": "image",
+				"attrs": {
+					"src": "https://res.cloudinary.com/dycw73vuy/image/upload/v1754418661/comments/culu8p4ziujjp3i38bmq.jpg",
+					"alt": null,
+					"title": null
+				}
+			},
+			{
+				"type": "image",
+				"attrs": {
+					"src": "https://res.cloudinary.com/dycw73vuy/image/upload/v1754418660/comments/ucimpmb3i9bzcpxc1aod.jpg",
+					"alt": null,
+					"title": null
+				}
+			},
+			{ "type": "paragraph" },
+			{
+				"type": "image",
+				"attrs": {
+					"src": "https://res.cloudinary.com/dycw73vuy/image/upload/v1754418660/comments/litzxkdu6ed1sg2abdhf.jpg",
+					"alt": null,
+					"title": null
+				}
+			}
+		]
+	},
+	"comment_by": { "$oid": "6807db2377cd5069138646c3" },
+	"likes": [],
+	"state": "active",
+	"dislikes": [],
+	"createdAt": { "$date": { "$numberLong": "1754418661785" } },
+	"updatedAt": { "$date": { "$numberLong": "1754418661785" } },
+	"__v": { "$numberInt": "0" }
+}
