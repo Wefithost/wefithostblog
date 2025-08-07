@@ -11,6 +11,7 @@ import {
 	Highlighter,
 	ImageIcon,
 	Italic,
+	LinkIcon,
 	List,
 	Strikethrough,
 } from 'lucide-react';
@@ -109,6 +110,26 @@ export const MenuBar = ({ editor }: editorProps) => {
 			onClick: () => fileInputRef.current?.click(),
 			pressed: false,
 			icon: <ImageIcon size={15} />,
+		},
+		{
+			onClick: () => {
+				const previousUrl = editor.getAttributes('link').href;
+				const url = window.prompt('Enter a URL', previousUrl || 'https://');
+				if (url === null) return;
+
+				if (url === '') {
+					editor.chain().focus().extendMarkRange('link').unsetLink().run();
+				} else {
+					editor
+						.chain()
+						.focus()
+						.extendMarkRange('link')
+						.setLink({ href: url })
+						.run();
+				}
+			},
+			pressed: editor.isActive('link'),
+			icon: <LinkIcon size={15} />,
 		},
 	];
 	return (

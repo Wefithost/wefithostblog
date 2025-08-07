@@ -1,7 +1,6 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
 import { FaAngleDown } from 'react-icons/fa';
 import { toggleOverlay } from '~/lib/utils/toggle-overlay';
 import { usePopup } from '~/lib/utils/toggle-popups';
@@ -10,53 +9,6 @@ import { useUtilsContext } from '../context/utils-context';
 import { IoMdClose, IoMdMenu } from 'react-icons/io';
 
 const Header = () => {
-	const [isVisible, setIsVisible] = useState(true);
-	const [lastScrollY, setLastScrollY] = useState(0);
-	const [isScrolled, setIsScrolled] = useState(false);
-	console.log('', isScrolled);
-	const handleScrollBeyond = () => {
-		const scrollTop = window.scrollY;
-		const scrollThreshold = 500;
-
-		if (scrollTop > scrollThreshold) {
-			setIsScrolled(true);
-		} else {
-			setIsScrolled(false);
-		}
-	};
-
-	useEffect(() => {
-		window.addEventListener('scroll', handleScrollBeyond);
-
-		return () => {
-			window.removeEventListener('scroll', handleScrollBeyond);
-		};
-	}, []);
-	const handleScroll = useCallback(() => {
-		setLastScrollY((prevLastScrollY) => {
-			const currentScrollY = window.scrollY;
-
-			if (currentScrollY > prevLastScrollY) {
-				setIsVisible(false);
-			} else {
-				setIsVisible(true);
-			}
-
-			return currentScrollY;
-		});
-	}, []);
-	useEffect(() => {
-		window.addEventListener('scroll', handleScroll);
-
-		return () => {
-			window.removeEventListener('scroll', handleScroll);
-		};
-	}, [lastScrollY, handleScroll]);
-
-	const elementStyle = {
-		transition: 'all 0.5s',
-		transform: isVisible ? 'translateY(0)' : 'translateY(-100%)',
-	};
 	const {
 		isActive: dropdown,
 		isVisible: dropdownVisible,
@@ -69,10 +21,7 @@ const Header = () => {
 		setOverlayOpen(!overlayOpen);
 	};
 	return (
-		<nav
-			className=" py-4  mx-auto w-full sticky top-0  bg-white  z-50 flex items-center justify-center px-16 max-xl:px-10 max-xs:px-5 max-2xl:py-2"
-			style={elementStyle}
-		>
+		<header className=" py-4  mx-auto w-full sticky top-0  bg-white  z-50 flex items-center justify-center px-16 max-xl:px-10 max-xs:px-5 max-2xl:py-2">
 			<div className="max-w-[1500px] flex items-center justify-between w-full">
 				<Link href="/">
 					<Image
@@ -148,7 +97,7 @@ const Header = () => {
 					)}
 				</button>
 			</div>
-		</nav>
+		</header>
 	);
 };
 

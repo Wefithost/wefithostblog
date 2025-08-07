@@ -12,8 +12,8 @@ import { toast } from 'react-toastify';
 import { useState } from 'react';
 import AsyncButton from '../components/buttons/async-button';
 import Link from 'next/link';
-import ArticlesContainer from '../components/articles-container';
 import ArticleViewer from '../rich-text-editor/viewer';
+import RelatedArticlesSection from '../components/related-articles';
 const Article = () => {
 	const params = useParams();
 	const { title } = params;
@@ -61,6 +61,10 @@ const Article = () => {
 			},
 		});
 	};
+
+	const related_articles = articles?.filter(
+		(type) => slugify(type?.title) !== title,
+	);
 	return (
 		<main className=" flex flex-col mx-auto max-w-[1500px] min-h-screen w-full gap-10 py-12 px-8 max-md:py-6 max-md:gap-5 max-xs:px-5">
 			<section className="flex w-full flex-col gap-3 items-start">
@@ -138,7 +142,10 @@ const Article = () => {
 					</div>
 				</div>
 			</section>
-			<ArticlesContainer />
+			<RelatedArticlesSection
+				related_articles={related_articles}
+				header="You might also like…"
+			/>
 		</main>
 	);
 };

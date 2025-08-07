@@ -6,7 +6,11 @@ import { useState } from 'react';
 import EmptyState from './empty-state';
 import { IArticle } from '~/types/articles';
 
-const ArticlesContainer = () => {
+interface containerProps {
+	showFilters?: boolean;
+}
+
+const ArticlesContainer = ({ showFilters = true }: containerProps) => {
 	const [activeFilter, setActiveFilter] = useState('all');
 	const [selectedSort, setSelectedSort] = useState('newest');
 	const filteredArticles = (() => {
@@ -38,52 +42,50 @@ const ArticlesContainer = () => {
 	const [searchResults, setSearchResults] = useState<IArticle[]>([]);
 	const [noResults, setNoResults] = useState(false);
 	const searchedArticles = searchTerm ? searchResults : [];
+	const hasSearch = searchTerm.trim().length > 0;
+	const hasSearchResults = searchedArticles.length > 0;
+	const hasFilteredResults = filteredArticles.length > 0;
+	const hasArticles = articles.length > 0;
+	const isFiltered = activeFilter !== 'all';
+	console.log(noResults);
 	return (
 		<section className="flex w-full flex-col gap-8 max-2xl:gap-4 ">
-			<div className="w-full">
-				<FilterBar
-					activeFilter={activeFilter}
-					setActiveFilter={setActiveFilter}
-					articles={articles}
-					searchTerm={searchTerm}
-					setSearchTerm={setSearchTerm}
-					setSearchResults={setSearchResults}
-					setNoResults={setNoResults}
-					selectedSort={selectedSort}
-					setSelectedSort={setSelectedSort}
-				/>
-			</div>
-			{searchTerm.trim() ? (
-				searchTerm && !noResults && searchedArticles.length > 0 ? (
+			{showFilters && (
+				<div className="w-full">
+					<FilterBar
+						activeFilter={activeFilter}
+						setActiveFilter={setActiveFilter}
+						articles={articles}
+						searchTerm={searchTerm}
+						setSearchTerm={setSearchTerm}
+						setSearchResults={setSearchResults}
+						setNoResults={setNoResults}
+						selectedSort={selectedSort}
+						setSelectedSort={setSelectedSort}
+					/>
+				</div>
+			)}
+			{hasSearch ? (
+				hasSearchResults ? (
 					<div className="flex w-full items-center flex-col gap-4 ">
 						<h1 className=" text-lg font-semibold spaced self-start">
 							Found {searchedArticles.length}{' '}
 							{searchedArticles?.length > 1 ? 'articles' : 'article'} for `
 							{searchTerm}`
 						</h1>
-						<div className="grid grid-cols-3 max-2xs:flex max-2xs:flex-col  max-xl:grid-cols-2 max-dmd:grid-cols-1 gap-x-5 gap-y-8 max-xs:gap-2 ">
-							{searchedArticles.map((article) => (
-								<ArticleCard key={article.id} article={article} />
-							))}
-						</div>
+						<ArticleGrid articles={searchedArticles} />
 					</div>
 				) : (
 					<EmptyState message={`No articles found for ${searchTerm}`} />
 				)
-			) : activeFilter !== 'all' && filteredArticles.length > 0 ? (
-				<div className="grid grid-cols-3 max-2xs:flex max-2xs:flex-col  max-xl:grid-cols-2 max-dmd:grid-cols-1 gap-x-5 gap-y-8 max-xs:gap-2 ">
-					{filteredArticles.map((article) => (
-						<ArticleCard key={article.id} article={article} />
-					))}
-				</div>
-			) : activeFilter !== 'all' ? (
-				<EmptyState message="No articles match your filters" />
-			) : articles.length > 0 ? (
-				<div className="grid grid-cols-3 max-2xs:flex max-2xs:flex-col  max-xl:grid-cols-2 max-dmd:grid-cols-1 gap-x-5 gap-y-8 max-xs:gap-2 ">
-					{filteredArticles.map((article) => (
-						<ArticleCard key={article.id} article={article} />
-					))}
-				</div>
+			) : isFiltered ? (
+				hasFilteredResults ? (
+					<ArticleGrid articles={filteredArticles} />
+				) : (
+					<EmptyState message="No articles match your filters" />
+				)
+			) : hasArticles ? (
+				<ArticleGrid articles={filteredArticles} />
 			) : (
 				<EmptyState message="No articles available" />
 			)}
@@ -92,4 +94,15 @@ const ArticlesContainer = () => {
 };
 
 export default ArticlesContainer;
+interface gridProps {
+	articles: IArticle[];
+}
+
+export const ArticleGrid = ({ articles }: gridProps) => (
+	<div className="grid grid-cols-3 max-2xs:flex max-2xs:flex-col max-xl:grid-cols-2 max-dmd:grid-cols-1 gap-x-5 gap-y-8 max-xs:gap-2">
+		{articles.map((article) => (
+			<ArticleCard key={article.id} article={article} />
+		))}
+	</div>
+);
 

@@ -1,34 +1,78 @@
-import Image from 'next/image';
+'use client';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { FaCircle } from 'react-icons/fa';
-import heroImg from '~/public/images/hero-img.jpg';
-// hero section slideshow
+import { articles } from '~/data/articles';
+import { formatDate } from '~/lib/utils/format-date';
+import { slugify } from '~/lib/utils/slugify';
 const HeroPreview = () => {
+	const [isHovered, setIsHovered] = useState(false);
+	const [currentIndex, setCurrentIndex] = useState(() =>
+		Math.floor(Math.random() * articles.length),
+	);
+	const [fadeOut, setFadeOut] = useState(false);
+
+	useEffect(() => {
+		if (isHovered) return;
+		const interval = setInterval(() => {
+			setFadeOut(true); // start fade out
+
+			setTimeout(() => {
+				let newIndex = Math.floor(Math.random() * articles.length);
+
+				// avoid repeating the same article
+				while (articles.length > 1 && newIndex === currentIndex) {
+					newIndex = Math.floor(Math.random() * articles.length);
+				}
+
+				setCurrentIndex(newIndex);
+				setFadeOut(false); // start fade in
+			}, 500); // match fade transition
+		}, 2000); // every 20s
+
+		return () => clearInterval(interval);
+	}, [currentIndex, isHovered]);
+
+	const article = articles[currentIndex];
+
 	return (
-		<section className="flex min-h-[700px] max-h-[700px] w-full bg-black-50 overflow-hidden relative items-end rounded-lg max-2xl:min-h-[500px]  max-2xl:max-h-[500px] max-md:min-h-[300px] max-md:max-h-[300px]">
-			<div className="w-full h-full absolute z-[20] object-cover top-0 left-0 bg-[#ffffff68]"></div>
-			<Image
-				src={heroImg}
+		<section
+			className={`flex min-h-[700px] max-h-[700px] w-full overflow-hidden relative items-end rounded-lg max-2xl:min-h-[500px]  max-2xl:max-h-[500px] max-md:min-h-[300px] max-md:max-h-[300px] duration-500`}
+			style={{
+				backgroundImage: `url(${article?.img})`,
+				backgroundSize: 'cover',
+				backgroundPosition: 'center',
+			}}
+			onMouseEnter={() => setIsHovered(true)}
+			onMouseLeave={() => setIsHovered(false)}
+		>
+			<div className="w-full h-full absolute z-[20] object-cover top-0 left-0 bg-[#00000077] "></div>
+			{/*eslint-disable-next-line */}
+			<img
+				src={article?.img}
 				alt="hero-img"
-				className="absolute top-0 left-0 w-full h-full object-cover z-2"
+				className={`absolute top-0 left-0 w-full h-full object-cover z-2 duration-150 ${
+					fadeOut ? 'opacity-0' : 'opacity-100'
+				}`}
 			/>
-			<div className="flex flex-col gap-4 relative z-30 max-w-[800px] items-start p-8 py-16 max-lg:py-8 max-lg:max-w-full  max-xl:gap-2 max-md:px-4 text-black  max-2xs:py-4 ">
+			<div className="flex flex-col gap-3 relative z-30 max-w-[900px] items-start p-8 py-16 max-lg:py-8 max-lg:max-w-full  max-xl:gap-2 max-md:px-4 text-white  max-2xs:py-4 font-semibold max-2xs:font-normal">
 				<button className="bg-purple hover:bg-darkPurple text-white text-lg h-[40px] px-2.5 duration-150 rounded-sm max-md:h-[30px] max-md:text-sm">
-					Tips
+					{article?.topic}
 				</button>
-				<h1 className="text-[32px] poppins-bold max-2xl:text-2xl max-xl:text-xl max-2xs:text-base  line-clamp-2">
-					5 Proven Ways to Supercharge Your Website’s Hosting Performance in
-					2025
+				<h1 className="text-[32px] poppins-bold max-2xl:text-2xl max-xl:text-xl max-2xs:text-base  line-clamp-1">
+					{article?.title}
 				</h1>
-				<p className="text-lg max-2xl:text-base max-xl:text-sm  line-clamp-2">
-					A slow website can cost you conversions, customers, and credibility.
-					Discover the key strategies hosting experts use to deliver
-					lightning-fast load times and rock-solid uptime
+				<p className="text-lg max-2xl:text-base max-xl:text-sm  line-clamp-1">
+					{article?.description}
 				</p>
-				<div className="flex gap-4 items-center text-lg max-2xl:text-base max-xl:text-sm">
-					<span>26, Jan 2025</span>
+				<div className="flex gap-4 items-center text-lg max-2xl:text-base max-xl:text-sm max-2xs:hidden">
+					<span>{formatDate(article?.date)}</span>
 					<FaCircle className="text-[10px] " />
-					<span>10 mins read</span>
+					<span>{article?.duration} mins read</span>
 				</div>
+				<Link href={`/${slugify(article?.title)}`} className="link-style ">
+					Read more...
+				</Link>
 			</div>
 		</section>
 	);

@@ -5,6 +5,7 @@ import { EditorContent, JSONContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import './style.css';
 import Image from '@tiptap/extension-image';
+import Link from '@tiptap/extension-link';
 import { MenuBar } from './menu-bar';
 const extensions = [
 	Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -14,6 +15,16 @@ const extensions = [
 		bulletList: {
 			keepMarks: true,
 			keepAttributes: false,
+		},
+	}),
+	Link.configure({
+		openOnClick: true,
+		linkOnPaste: true,
+		autolink: true,
+		HTMLAttributes: {
+			target: '_blank',
+			rel: 'noopener noreferrer',
+			class: 'text-blue-500 underline',
 		},
 	}),
 
