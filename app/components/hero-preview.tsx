@@ -70,7 +70,10 @@ const HeroPreview = () => {
 					<FaCircle className="text-[10px] " />
 					<span>{article?.duration} mins read</span>
 				</div>
-				<Link href={`/${slugify(article?.title)}`} className="link-style ">
+				<Link
+					href={`/${slugify(article?.title)}`}
+					className="link-style  text-lg max-2xl:text-base max-xl:text-sm"
+				>
 					Read more...
 				</Link>
 			</div>

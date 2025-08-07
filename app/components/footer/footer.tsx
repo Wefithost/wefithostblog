@@ -2,7 +2,7 @@
 import Link from 'next/link';
 
 import { usePathname } from 'next/navigation';
-import { Accordion } from './footer-accordion';
+import { Accordion } from '../accordion';
 import logo from '~/public/icons/logo.svg';
 import { FaFacebook, FaInstagram, FaSlack, FaYoutube } from 'react-icons/fa';
 import Image from 'next/image';

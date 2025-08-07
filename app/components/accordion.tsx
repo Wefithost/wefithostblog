@@ -14,10 +14,14 @@ interface AccordionItemProps {
 		dir: string;
 		href: string;
 	}[];
+	accordion_class_override?: string;
+	arrow_class_override?: string;
 }
 const AccordionItem: React.FC<AccordionItemProps> = ({
 	isOpen,
 	onClick,
+	accordion_class_override,
+	arrow_class_override,
 	features,
 	...props
 }) => {
@@ -32,16 +36,16 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
 		}
 	}, [isOpen]);
 	return (
-		<div className=" overflow-hidden   w-full flex flex-col    text-white  border-b  border-[#ffffffa7]   px-2 ">
+		<div
+			className={` overflow-hidden   w-full flex flex-col    text-white  border-b  border-[#ffffffa7]   px-2 text-xs ${accordion_class_override}`}
+		>
 			<button
 				className={`w-full  py-6   flex items-center justify-between  border-none pointer leading-none   flex-nowrap  max-md:py-5 `}
 				onClick={onClick}
 			>
-				<p className="text-xs neue-thin uppercase neue-light ">
-					{props.header}
-				</p>
+				<p className="uppercase  ">{props.header}</p>
 				<span
-					className={`p-1   border-b-[1px] border-r-[1px]   border-[#fff] duration-300   ${
+					className={`p-1   border-b-[1px] border-r-[1px]   border-[#fff] duration-300 ${arrow_class_override}  ${
 						isOpen ? 'rotate-[45deg]' : 'rotate-[315deg]'
 					}`}
 				></span>
@@ -52,15 +56,13 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
 				style={{ height }}
 			>
 				<div className="flex flex-col  py-2 ">
-					{features.map((data) => (
+					{features?.map((data) => (
 						<Link
 							href={data.href}
 							className="leading-none  py-3 rounded-md shrink-0 max-xs:py-2 ease-out duration-100"
 							key={data.dir}
 						>
-							<p className="   text-sm neue-light text-dimGrey  hover:text-darkGrey capitalize ">
-								{data.dir}
-							</p>
+							<p className="   text-sm    capitalize ">{data.dir}</p>
 						</Link>
 					))}
 				</div>
@@ -77,8 +79,15 @@ interface Links {
 }
 interface AccordionProps {
 	links: Links[];
+
+	accordion_class_override?: string;
+	arrow_class_override?: string;
 }
-export const Accordion = ({ links }: AccordionProps) => {
+export const Accordion = ({
+	links,
+	accordion_class_override,
+	arrow_class_override,
+}: AccordionProps) => {
 	const [activeIndices, setActiveIndices] = useState<number[]>([]);
 
 	const handleItemClick = (index: number) => {
@@ -91,13 +100,15 @@ export const Accordion = ({ links }: AccordionProps) => {
 
 	return (
 		<div className="w-full max-lg:flex max-lg:flex-col  hidden ">
-			{links.map((item, index) => (
+			{links?.map((item, index) => (
 				<AccordionItem
 					key={item?.header}
 					{...item}
 					isOpen={activeIndices.includes(index)}
 					onClick={() => handleItemClick(index)}
 					features={item.link}
+					accordion_class_override={accordion_class_override}
+					arrow_class_override={arrow_class_override}
 				/>
 			))}
 		</div>
