@@ -2,9 +2,9 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { FaCircle } from 'react-icons/fa';
-import { articles } from '~/data/articles';
-import { formatDate } from '~/lib/utils/format-date';
-import { slugify } from '~/lib/utils/slugify';
+import { articles } from '~/lib/data/articles';
+import { formatDate } from '~/utils/format-date';
+import { slugify } from '~/utils/slugify';
 const HeroPreview = () => {
 	const [isHovered, setIsHovered] = useState(false);
 	const [currentIndex, setCurrentIndex] = useState(() =>

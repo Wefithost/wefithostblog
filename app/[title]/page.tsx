@@ -2,12 +2,12 @@
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { FaCircle, FaEnvelope } from 'react-icons/fa';
-import { articles } from '~/data/articles';
-import { formatDate } from '~/lib/utils/format-date';
-import { slugify } from '~/lib/utils/slugify';
+import { articles } from '~/lib/data/articles';
+import { formatDate } from '~/utils/format-date';
+import { slugify } from '~/utils/slugify';
 import logo from '~/public/icons/logo-icon.png';
 import ClassicInput from '../components/inputs/classic-input';
-import { apiRequest } from '~/lib/utils/api-request';
+import { apiRequest } from '~/utils/api-request';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import AsyncButton from '../components/buttons/async-button';

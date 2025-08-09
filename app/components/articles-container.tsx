@@ -1,10 +1,10 @@
 'use client';
-import { articles } from '~/data/articles';
+import { articles } from '~/lib/data/articles';
 import ArticleCard from './cards/article-card';
 import FilterBar from './filter-bar';
 import { useState } from 'react';
 import EmptyState from './empty-state';
-import { IArticle } from '~/types/articles';
+import { IArticle } from '~/types/article';
 
 interface containerProps {
 	showFilters?: boolean;

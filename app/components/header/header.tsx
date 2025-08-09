@@ -2,12 +2,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaAngleDown } from 'react-icons/fa';
-import { toggleOverlay } from '~/lib/utils/toggle-overlay';
-import { usePopup } from '~/lib/utils/toggle-popups';
+import { toggleOverlay } from '~/utils/toggle-overlay';
+import { usePopup } from '~/utils/toggle-popups';
 import logo from '~/public/icons/logo.svg';
-import { useUtilsContext } from '../context/utils-context';
+import { useUtilsContext } from '../../context/utils-context';
 import { IoMdClose, IoMdMenu } from 'react-icons/io';
-
+import { motion } from 'motion/react';
+import { useAuthContext } from '../../context/auth-context';
+import ProfileDropdown from './profile-dropdown';
 const Header = () => {
 	const {
 		isActive: dropdown,
@@ -15,7 +17,17 @@ const Header = () => {
 		togglePopup: toggleDropdown,
 		ref: dropdownRef,
 	} = usePopup();
-	const { overlayOpen, setOverlayOpen } = useUtilsContext();
+	const {
+		isActive: profileDropdown,
+		isVisible: profileDropdownVisible,
+		togglePopup: toggleProfileDropdown,
+		ref: profileDropdownRef,
+	} = usePopup();
+
+	const { overlayOpen, setOverlayOpen, toggleAuthPopup, setCurrentAction } =
+		useUtilsContext();
+
+	const { user } = useAuthContext();
 	const handleToggleOverlay = () => {
 		toggleOverlay();
 		setOverlayOpen(!overlayOpen);
@@ -82,9 +94,48 @@ const Header = () => {
 					<Link href="https://www.wefithost.com/" className="link-style-dark">
 						Visit Wefithost
 					</Link>
-					<Link href="/contact" className="link-style-dark">
-						Contact Us
-					</Link>
+					{user ? (
+						<div className="relative">
+							<div
+								className="text-sm  flex gap-2 items-center  py-1 px-2 rounded-full bg-lightGrey  cursor-pointer border-purple-100 border hover:bg-grey-"
+								onClick={toggleProfileDropdown}
+							>
+								{/* eslint-disable-next-line */}
+								<img
+									src={user?.profile ? user.profile : '/icons/default-user.svg'}
+									className="w-6 h-6 object-cover rounded-full "
+									alt=""
+									width={24}
+									height={24}
+								/>
+								<h1 className="text-black  max-2xl:text-base  max-xs:text-sm text-base leading-0">
+									{user?.first_name ?? user?.email}
+								</h1>
+								<FaAngleDown
+									className={`duration-150 text-black text-base font-light  ${
+										profileDropdownVisible ? 'rotate-180' : ''
+									}`}
+								/>
+							</div>
+							<ProfileDropdown
+								profileDropdown={profileDropdown}
+								profileDropdownRef={profileDropdownRef}
+								profileDropdownVisible={profileDropdownVisible}
+								toggleProfileDropdown={toggleProfileDropdown}
+							/>
+						</div>
+					) : (
+						<motion.button
+							whileTap={{ scale: 0.9 }}
+							onClick={() => {
+								toggleAuthPopup();
+								setCurrentAction('log-in');
+							}}
+							className=" h-[45px] text-center bg-purple text-white text-[20px] rounded-sm px-5 duration-150 hover:bg-darkPurple"
+						>
+							Sign In
+						</motion.button>
+					)}
 				</div>
 				<button
 					className=" p-2  rounded-sm  hidden max-2xs:flex"

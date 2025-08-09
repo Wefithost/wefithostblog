@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { FaCircle } from 'react-icons/fa';
-import { formatDate } from '~/lib/utils/format-date';
-import { slugify } from '~/lib/utils/slugify';
-import { IArticle } from '~/types/articles';
+import { formatDate } from '~/utils/format-date';
+import { slugify } from '~/utils/slugify';
+import { IArticle } from '~/types/article';
 interface articleProps {
 	article: IArticle;
 }

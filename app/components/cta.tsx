@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import ClassicInput from './inputs/classic-input';
-import { apiRequest } from '~/lib/utils/api-request';
+import { apiRequest } from '~/utils/api-request';
 import { toast } from 'react-toastify';
 import AsyncButton from './buttons/async-button';
 import Image from 'next/image';
@@ -9,7 +9,7 @@ import newsletter from '~/public/images/newsletter.jpg';
 import smoke from '~/public/images/smoke.jpg';
 import websiteonline from '~/public/images/phone-hold.jpg';
 import space from '~/public/images/Data-Centers-in-Space.jpg';
-import { articles } from '~/data/articles';
+import { articles } from '~/lib/data/articles';
 const CtaSection = () => {
 	const [email, setEmail] = useState('');
 	const [subscribing, setSubscribing] = useState(false);

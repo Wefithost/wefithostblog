@@ -1,7 +1,7 @@
 'use client';
 import Fuse from 'fuse.js';
 import { SetStateAction } from 'react';
-import { IArticle } from '~/types/articles';
+import { IArticle } from '~/types/article';
 interface filterProps {
 	activeFilter: string;
 	setActiveFilter: React.Dispatch<SetStateAction<string>>;

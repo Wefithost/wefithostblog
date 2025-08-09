@@ -2,11 +2,14 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 import localFont from 'next/font/local';
-import Header from './components/header';
+import Header from './components/header/header';
 import { ToastContainer } from 'react-toastify';
 import Footer from './components/footer/footer';
 import { UtilsProvider } from './context/utils-context';
 import Overlay from './components/overlay';
+import AuthPrompt from './components/auth/auth';
+import { AuthProvider } from './context/auth-context';
+import { NextAuthProvider } from './next-auth-provider';
 const PoppinsReg = localFont({
 	src: './fonts/Poppins-Regular.ttf',
 	variable: '--font-poppins',
@@ -37,13 +40,18 @@ export default function RootLayout({
 				className={`${PoppinsReg.variable}  ${QuicksandReg.variable} ${PoppinsBold.variable} antialiased  flex flex-col mx-auto`}
 				id="body"
 			>
-				<ToastContainer position="bottom-right" closeButton={false} />
-				<UtilsProvider>
-					<Header />
-					<Overlay />
-					{children}
-					<Footer />
-				</UtilsProvider>
+				<NextAuthProvider>
+					<ToastContainer position="bottom-right" closeButton={false} />
+					<UtilsProvider>
+						<AuthProvider>
+							<Header />
+							<Overlay />
+							<AuthPrompt />
+							{children}
+							<Footer />
+						</AuthProvider>
+					</UtilsProvider>
+				</NextAuthProvider>
 			</body>
 		</html>
 	);

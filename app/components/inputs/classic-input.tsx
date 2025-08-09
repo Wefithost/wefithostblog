@@ -42,7 +42,7 @@ const ClassicInput = <T extends string | number>({
 	textarea = false,
 	autocomplete = 'on',
 	autofocus = false,
-	required = false,
+	required = true,
 	password,
 	toggleVisibility,
 	passwordVisible,
@@ -92,7 +92,7 @@ const ClassicInput = <T extends string | number>({
 						className={`  ${classname_override} h-[45px] py-1 px-3 bg-grey  text-black   text-sm    focus:ring-[1px]    ring-purple    outline-none w-full  duration-150 rounded-sm hover:bg-gray-50 ${
 							error && serverError?.includes(error) && 'border-red border-2'
 						}     ${
-							error === errorContent && !value
+							required && error === errorContent && !value
 								? 'border-red border-2 '
 								: 'border-grey'
 						}

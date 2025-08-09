@@ -24,7 +24,7 @@ const AsyncButton = ({
 	return (
 		<button
 			className={`${classname_override}  ${className} ${
-				disabled && 'cursor-not-allowed'
+				disabled && 'opacity-40'
 			}`}
 			disabled={disabled}
 			onClick={onClick}

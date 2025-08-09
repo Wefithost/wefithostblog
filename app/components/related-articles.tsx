@@ -1,4 +1,4 @@
-import { IArticle } from '~/types/articles';
+import { IArticle } from '~/types/article';
 import ArticleCard from './cards/article-card';
 import { useMemo } from 'react';
 

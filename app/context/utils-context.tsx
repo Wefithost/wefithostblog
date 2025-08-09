@@ -1,6 +1,6 @@
 'use client';
 import React, { createContext, useContext, useMemo, useState } from 'react';
-import { usePopup } from '~/lib/utils/toggle-popups';
+import { usePopup } from '~/utils/toggle-popups';
 
 interface UtilsContextType {
 	authPopup: boolean;
@@ -10,13 +10,17 @@ interface UtilsContextType {
 	setDisableToggle: React.Dispatch<React.SetStateAction<boolean>>;
 	overlayOpen: boolean;
 	setOverlayOpen: React.Dispatch<React.SetStateAction<boolean>>;
-	createTeamPopup: boolean;
-	createTeamPopupVisible: boolean;
-	createTeamPopupRef: React.RefObject<HTMLDivElement | null>;
-	setDisableTeamPopup: React.Dispatch<React.SetStateAction<boolean>>;
-	toggleCreateTeamPopup: () => void;
+	createArticlePopup: boolean;
+	createArticlePopupVisible: boolean;
+	createArticlePopupRef: React.RefObject<HTMLDivElement | null>;
+	setDisableArticlePopup: React.Dispatch<React.SetStateAction<boolean>>;
+	toggleCreateArticlePopup: () => void;
 	rerenderKey: number;
 	setRerenderKey: React.Dispatch<React.SetStateAction<number>>;
+	currentAction: string;
+	setCurrentAction: React.Dispatch<React.SetStateAction<string>>;
+	resetPassword: boolean;
+	setResetPassword: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export const UtilsContext = createContext<UtilsContextType | null>(null);
 
@@ -30,14 +34,16 @@ export const UtilsProvider: React.FC<{ children: React.ReactNode }> = ({
 		togglePopup: toggleAuthPopup,
 		setDisableToggle: setDisableToggle,
 	} = usePopup();
+	const [currentAction, setCurrentAction] = useState<string>('log-in');
+	const [resetPassword, setResetPassword] = useState(false);
 	const [overlayOpen, setOverlayOpen] = useState(false);
 	const [rerenderKey, setRerenderKey] = useState(0);
 	const {
-		isActive: createTeamPopup,
-		isVisible: createTeamPopupVisible,
-		ref: createTeamPopupRef,
-		togglePopup: toggleCreateTeamPopup,
-		setDisableToggle: setDisableTeamPopup,
+		isActive: createArticlePopup,
+		isVisible: createArticlePopupVisible,
+		ref: createArticlePopupRef,
+		togglePopup: toggleCreateArticlePopup,
+		setDisableToggle: setDisableArticlePopup,
 	} = usePopup();
 
 	const providerValue = useMemo(
@@ -46,32 +52,40 @@ export const UtilsProvider: React.FC<{ children: React.ReactNode }> = ({
 			authPopupRef,
 			authPopupVisible,
 			toggleAuthPopup,
-			createTeamPopup,
-			createTeamPopupRef,
-			createTeamPopupVisible,
-			toggleCreateTeamPopup,
+			createArticlePopup,
+			createArticlePopupRef,
+			createArticlePopupVisible,
+			toggleCreateArticlePopup,
 			setDisableToggle,
-			setDisableTeamPopup,
+			setDisableArticlePopup,
 			overlayOpen,
 			setOverlayOpen,
 			setRerenderKey,
 			rerenderKey,
+			currentAction,
+			setCurrentAction,
+			resetPassword,
+			setResetPassword,
 		}),
 		[
 			authPopup,
 			authPopupRef,
 			authPopupVisible,
 			toggleAuthPopup,
-			createTeamPopup,
-			createTeamPopupRef,
-			createTeamPopupVisible,
-			toggleCreateTeamPopup,
+			createArticlePopup,
+			createArticlePopupRef,
+			createArticlePopupVisible,
+			toggleCreateArticlePopup,
 			setDisableToggle,
-			setDisableTeamPopup,
+			setDisableArticlePopup,
 			overlayOpen,
 			setOverlayOpen,
 			setRerenderKey,
 			rerenderKey,
+			currentAction,
+			setCurrentAction,
+			resetPassword,
+			setResetPassword,
 		],
 	);
 
