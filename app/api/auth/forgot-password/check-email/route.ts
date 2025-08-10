@@ -32,64 +32,67 @@ export async function POST(req: NextRequest) {
       subject: "Your Password Reset Code",
       html: `
 <table
-style="
-  background-color:  #1C3A4D;
-  font-family: Arial, sans-serif;
-  border-radius: 10px;
-  max-width: 400px;
-  margin: 10px auto;
-  padding: 50px 30px;
-"
+	style="
+		background-color: #fbfbff;
+		font-family: Arial, sans-serif;
+		border-radius: 10px;
+		max-width: 400px;
+		margin: 10px auto;
+		padding: 50px 30px;
+	"
 >
-<tr>
-  <td align="center" style="padding-bottom: 10px;">
-    <img
-      src="https://res.cloudinary.com/dycw73vuy/image/upload/v1745081198/cc227f9e6c5a43778cfa485c4ce13ec3_oem5jj.png"
-      style="width: 200px"
-    />
-  </td>
-</tr>
-<tr>
-  <td
-    style="
-      border-top: 1px solid #DBE4E9;
-      padding: 50px 15px;
-      box-sizing: border-box;
-      color: #DBE4E9;
-    "
-  >
-    <p style="margin: 0; padding-bottom: 10px">Trouble signing in?</p>
-    <p
-      style="
-        font-size: 14px;
-        font-weight: 300;
-        line-height: 20px;
-        margin: 0 0 20px 0;
-      "
-    >
-      Resetting your password is easy.
-      <br />
-      Just copy the verification code below and follow the instructions. We’ll
-      have you up and running in no time.
-    </p>
-  </td>
-</tr>
-<tr>
-  <td align="center" style="padding: 10px 0">
-    <p style="font-size: 40px; color: #DBE4E9; font-weight: bold; margin: 0">
-      ${verificationCode}
-    </p>
-  </td>
-</tr>
-<tr>
-  <td align="start" style="padding-top: 20px">
-    <p style="font-size: 14px; color: #DBE4E9; margin: 0">© wefithostblog. 2025</p>
-    <p style="font-size:12px; color:gray;">
-  You’re receiving this email from Dax. <a href="#">Unsubscribe</a>
-</p>
-  </td>
-</tr>
+	<tr>
+		<td align="center" style="padding-bottom: 10px">
+			<img
+				src="https://res.cloudinary.com/dl6pa30kz/image/upload/v1754743573/logo_hdvqjb.svg"
+				style="width: 150px"
+			/>
+		</td>
+	</tr>
+	<tr>
+		<td
+			style="
+				border-top: 1px solid #5f5f5f;
+				padding: 50px 15px;
+				box-sizing: border-box;
+				color: #000;
+			"
+		>
+			<p style="margin: 0; padding-bottom: 10px">Trouble signing in?</p>
+			<p
+				style="
+					font-size: 14px;
+					font-weight: 300;
+					line-height: 20px;
+					margin: 0 0 20px 0;
+				"
+			>
+				Resetting your password is easy.
+				<br />
+				Just copy the verification code below and follow the instructions. We’ll
+				have you up and running in no time.
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td align="center" style="padding: 10px 0">
+			<p style="font-size: 40px; color: #171639; font-weight: bold; margin: 0">
+				${verificationCode}
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td align="start" style="padding-top: 20px">
+			<p style="font-size: 14px; color: gray; margin: 0">
+				© wefithost.${new Date()}
+			</p>
+			<p style="font-size: 12px; color: gray">
+				You’re receiving this email from WeFitHost.
+			</p>
+		</td>
+	</tr>
 </table>
+
       `,
     });
 

@@ -111,10 +111,6 @@ const EditProfile = ({
 					>
 						<div className="flex items-center flex-col gap-0 w-full leading-none">
 							<h1 className="text-2xl text-center text-black">Upload Image</h1>
-							{/* <p className="text-grey-blue text-center text-sm ">
-								{useAvatar &&
-									'Select an avatar  to use as your profile picture'}
-							</p> */}
 						</div>
 
 						<div className="flex flex-col gap-0 items-center justify-center">
@@ -126,7 +122,7 @@ const EditProfile = ({
 									className="w-28  h-28  rounded-full "
 								/>
 							) : (
-								<IoImageSharp className="w-28  h-28  text-black object-cover" />
+								<IoImageSharp className="w-28  h-28  text-gray-500 object-cover" />
 							)}
 							<button
 								className=" text-black link-style-dark text-xs"

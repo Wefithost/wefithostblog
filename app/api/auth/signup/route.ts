@@ -61,59 +61,70 @@ export async function POST(req: NextRequest) {
     await transporter.sendMail({
       ...mailOptions,
       to: email,
-      text: "Hello. This email is for your email verification.",
+      text: "Hello. This mail is for your email verification.",
       subject: "Welcome to wefithostblog,Verify Your Email",
-      html: `<table style="
+      html: `<table
+	style="
 		background-color: #fbfbff;
 		font-family: Arial, sans-serif;
 		border-radius: 10px;
 		max-width: 400px;
 		margin: 10px auto;
 		padding: 50px 30px;
-	">
-    <tr>
-        <td align="center" style="padding-bottom: 10px">
-            <img src="https://res.cloudinary.com/dl6pa30kz/image/upload/v1754743573/logo_hdvqjb.svg" style="width: 150px" alt="wefithost logo" />
-        </td>
-    </tr>
-    <tr>
-        <td style="
+	"
+>
+	<tr>
+		<td align="center" style="padding-bottom: 10px">
+			<img
+				src="https://res.cloudinary.com/dl6pa30kz/image/upload/v1754743573/logo_hdvqjb.svg"
+				style="width: 150px"
+				alt="wefithost logo"
+			/>
+		</td>
+	</tr>
+	<tr>
+		<td
+			style="
 				border-top: 1px solid #8a8a8a;
 				padding: 50px 15px 0px;
 				box-sizing: border-box;
 				color: #000000;
-			">
-            <p style="margin: 0; padding-bottom: 10px">
-                Hello ${firstName} ${lastName},
-            </p>
-            <p style="
+			"
+		>
+			<p style="margin: 0; padding-bottom: 10px">Hello ${firstName},</p>
+			<p
+				style="
 					font-size: 14px;
 					font-weight: 300;
 					line-height: 20px;
 					margin: 0 0 20px 0;
-				">
-                Thanks for signing up with wefithost blog! Before you get started, we need you to confirm your email address. Please copy this number below to complete your signup.
-            </p>
-        </td>
-    </tr>
-    <tr>
-        <td align="center" style="padding: 10px 0">
-            <p style="font-size: 40px; color: #171639; font-weight: bold; margin: 0">
-                ${verificationCode}
-            </p>
-        </td>
-    </tr>
-    <tr>
-        <td align="start" style="padding-top: 20px">
-            <p style="font-size: 14px; color: gray; margin: 0">
-                © wefithostblog. ${new Date()}
-            </p>
-            <p style="font-size: 12px; color: gray">
-                You’re receiving this email from wefithost.
-            </p>
-        </td>
-    </tr>
-</table>`,
+				"
+			>
+				Thanks for signing up with wefithost blog! Before you get started, we
+				need you to confirm your email address. Please copy this number below to
+				complete your signup.
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td align="center" style="padding: 10px 0">
+			<p style="font-size: 40px; color: #171639; font-weight: bold; margin: 0">
+				${verificationCode}
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td align="start" style="padding-top: 20px">
+			<p style="font-size: 14px; color: gray; margin: 0">
+				© wefithost. ${new Date()}
+			</p>
+			<p style="font-size: 12px; color: gray">
+				You’re receiving this email from wefithost.
+			</p>
+		</td>
+	</tr>
+</table>
+`,
     });
 
     return NextResponse.json(

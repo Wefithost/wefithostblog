@@ -27,7 +27,7 @@ const userSchema = new Schema<IUser>(
       { type: mongoose.Schema.Types.ObjectId, ref: "Article" },
     ],
     job_name: { type: String, required: false },
-    role: { type: String, required: false, enum: ["admin", "member"], default: 'member' },
+    role: { type: String, required: false, enum: ["admin", "member","super_admin"], default: 'member' },
     password: { type: String },
     verification_hash: { type: String },
     oauth_provider: { type: String },

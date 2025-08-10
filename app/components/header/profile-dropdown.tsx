@@ -7,6 +7,7 @@ import LogoutPrompt from './logout-prompt';
 import EditName from './edit-name-prompt';
 import EditProfile from './edit-profile';
 import { useUtilsContext } from '~/app/context/utils-context';
+import Link from 'next/link';
 
 interface profileDropProps {
 	profileDropdown: boolean;
@@ -51,7 +52,7 @@ const ProfileDropdown = ({
 					}`}
 					ref={profileDropdownRef}
 				>
-					<h1 className="text-[27px]  text-black ">Your account</h1>
+					<h1 className="text-xl  text-black ">Your account</h1>
 					<div className="flex flex-col w-full gap-1">
 						<div className="flex  items-center gap-3 py-2 px-3   bg-white rounded-lg  border-gray-400 ">
 							{/* eslint-disable-next-line */}
@@ -72,12 +73,20 @@ const ProfileDropdown = ({
 								)}
 							</div>
 						</div>
-						<h1 className="text-sm text-[#8D8896] py-1 px-3 ">
-							joined{' '}
-							<span className=" text-black">
-								{formatDate(user?.createdAt as string)}
-							</span>
-						</h1>
+						<div className="flex items-center justify-between">
+							<h1 className="text-sm text-[#8D8896] py-1 px-3 ">
+								joined{' '}
+								<span className=" text-black">
+									{formatDate(user?.createdAt as string)}
+								</span>
+							</h1>
+							<Link
+								href="/admin"
+								className="ext-xs  bg-[#FFFBDB] neue-light px-2 border border-[#a37a00]   rounded-full text-[#a37a00] text-xs "
+							>
+								admin
+							</Link>
+						</div>
 						<div className="w-full flex flex-col gap-2 ">
 							<button
 								className="flex items-center bg-white justify-between p-3 rounded-lg outline-none duration-150  hover:bg-purple-50"
