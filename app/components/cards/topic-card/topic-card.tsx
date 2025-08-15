@@ -97,7 +97,7 @@ const TopicCard = ({ topic, admin = false }: TopicProps) => {
 						className="w-full h-full object-cover min-h-[200px]"
 					/>
 					<div className="absolute top-0 left-0 h-full w-full bg-[#15133d7a] min-h-[200px]"></div>
-					<h1 className="  text-white text-3xl rounded-sm absolute  bottom-2 left-5 font-semibold  max-2xs:px-2  max-2xs:text-xs max-2xs:top-3 max-2xs:left-3 poppins-bold capitalize">
+					<h1 className="  text-white text-3xl rounded-sm absolute  bottom-2 left-5 font-semibold  max-2xs:px-2 max-2xs:text-2xl poppins-bold capitalize">
 						{topic?.title}
 					</h1>
 				</div>
