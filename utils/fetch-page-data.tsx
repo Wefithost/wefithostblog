@@ -1,71 +1,80 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from 'react';
 
-interface usePageFetchProps {
-  basePath: string;
-  ids: (string | number)[];
-  eventKey?: string;
-  pollingInterval?: number;
-  enabled?: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dep?: any;
+interface UsePageFetchProps {
+	basePath: string;
+	ids: (string | number)[];
+	eventKey?: string;
+	pollingInterval?: number;
+	enabled?: boolean;
+	dep?: unknown;
+	dataKey?: string;
 }
-// eslint-disable-next-line
-export function usePageFetch<T = any>({
-  basePath,
-  ids,
-  eventKey = "",
-  pollingInterval,
-  enabled = true,
-  dep,
-}: usePageFetchProps) {
-  const [fetchedData, setFetchedData] = useState<T | null>(null);
-  const [isFetching, setIsFetching] = useState(true);
-  const [hasError, setHasError] = useState(false);
-  const [error, setError] = useState("");
 
-  useEffect(() => {
-    if (!basePath) return;
-    if (!enabled) return;
-    let intervalId: NodeJS.Timeout;
+export function usePageFetch<T = unknown>({
+	basePath,
+	ids,
+	eventKey = '',
+	pollingInterval,
+	enabled = true,
+	dep,
+	dataKey = 'response',
+}: UsePageFetchProps) {
+	const [fetchedData, setFetchedData] = useState<T | null>(null);
+	const [isFetching, setIsFetching] = useState(true);
+	const [hasError, setHasError] = useState(false);
+	const [error, setError] = useState('');
 
-    const fetchData = async () => {
-      try {
-        const res = await fetch(`${basePath}/${ids.join("/")}`);
-        const data = await res.json();
+	// Prevent "new array every render" issue
+	// eslint-disable-next-line
+	const stableIds = useMemo(() => ids, [JSON.stringify(ids)]);
 
-        if (!res.ok) {
-          setHasError(true);
-          setError(data.error);
-          return;
-        }
+	const fetchData = useCallback(async () => {
+		if (!enabled || !basePath) return;
 
-        setFetchedData(data.result);
-        setHasError(false);
-        setError("");
-      } catch (error) {
-        console.error(error);
-        setHasError(true);
-      } finally {
-        setIsFetching(false);
-      }
-    };
+		setIsFetching(true);
+		try {
+			const res = await fetch(
+				stableIds.length > 0 ? `${basePath}/${stableIds.join('/')}` : basePath,
+			);
 
-    fetchData();
+			const data = await res.json();
 
-    const handleUpdate = () => fetchData();
-    window.addEventListener(eventKey, handleUpdate);
+			if (!res.ok) {
+				setHasError(true);
+				setError(data.error || 'An error occurred');
+				return;
+			}
 
-    // Polling setup (only if pollingInterval is provided)
-    if (pollingInterval) {
-      intervalId = setInterval(fetchData, pollingInterval);
-    }
+			setFetchedData(data[dataKey] ?? data.response);
+			setHasError(false);
+			setError('');
+		} catch (err) {
+			console.error(err);
+			setHasError(true);
+			setError('Network error');
+		} finally {
+			setIsFetching(false);
+		}
+	}, [basePath, stableIds, enabled, dataKey]);
 
-    return () => {
-      window.removeEventListener(eventKey, handleUpdate);
-      if (intervalId) clearInterval(intervalId);
-    };
-    // eslint-disable-next-line
-  }, [basePath, eventKey, pollingInterval, ...ids, dep]);
+	useEffect(() => {
+		if (!enabled) return;
+		let intervalId: NodeJS.Timeout;
 
-  return { fetchedData, isFetching, hasError, error };
+		fetchData();
+
+		if (eventKey) {
+			const handleUpdate = () => fetchData();
+			window.addEventListener(eventKey, handleUpdate);
+			return () => window.removeEventListener(eventKey, handleUpdate);
+		}
+
+		if (pollingInterval) {
+			intervalId = setInterval(fetchData, pollingInterval);
+			return () => clearInterval(intervalId);
+		}
+	}, [fetchData, eventKey, pollingInterval, dep, enabled]);
+
+	return { fetchedData, isFetching, hasError, error, refetch: fetchData };
 }
+

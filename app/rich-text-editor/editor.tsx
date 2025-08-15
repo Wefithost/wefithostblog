@@ -44,7 +44,7 @@ const RichTextEditor = ({
 		extensions,
 		editorProps: {
 			attributes: {
-				class: `${classname_override} text-white pt-10  pb-2 px-3  min-h-[200px] outline-none  editor   focus:ring-2  focus:ring-grey ring-[1px] ring-grey rounded-xl`,
+				class: `${classname_override} text-black   min-h-[200px] outline-none  editor     max-h-[80vh] overflow-auto new-article pt-3`,
 			},
 		},
 		immediatelyRender: false,
@@ -56,7 +56,7 @@ const RichTextEditor = ({
 	});
 
 	return (
-		<div className="flex  flex-col gap-4         rounded-xl      duration-150 relative z-20 w-full">
+		<div className="flex  flex-col gap-0  duration-150 relative z-20 w-full">
 			{editor && <MenuBar editor={editor} />}
 			<EditorContent editor={editor} />
 		</div>

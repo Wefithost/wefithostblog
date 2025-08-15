@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Sidebar from './components/sidebar/sidebar';
 import { useAuthContext } from '../context/auth-context';
-import Header from '../components/header/header';
+import Header from './components/header';
 export default function RootLayout({
 	children,
 }: Readonly<{

@@ -1,0 +1,33 @@
+import mongoose, { Schema, model, Document, Model, Types } from 'mongoose';
+import { JSONContent } from '@tiptap/react';
+interface IArticle extends Document {
+	image: string;
+	slug: string;
+	title: string;
+	topic: Types.ObjectId;
+	duration: string;
+	description: string;
+	article: JSONContent;
+	author: Types.ObjectId;
+}
+
+const ArticleSchema = new Schema<IArticle>(
+	{
+		title: { type: String, required: true },
+		topic: { type: Schema.Types.ObjectId, ref: 'Topic', required: true },
+		author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+		description: { type: String, required: true },
+		image: { type: String, required: true },
+		slug: { type: String },
+		duration: { type: String, required: false },
+		article: { type: Schema.Types.Mixed },
+	},
+	{ timestamps: true },
+);
+
+const Article: Model<IArticle> =
+	mongoose.models.Article || model<IArticle>('Article', ArticleSchema);
+
+export default Article;
+export type { IArticle };
+

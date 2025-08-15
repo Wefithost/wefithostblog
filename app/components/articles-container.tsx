@@ -1,42 +1,50 @@
 'use client';
-import { articles } from '~/lib/data/articles';
-import ArticleCard from './cards/article-card';
+import ArticleCard from './cards/article-card/article-card';
 import FilterBar from './filter-bar';
 import { useState } from 'react';
 import EmptyState from './empty-state';
 import { IArticle } from '~/types/article';
+import { useTopicsContext } from '../context/topics-context';
 
 interface containerProps {
 	showFilters?: boolean;
+	articles: IArticle[] | null;
 }
 
-const ArticlesContainer = ({ showFilters = true }: containerProps) => {
+const ArticlesContainer = ({
+	showFilters = true,
+	articles,
+}: containerProps) => {
 	const [activeFilter, setActiveFilter] = useState('all');
 	const [selectedSort, setSelectedSort] = useState('newest');
-	const filteredArticles = (() => {
-		const filtered = articles?.filter((article) => {
-			// If 'all' is selected, keep all articles
-			if (activeFilter === 'all') return true;
+	const { topics } = useTopicsContext();
+	const filteredArticles =
+		(() => {
+			const filtered = articles?.filter((article) => {
+				// If 'all' is selected, keep all articles
+				if (activeFilter === 'all') return true;
 
-			// Only keep articles with a matching topic (case-insensitive)
-			return article?.topic?.toLowerCase() === activeFilter.toLowerCase();
-		});
+				// Only keep articles with a matching topic (case-insensitive)
+				return (
+					article?.topic.title?.toLowerCase() === activeFilter.toLowerCase()
+				);
+			});
 
-		// Sort the filtered list
-		return filtered?.slice().sort((a, b) => {
-			const dateA = new Date(a?.date ?? 0).getTime();
-			const dateB = new Date(b?.date ?? 0).getTime();
+			// Sort the filtered list
+			return filtered?.slice().sort((a, b) => {
+				const dateA = new Date(a?.createdAt ?? 0).getTime();
+				const dateB = new Date(b?.createdAt ?? 0).getTime();
 
-			switch (selectedSort) {
-				case 'newest':
-					return dateB - dateA;
-				case 'oldest':
-					return dateA - dateB;
-				default:
-					return 0;
-			}
-		});
-	})();
+				switch (selectedSort) {
+					case 'newest':
+						return dateB - dateA;
+					case 'oldest':
+						return dateA - dateB;
+					default:
+						return 0;
+				}
+			});
+		})() ?? [];
 
 	const [searchTerm, setSearchTerm] = useState('');
 	const [searchResults, setSearchResults] = useState<IArticle[]>([]);
@@ -44,27 +52,27 @@ const ArticlesContainer = ({ showFilters = true }: containerProps) => {
 	const searchedArticles = searchTerm ? searchResults : [];
 	const hasSearch = searchTerm.trim().length > 0;
 	const hasSearchResults = searchedArticles.length > 0;
-	const hasFilteredResults = filteredArticles.length > 0;
-	const hasArticles = articles.length > 0;
+	const hasFilteredResults = filteredArticles && filteredArticles.length > 0;
+	const hasArticles = articles && articles.length > 0;
 	const isFiltered = activeFilter !== 'all';
 	console.log(noResults);
 	return (
-		<section className="flex w-full flex-col gap-8 max-2xl:gap-4 ">
-			{showFilters && (
-				<div className="w-full">
-					<FilterBar
-						activeFilter={activeFilter}
-						setActiveFilter={setActiveFilter}
-						articles={articles}
-						searchTerm={searchTerm}
-						setSearchTerm={setSearchTerm}
-						setSearchResults={setSearchResults}
-						setNoResults={setNoResults}
-						selectedSort={selectedSort}
-						setSelectedSort={setSelectedSort}
-					/>
-				</div>
-			)}
+		<section className="flex w-full flex-col gap-8 max-2xl:gap-4 bg-white">
+			<div className="w-full">
+				<FilterBar
+					activeFilter={activeFilter}
+					setActiveFilter={setActiveFilter}
+					articles={articles}
+					searchTerm={searchTerm}
+					setSearchTerm={setSearchTerm}
+					setSearchResults={setSearchResults}
+					setNoResults={setNoResults}
+					selectedSort={selectedSort}
+					setSelectedSort={setSelectedSort}
+					topics={topics}
+					showFilters={showFilters}
+				/>
+			</div>
 			{hasSearch ? (
 				hasSearchResults ? (
 					<div className="flex w-full items-center flex-col gap-4 ">
@@ -95,14 +103,15 @@ const ArticlesContainer = ({ showFilters = true }: containerProps) => {
 
 export default ArticlesContainer;
 interface gridProps {
-	articles: IArticle[];
+	articles: IArticle[] | null;
 }
 
 export const ArticleGrid = ({ articles }: gridProps) => (
-	<div className="grid grid-cols-3 max-2xs:flex max-2xs:flex-col max-xl:grid-cols-2 max-dmd:grid-cols-1 gap-x-5 gap-y-8 max-xs:gap-2">
-		{articles.map((article) => (
-			<ArticleCard key={article.id} article={article} />
-		))}
+	<div className="grid grid-cols-3 max-2xs:flex max-2xs:flex-col max-xl:grid-cols-2 max-md:grid-cols-1 gap-x-5 gap-y-8 max-xs:gap-2">
+		{articles &&
+			articles.map((article) => (
+				<ArticleCard key={article._id} article={article} />
+			))}
 	</div>
 );
 

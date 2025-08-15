@@ -126,7 +126,7 @@ ${password && 'pr-8'}
 			{textarea && (
 				<div className="flex flex-col gap-1 ">
 					<textarea
-						className={` ${classname_override}  min-h-[50px] py-1 px-3     bg-grey  text-white   text-sm    focus:ring-[1px]    ring-grey-blue   outline-none w-full  duration-150  ${
+						className={` ${classname_override}  min-h-[50px] py-1 px-3     bg-grey  text-black   text-sm    focus:ring-[1px]    ring-purple    outline-none w-full  duration-150 rounded-sm ${
 							error && serverError?.includes(error) && 'border-red border-2'
 						}     ${
 							error === errorContent && !value

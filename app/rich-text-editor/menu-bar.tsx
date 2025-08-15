@@ -133,13 +133,13 @@ export const MenuBar = ({ editor }: editorProps) => {
 		},
 	];
 	return (
-		<div className="text-white flex items-center gap-1 w-full  absolute top-1  left-2 z-1   ">
+		<div className="text-black flex items-center gap-1 w-full  sticky top-1   z-1  bg-white p-2">
 			{options.map((opt, index) => (
 				<button
 					onClick={opt.onClick}
 					disabled={opt.disabled}
 					className={` p-1.5   rounded-full ${
-						opt.pressed ? 'bg-grey' : ' hover:bg-fade-grey'
+						opt.pressed ? 'bg-gray-200' : ' hover:bg-gray-100'
 					}`}
 					key={index}
 				>

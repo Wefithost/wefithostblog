@@ -10,6 +10,7 @@ import Overlay from './components/overlay';
 import AuthPrompt from './components/auth/auth';
 import { AuthProvider } from './context/auth-context';
 import { NextAuthProvider } from './next-auth-provider';
+import { TopicsProvider } from './context/topics-context';
 const PoppinsReg = localFont({
 	src: './fonts/Poppins-Regular.ttf',
 	variable: '--font-poppins',
@@ -37,19 +38,21 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body
-				className={`${PoppinsReg.variable}  ${QuicksandReg.variable} ${PoppinsBold.variable} antialiased  flex flex-col mx-auto`}
+				className={`${PoppinsReg.variable}  ${PoppinsBold.variable}  ${QuicksandReg.variable} antialiased  flex flex-col mx-auto`}
 				id="body"
 			>
 				<NextAuthProvider>
 					<ToastContainer position="bottom-right" closeButton={false} />
 					<UtilsProvider>
-						<AuthProvider>
-							<Header />
-							<Overlay />
-							<AuthPrompt />
-							{children}
-							<Footer />
-						</AuthProvider>
+						<TopicsProvider>
+							<AuthProvider>
+								<Header />
+								<Overlay />
+								<AuthPrompt />
+								{children}
+								<Footer />
+							</AuthProvider>
+						</TopicsProvider>
 					</UtilsProvider>
 				</NextAuthProvider>
 			</body>

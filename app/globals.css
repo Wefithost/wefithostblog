@@ -200,3 +200,27 @@ button {
         text-wrap: nowrap;
     }
 }
+
+.new-article::-webkit-scrollbar {
+    width: 4px;
+    /* width of vertical scrollbar */
+    height: 4px;
+    /* height of horizontal scrollbar */
+}
+
+.new-article::-webkit-scrollbar-track {
+    background: #f0f0f000;
+    /* scrollbar track color */
+}
+
+.new-article::-webkit-scrollbar-thumb {
+    background-color: #c9c9c9;
+    /* scrollbar thumb color */
+    border-radius: 4px;
+    /* roundness of the thumb */
+}
+
+.new-article::-webkit-scrollbar-thumb:hover {
+    background-color: #b6b6b6;
+    /* hover color */
+}

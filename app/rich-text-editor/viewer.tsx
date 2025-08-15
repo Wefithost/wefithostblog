@@ -10,10 +10,12 @@ import Link from '@tiptap/extension-link';
 interface ArticleViewerProps {
 	content?: JSONContent;
 	className?: string;
+	editable?: boolean;
 }
 export default function ArticleViewer({
 	content,
 	className,
+	editable = false,
 }: ArticleViewerProps) {
 	const extensions = [
 		Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -39,7 +41,7 @@ export default function ArticleViewer({
 	];
 
 	const editor = useEditor({
-		editable: false, // 🔒 Read-only
+		editable: editable, // 🔒 Read-only
 		content: content,
 		extensions: extensions,
 		editorProps: {

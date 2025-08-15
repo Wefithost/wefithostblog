@@ -1,0 +1,227 @@
+'use client';
+import { useRef, useState } from 'react';
+import { FaCheck, FaPlus } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import AsyncButton from '~/app/components/buttons/async-button';
+import CropImage from '~/app/components/crop-image';
+import ClassicInput from '~/app/components/inputs/classic-input';
+import { useAuthContext } from '~/app/context/auth-context';
+import { apiRequest } from '~/utils/api-request';
+import { usePopup } from '~/utils/toggle-popups';
+import { IoImageSharp } from 'react-icons/io5';
+import { useParams } from 'next/navigation';
+const NewArticle = () => {
+	const {
+		isActive: newArticlePrompt,
+		isVisible: newArticlePromptVisible,
+		ref: newArticlePromptRef,
+		setDisableToggle: disableNewArticlePrompt,
+		togglePopup: toggleNewArticlePrompt,
+	} = usePopup();
+	const { user } = useAuthContext();
+	const { topic } = useParams();
+	const [title, setTitle] = useState('');
+	const [desc, setDesc] = useState('');
+
+	const [error, setError] = useState('');
+	const [loading, setLoading] = useState(false);
+	const [successful, setSuccessful] = useState(false);
+
+	const [selecting, setSelecting] = useState(false);
+	const [imageBlob, setImageBlob] = useState<Blob | null>(null);
+	const [imagePreview, setImagePreview] = useState<string | null>(null);
+	const [imageUrl, setImageUrl] = useState<string | null>(null);
+	const createArticle = async () => {
+		if (!user || loading) {
+			return;
+		}
+
+		if (desc.trim() === '') {
+			setError('Description is required');
+			return;
+		}
+		if (title.trim() === '') {
+			setError('Title is required');
+			return;
+		}
+		if (!imageUrl) {
+			setError('An image is required');
+			return;
+		}
+		setLoading(true);
+		setError('');
+		disableNewArticlePrompt(true);
+		const formData = new FormData();
+
+		formData.append('adminId', user._id);
+		formData.append('title', title);
+		formData.append('description', desc);
+		formData.append('uploaded_image', imageBlob as Blob);
+
+		await apiRequest({
+			url: `/api/topics/${topic}/create-article`,
+			method: 'POST',
+			body: formData,
+			onSuccess: (response) => {
+				setSuccessful(true);
+				toast.success(response.message, {
+					icon: <FaCheck color="white" />,
+				});
+				window.dispatchEvent(new CustomEvent('articlesUpdated'));
+				setTimeout(() => {
+					toggleNewArticlePrompt();
+					cancelCreation();
+					setSuccessful(false);
+				}, 3000);
+			},
+			onError: (error) => {
+				setError(error);
+			},
+			onFinally: () => {
+				setLoading(false);
+				disableNewArticlePrompt(false);
+			},
+		});
+	};
+	const inputImageRef = useRef<HTMLInputElement | null>(null);
+	const handleClickSelect = () => inputImageRef.current?.click();
+	const handleImageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const file = e.target.files?.[0];
+		if (!file) return;
+		setSelecting(true);
+		setError('');
+		const reader = new FileReader();
+		reader.onloadend = () => setImageUrl(reader.result as string);
+		reader.readAsDataURL(file);
+	};
+
+	const cancelCreation = () => {
+		toggleNewArticlePrompt();
+		setTitle('');
+		setDesc('');
+
+		setError('');
+		setLoading(false);
+		setSuccessful(false);
+
+		setSelecting(false);
+		setImageBlob(null);
+		setImagePreview(null);
+		setImageUrl(null);
+	};
+	return (
+		<>
+			<button
+				className="h-[40px] rounded-md px-4 bg-purple hover:bg-darkPurple duration-150 flex items-center justify-center text-white gap-2 text-center "
+				onClick={toggleNewArticlePrompt}
+			>
+				<span>
+					<FaPlus />
+				</span>
+				<span>New Article</span>
+			</button>
+			{newArticlePrompt && (
+				<div className="fixed top-[0px]  h-full w-full  z-50 left-0 flex  justify-center  items-center        backdrop-brightness-50  px-8     xs:px-0">
+					{selecting ? (
+						<CropImage
+							selecting={selecting}
+							setSelecting={setSelecting}
+							ref={newArticlePromptRef}
+							setImagePreview={setImagePreview}
+							setImageBlob={setImageBlob}
+							imageUrl={imageUrl}
+							setImageUrl={setImageUrl}
+							aspectRatio={465 / 301}
+						/>
+					) : (
+						<div
+							className={`w-[350px]     mid-popup   duration-300 ease-in-out flex flex-col py-6 px-6  gap-4   rounded-lg bg-white   items-center font-normal     ${
+								newArticlePromptVisible ? '' : 'mid-popup-hidden'
+							}`}
+							ref={newArticlePromptRef}
+						>
+							<div className="flex items-center flex-col gap-0 w-full leading-none">
+								<h1 className="text-2xl sf-bold text-center text-black">
+									Create a new Article
+								</h1>
+							</div>
+							<div className="flex flex-col gap-0 items-center justify-center w-full">
+								{imagePreview ? (
+									// eslint-disable-next-line
+									<img src={imagePreview} alt="icon" className="w-full   " />
+								) : (
+									<IoImageSharp className="text-9xl  text-gray-500 object-cover" />
+								)}
+								<button
+									className=" text-black link-style-dark text-xs"
+									onClick={handleClickSelect}
+								>
+									{imageUrl ? 'Choose another' : 'Select Image'}
+								</button>
+							</div>
+							<ClassicInput
+								value={title}
+								setValue={setTitle}
+								error={error}
+								setError={setError}
+								placeholder="hosting"
+								classname_override="!bg-lightGrey"
+								autofocus={true}
+								label="Title"
+								name="title"
+								errorContent="Title is required"
+							/>
+							<ClassicInput
+								value={desc}
+								setValue={setDesc}
+								textarea
+								error={error}
+								classname_override="!bg-lightGrey !text-black !rounded-sm "
+								setError={setError}
+								placeholder="Everything hosting"
+								errorContent="Description is required"
+								name="desc"
+							/>
+							{!error && (
+								<h1 className="text-xs text-center text-gray-600">
+									*more details will need to be filled in the article page
+								</h1>
+							)}
+							{error && (
+								<h1 className="text-xs text-center text-red">{error}</h1>
+							)}
+							<div className="gap-2 flex w-full">
+								<AsyncButton
+									classname_override="!h-[40px] !rounded-md"
+									action="Create"
+									disabled={!title || !desc || !imageUrl}
+									loading={loading}
+									success={successful}
+									onClick={createArticle}
+								/>
+								<button
+									className="bg-gray-600 text-center w-full  hover:outline outline-gray-600   !rounded-md text-sm text-white duration-150"
+									onClick={cancelCreation}
+									disabled={loading}
+								>
+									Cancel
+								</button>
+
+								<input
+									type="file"
+									accept="image/*"
+									onChange={handleImageFileChange}
+									ref={inputImageRef}
+									className="hidden"
+								/>
+							</div>
+						</div>
+					)}
+				</div>
+			)}
+		</>
+	);
+};
+
+export default NewArticle;
+

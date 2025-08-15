@@ -4,8 +4,8 @@ import { toast } from 'react-toastify';
 import AsyncButton from '~/app/components/buttons/async-button';
 import { useAuthContext } from '~/app/context/auth-context';
 import { apiRequest } from '~/utils/api-request';
-import CropProfile from './crop-profile';
 import { IoImageSharp } from 'react-icons/io5';
+import CropImage from '../crop-image';
 
 interface PopupPrompt {
 	isVisible: boolean;
@@ -52,7 +52,7 @@ const EditProfile = ({
 		formData.append('uploaded_image', profileBlob as Blob);
 
 		await apiRequest({
-			url: '/api/auth/update-profile',
+			url: '/api/auth/upload-profile',
 			method: 'PATCH',
 			body: formData,
 			onSuccess: (response) => {
@@ -61,7 +61,6 @@ const EditProfile = ({
 					icon: <FaCheck color="white" />,
 				});
 				window.dispatchEvent(new CustomEvent('userUpdated'));
-				window.dispatchEvent(new CustomEvent('fetchUser'));
 				setTimeout(() => {
 					togglePopup();
 					setSuccessful(false);
@@ -93,14 +92,15 @@ const EditProfile = ({
 		isActive && (
 			<div className="fixed top-[0px]  h-full w-full  z-50 left-0 flex  justify-center  items-center        backdrop-brightness-50  px-8     xs:px-0  ">
 				{selecting ? (
-					<CropProfile
+					<CropImage
 						selecting={selecting}
 						setSelecting={setSelecting}
 						ref={ref}
-						setProfilePreview={setProfilePreview}
-						setProfileBlob={setProfileBlob}
-						profileUrl={profileUrl}
-						setProfileUrl={setProfileUrl}
+						setImagePreview={setProfilePreview}
+						setImageBlob={setProfileBlob}
+						imageUrl={profileUrl}
+						setImageUrl={setProfileUrl}
+						aspectRatio={1 / 1}
 					/>
 				) : (
 					<div
@@ -132,9 +132,7 @@ const EditProfile = ({
 							</button>
 						</div>
 
-						{error && (
-							<h1 className="text-2xl text-center text-red">{error}</h1>
-						)}
+						{error && <h1 className="text-xs text-center text-red">{error}</h1>}
 
 						<div className="gap-2 flex w-full">
 							<AsyncButton

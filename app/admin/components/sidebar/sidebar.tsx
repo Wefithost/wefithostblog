@@ -2,27 +2,28 @@ import Image from 'next/image';
 import logo from '~/public/icons/logo.svg';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import SidebarList from './projects-list-card';
+import SidebarList from './sidebar-lists';
 import { MdApps, MdArticle } from 'react-icons/md';
+import { FaUsers } from 'react-icons/fa';
 interface SidebarProps {
-	hidden: string;
+	hidden: boolean;
 }
 const Sidebar = ({ hidden }: SidebarProps) => {
 	const linkname = usePathname();
 	const menuList = [
 		{
 			id: 1,
-			dir: 'Products',
-			href: '/admin/products',
+			dir: 'Topics',
+			href: '/admin/topics',
 			icon: <MdArticle className="text-black" />,
 			activeIcon: <MdArticle className="text-purple" />,
 		},
 		{
 			id: 2,
-			dir: 'Users',
-			href: '/admin/users',
-			icon: <MdArticle className="text-black" />,
-			activeIcon: <MdArticle className="text-black" />,
+			dir: 'Members',
+			href: '/admin/members',
+			icon: <FaUsers className="text-black" />,
+			activeIcon: <FaUsers className="text-purple" />,
 		},
 		{
 			id: 3,
@@ -34,8 +35,8 @@ const Sidebar = ({ hidden }: SidebarProps) => {
 	];
 	return (
 		<section
-			className={`h-full w-[260px]  pt-6 pb-5 flex flex-col gap-10  items-start shrink-0   xl:pt-5 xl:px-2  bg-white lg:w-[260px] lg:px-0     ${
-				hidden && 'lg:hidden'
+			className={`h-full w-[260px]  pt-3 pb-5 flex flex-col gap-10  items-start shrink-0   max-xl:pt-5 max-xl:px-2  bg-white max-lg:w-[260px] max-lg:px-0     ${
+				hidden && 'max-lg:hidden'
 			}`}
 		>
 			<div className="flex  items-center justify-center   w-full flex-col">
@@ -43,7 +44,7 @@ const Sidebar = ({ hidden }: SidebarProps) => {
 					<Image
 						src={logo}
 						alt=""
-						className="w-[160px] xl:w-[120px] shrink-0"
+						className="w-[160px] max-xl:w-[120px] shrink-0"
 						priority
 					/>
 				</Link>
@@ -54,14 +55,16 @@ const Sidebar = ({ hidden }: SidebarProps) => {
 				<div className="h-full  w-full flex flex-col gap-1">
 					<Link
 						href={'/admin'}
-						className={`   py-3 px-5 text-[20px] neue  flex items-center  gap-3  w-full xl:text-xl text-grey relative duration-150      ${
-							linkname === '/admin' && ' bg-dimGreen  text-softGreen  '
+						className={`   py-3 px-5 text-[20px] neue  flex items-center  gap-3  w-full max-xl:text-xl text-grey relative duration-150      ${
+							linkname === '/admin'
+								? ' bg-purple-50  text-purple  '
+								: 'hover:bg-purple-50'
 						}`}
 					>
 						{linkname === '/admin' ? (
 							<MdApps className="text-purple" />
 						) : (
-							<MdApps className="text-purple" />
+							<MdApps className="text-black" />
 						)}
 
 						{linkname === '/admin' && (

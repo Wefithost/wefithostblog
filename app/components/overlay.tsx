@@ -19,6 +19,7 @@ const Overlay = () => {
 
 		setOverlayOpen(false);
 	}, [linkname, setOverlayOpen]);
+
 	const footerLink = [
 		{
 			header: 'Topics',

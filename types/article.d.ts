@@ -1,14 +1,26 @@
-import {  JSONContent} from "@tiptap/react";
+import { JSONContent } from '@tiptap/react';
 export interface IArticle {
-  id: number;
-  title: string;
-  topic: 'news' | 'security' | 'hosting' | 'tips' | 'marketing' | string;
-  img: string;
-  duration: string; 
-  description: string;
-  date: string; 
-  article: JSONContent;
+	_id: string;
+
+	topic: {
+		title: string;
+		_id: string;
+	};
+	duration: string;
+	description: string;
+	createdAt: string;
+	article: JSONContent;
+	author: {
+		_id: string;
+		first_name: string;
+		last_name: string;
+		profile: string;
+		bio: string;
+	};
+	image: string;
+	slug: string;
+	title: string;
+	description: string;
+	article: JSONContent;
 }
-
-
 

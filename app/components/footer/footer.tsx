@@ -114,7 +114,7 @@ const Footer = () => {
 	const linkname = usePathname();
 	return (
 		<footer
-			className={`bg-deepPurple flex flex-col w-full  text-darkGrey border-t-lightGrey border-t mt-10   ${
+			className={`bg-deepPurple flex flex-col w-full  text-darkGrey ${
 				linkname.startsWith('/admin') && 'hidden'
 			}`}
 		>

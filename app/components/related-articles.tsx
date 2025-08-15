@@ -1,5 +1,5 @@
 import { IArticle } from '~/types/article';
-import ArticleCard from './cards/article-card';
+import ArticleCard from './cards/article-card/article-card';
 import { useMemo } from 'react';
 
 interface RelatedProps {
@@ -22,7 +22,7 @@ const RelatedArticlesSection = ({ header, related_articles }: RelatedProps) => {
 			)}
 			<div className="grid grid-cols-3 max-2xs:flex max-2xs:flex-col  max-xl:grid-cols-2 max-dmd:grid-cols-1 gap-x-5 gap-y-8 max-xs:gap-2 ">
 				{shuffledArticles.map((article) => (
-					<ArticleCard key={article.id} article={article} />
+					<ArticleCard key={article._id} article={article} />
 				))}
 			</div>
 		</aside>

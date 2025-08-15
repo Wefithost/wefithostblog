@@ -22,8 +22,8 @@ const EditName = ({
 	setDisable,
 }: PopupPrompt) => {
 	const { user } = useAuthContext();
-	const [firstName, setFirstName] = useState('');
-	const [lastName, setLastName] = useState('');
+	const [firstName, setFirstName] = useState(user?.first_name || '');
+	const [lastName, setLastName] = useState(user?.last_name || '');
 	const [error, setError] = useState('');
 	const [loading, setLoading] = useState(false);
 	const [successful, setSuccessful] = useState(false);
@@ -53,7 +53,6 @@ const EditName = ({
 					icon: <FaCheck color="white" />,
 				});
 				window.dispatchEvent(new CustomEvent('userUpdated'));
-				window.dispatchEvent(new CustomEvent('fetchUser'));
 				setTimeout(() => {
 					togglePopup();
 					setSuccessful(false);

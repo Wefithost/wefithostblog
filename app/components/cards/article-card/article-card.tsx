@@ -1,0 +1,167 @@
+import Link from 'next/link';
+import { FaCircle, FaPen } from 'react-icons/fa';
+import { formatDate } from '~/utils/format-date';
+import { slugify } from '~/utils/slugify';
+import { IArticle } from '~/types/article';
+import { FaEllipsisVertical } from 'react-icons/fa6';
+import { usePopup } from '~/utils/toggle-popups';
+import { useState } from 'react';
+import { RiDeleteBin5Line } from 'react-icons/ri';
+import DeleteArticlePrompt from './delete-article-prompt';
+import EditArticlePrompt from './edit-article-prompt';
+interface articleProps {
+	article: IArticle;
+	admin?: boolean;
+}
+const ArticleCard = ({ article, admin = false }: articleProps) => {
+	const {
+		isActive: adminPrompt,
+		isVisible: adminPromptVisible,
+		ref: adminPromptRef,
+		togglePopup: toggleAdminPrompt,
+	} = usePopup();
+	const {
+		isActive: editArticlePrompt,
+		isVisible: editArticlePromptVisible,
+		ref: editArticlePromptRef,
+		setDisableToggle: disableEditArticlePrompt,
+		togglePopup: toggleEditArticlePrompt,
+	} = usePopup();
+	const {
+		isActive: deleteArticlePrompt,
+		isVisible: deleteArticlePromptVisible,
+		ref: deleteArticlePromptRef,
+		setDisableToggle: disableDeleteArticlePrompt,
+		togglePopup: toggleDeleteArticlePrompt,
+	} = usePopup();
+	const [articleToEdit, setArticleToEdit] = useState<IArticle | null>(null);
+
+	console.log('article', article);
+	return (
+		<>
+			<Link
+				href={
+					admin
+						? `/admin/topics/${slugify(article.topic.title)}/${slugify(
+								article?.title,
+						  )}`
+						: `/topics/${slugify(article.topic.title)}/${slugify(
+								article?.title,
+						  )}`
+				}
+				className="flex flex-col gap-4 h-[550px] items-start overflow-hidden  rounded-xl p-3 hover:shadow-md duration-150 bg-gray-50 max-xs:gap-2 max-xs:h-[490px] max-2xs:h-auto relative justify-between"
+			>
+				{admin && (
+					<div className="absolute top-5 right-5 z-20">
+						<button
+							className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-[#ffffff43]  "
+							onClick={(e) => {
+								e.preventDefault();
+								e.stopPropagation();
+								toggleAdminPrompt();
+							}}
+						>
+							<FaEllipsisVertical className="text-xl text-white" />
+						</button>
+						{adminPrompt && (
+							<div
+								className={`flex  flex-col bg-white shadow-lg  w-[130px] rounded-md   duration-150 absolute top-0 right-[100%] divide-y divide-lightGrey overflow-hidden border border-lightGrey z-20   ${
+									adminPromptVisible ? 'opacity-100' : 'opacity-0 '
+								}`}
+								ref={adminPromptRef}
+							>
+								<button
+									className="py-2 w-full text-[13px]  text-grey flex items-center gap-2  px-3 hover:bg-lightGrey duration-150"
+									onClick={(e) => {
+										e.preventDefault();
+										e.stopPropagation();
+										toggleEditArticlePrompt();
+										setArticleToEdit(article);
+									}}
+								>
+									<FaPen className="text-sm" />
+									<span>Edit article</span>
+								</button>
+								<button
+									className="py-2 w-full text-[13px]  text-grey flex items-center gap-2  px-3 hover:bg-lightGrey duration-150"
+									onClick={(e) => {
+										e.preventDefault();
+										e.stopPropagation();
+										toggleDeleteArticlePrompt();
+									}}
+								>
+									<RiDeleteBin5Line className="text-sm text-red" />
+									<span>Delete article</span>
+								</button>
+							</div>
+						)}
+					</div>
+				)}
+				<div className="min-h-[300px] max-h-[300px] w-full overflow-hidden rounded-xl blog-img relative   max-2xs:max-h-auto max-2xs:min-h-[200px] ">
+					{/* eslint-disable-next-line */}
+					<img
+						src={article?.image}
+						alt=""
+						className="w-full h-full object-cover max-2xs:min-h-[200px]"
+					/>
+					{admin && (
+						<div className="absolute top-0 left-0 h-full w-full bg-[#15133d7a]"></div>
+					)}
+					<button className="bg-purple h-[40px] hover:bg-darkPurple duration-150 px-3 text-white text-sm rounded-sm absolute  top-5 left-5 font-semibold max-2xs:h-[30px] max-2xs:px-2  max-2xs:text-xs max-2xs:top-3 max-2xs:left-3 ">
+						{article?.topic.title}
+					</button>
+				</div>
+				<div className="flex gap-4 items-center text-lg  max-md:text-base">
+					<span>{formatDate(article?.createdAt)}</span>
+					{article?.duration && (
+						<>
+							<FaCircle className="text-[10px] " />
+							<span>{article?.duration} mins read</span>
+						</>
+					)}
+				</div>
+				<h1 className="text-lg poppins-bold line-clamp-2 max-2xs:text-base">
+					{article?.title}
+				</h1>
+				<p className="text-lg line-clamp-2 article-desc max-md:text-base max-2xs:text-sm">
+					{article.description}
+				</p>
+				<div className="flex items-center justify-between w-full">
+					<div className="flex items-center gap-2">
+						{/* eslint-disable-next-line */}
+						<img
+							src={article?.author?.profile ?? '/icons/default-user.svg'}
+							className="w-7 h-7 object-cover rounded-full max-sm:w-6 max-sm:h-6"
+							alt=""
+						/>
+						<span className="text-base font-semibold text-gray-700 max-sm:text-xs ">
+							{article?.author?.first_name} {article?.author?.last_name}
+						</span>
+					</div>
+					<span className="text-base text-purple hover:text-darkPurple max-sm:text-sm">
+						Read more
+					</span>
+				</div>
+			</Link>
+			<EditArticlePrompt
+				isVisible={editArticlePromptVisible}
+				ref={editArticlePromptRef}
+				isActive={editArticlePrompt}
+				togglePopup={toggleEditArticlePrompt}
+				setDisable={disableEditArticlePrompt}
+				articleToEdit={articleToEdit as IArticle}
+			/>
+			<DeleteArticlePrompt
+				isVisible={deleteArticlePromptVisible}
+				ref={deleteArticlePromptRef}
+				isActive={deleteArticlePrompt}
+				togglePopup={toggleDeleteArticlePrompt}
+				setDisable={disableDeleteArticlePrompt}
+				articleId={article?._id}
+			/>
+		</>
+	);
+};
+
+export default ArticleCard;
+
