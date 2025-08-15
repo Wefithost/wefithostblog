@@ -48,7 +48,7 @@ export default function Home() {
 				{topics && topics?.length > 0 && (
 					<>
 						<RelatedTopicsSection
-							header="Check out our other topics"
+							header="Check out other topics"
 							related_topics={topics}
 						/>
 					</>

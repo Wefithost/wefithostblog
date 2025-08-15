@@ -39,8 +39,8 @@ const TopicCard = ({ topic, admin = false }: TopicProps) => {
 	return (
 		<>
 			<Link
-				href={admin ? `/admin/topics/${topic?.slug}` : `/${topic?.slug}`}
-				className="flex flex-col gap-4 h-[400px] items-start overflow-hidden    hover:shadow-md duration-300 bg-gray-50 max-xs:gap-2 max-xs:h-[490px] max-2xs:h-auto rounded-lg relative"
+				href={admin ? `/admin/topics/${topic?.slug}` : `/topics/${topic?.slug}`}
+				className="flex flex-col items-start overflow-hidden    hover:shadow-md duration-300 bg-gray-50 max-xs:gap-2  max-2xs:h-auto rounded-lg relative "
 			>
 				{admin && (
 					<div className="absolute top-3 right-3 z-20">
@@ -97,12 +97,12 @@ const TopicCard = ({ topic, admin = false }: TopicProps) => {
 						className="w-full h-full object-cover min-h-[200px]"
 					/>
 					<div className="absolute top-0 left-0 h-full w-full bg-[#15133d7a] min-h-[200px]"></div>
-					<h1 className="  text-white text-2xl rounded-sm absolute  bottom-2 left-5 font-semibold  max-2xs:px-2  max-2xs:text-xs max-2xs:top-3 max-2xs:left-3 poppins-bold capitalize">
+					<h1 className="  text-white text-3xl rounded-sm absolute  bottom-2 left-5 font-semibold  max-2xs:px-2  max-2xs:text-xs max-2xs:top-3 max-2xs:left-3 poppins-bold capitalize">
 						{topic?.title}
 					</h1>
 				</div>
 
-				<p className="text-base line-clamp-2 article-desc max-md:text-sm max-2xs:text-sm px-2">
+				<p className="text-base line-clamp-2 article-desc max-md:text-sm max-2xs:text-sm p-6 ">
 					{topic?.description}
 				</p>
 			</Link>
