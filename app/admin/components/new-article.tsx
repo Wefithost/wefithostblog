@@ -183,9 +183,12 @@ const NewArticle = () => {
 								name="desc"
 							/>
 							{!error && (
-								<h1 className="text-xs text-center text-gray-600">
-									*more details will need to be filled in the article page
-								</h1>
+								<>
+									<h1 className="text-xs text-center text-gray-600">
+										*more details will need to be filled in the article page and
+										by default an article is unpublished until set
+									</h1>
+								</>
 							)}
 							{error && (
 								<h1 className="text-xs text-center text-red">{error}</h1>

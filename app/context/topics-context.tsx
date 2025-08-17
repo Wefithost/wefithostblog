@@ -1,7 +1,7 @@
 'use client';
 import React, { createContext, useContext, useMemo } from 'react';
 import { ITopic } from '~/types/topic';
-import { usePageFetch } from '~/utils/fetch-page-data';
+import { useFetch } from '~/utils/fetch-page-data';
 
 interface TopicsContextType {
 	topics: ITopic[] | null;
@@ -19,7 +19,7 @@ export const TopicsProvider: React.FC<{ children: React.ReactNode }> = ({
 		isFetching,
 		error,
 		refetch,
-	} = usePageFetch<ITopic[]>({
+	} = useFetch<ITopic[]>({
 		basePath: `/api/topics`,
 		ids: [],
 		eventKey: 'articlesUpdated',

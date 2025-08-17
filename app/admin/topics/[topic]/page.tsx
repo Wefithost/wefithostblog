@@ -7,7 +7,7 @@ import ArticleCard from '~/app/components/cards/article-card/article-card';
 import { useAuthContext } from '~/app/context/auth-context';
 
 import NewArticle from '../../components/new-article';
-import { usePageFetch } from '~/utils/fetch-page-data';
+import { useFetch } from '~/utils/fetch-page-data';
 import EmptyState from '~/app/components/empty-state';
 const Articles = () => {
 	const { topic } = useParams();
@@ -22,8 +22,8 @@ const Articles = () => {
 		isFetching,
 		error,
 		refetch,
-	} = usePageFetch<topicProps>({
-		basePath: `/api/topics/${topic}`,
+	} = useFetch<topicProps>({
+		basePath: `/api/topics/${topic}?`,
 		ids: [],
 		eventKey: 'articlesUpdated',
 		enabled: !!user && !loading,

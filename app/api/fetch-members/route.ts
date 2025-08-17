@@ -8,7 +8,9 @@ export async function GET(req: NextRequest) {
 		await connectMongo();
 		const { searchParams } = new URL(req.url);
 		const adminId = searchParams.get('adminId');
-		console.log(adminId);
+		const skip = parseInt(searchParams.get('skip') || '0', 10);
+		const limit = parseInt(searchParams.get('limit') || '10', 10);
+
 		if (!isValidObjectId(adminId)) {
 			return NextResponse.json(
 				{
@@ -33,8 +35,29 @@ export async function GET(req: NextRequest) {
 			);
 		}
 
-		const members = await User.find({});
-		return NextResponse.json({ response: members }, { status: 200 });
+		const members = await User.aggregate([
+			{
+				$addFields: {
+					rolePriority: {
+						$switch: {
+							branches: [
+								{ case: { $eq: ['$role', 'super_admin'] }, then: 2 },
+								{ case: { $eq: ['$role', 'admin'] }, then: 1 },
+							],
+							default: 0,
+						},
+					},
+				},
+			},
+			{ $sort: { rolePriority: -1, createdAt: -1 } }, // super_admin first, then admin, then others
+			{ $skip: skip },
+			{ $limit: limit },
+		]);
+		const membersLength = await User.countDocuments({});
+		return NextResponse.json(
+			{ members, members_length: membersLength },
+			{ status: 200 },
+		);
 	} catch (error) {
 		console.log(error);
 		return NextResponse.json(

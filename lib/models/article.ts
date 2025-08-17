@@ -9,6 +9,8 @@ interface IArticle extends Document {
 	description: string;
 	article: JSONContent;
 	author: Types.ObjectId;
+	featured: boolean;
+	published: boolean;
 }
 
 const ArticleSchema = new Schema<IArticle>(
@@ -20,6 +22,8 @@ const ArticleSchema = new Schema<IArticle>(
 		image: { type: String, required: true },
 		slug: { type: String },
 		duration: { type: String, required: false },
+		featured: { type: Boolean, default: false },
+		published: { type: Boolean, default: false },
 		article: { type: Schema.Types.Mixed },
 	},
 	{ timestamps: true },

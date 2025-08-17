@@ -4,7 +4,7 @@ import logo from '~/public/icons/spin-purple.svg';
 import errorIcon from '~/public/icons/error.svg';
 interface LoaderProps {
 	fetching: boolean;
-	error: string;
+	error?: string;
 	children: React.ReactNode;
 	classname_override?: string;
 	try_again?: () => void;
@@ -57,7 +57,7 @@ const Loader: React.FC<LoaderProps> = ({
 	);
 	let content;
 
-	if (error.trim() !== '') {
+	if (error?.trim() !== '') {
 		content = renderErrorState();
 	} else if (fetching) {
 		content = renderLoadingState();

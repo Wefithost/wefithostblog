@@ -1,5 +1,5 @@
 'use client';
-import { usePageFetch } from '~/utils/fetch-page-data';
+import { useFetch } from '~/utils/fetch-page-data';
 import ArticlesContainer from './components/articles-container';
 import CtaSection from './components/cta';
 import HeroPreview from './components/hero-preview';
@@ -14,7 +14,7 @@ export default function Home() {
 		fetchedData: articles,
 		isFetching,
 		error,
-	} = usePageFetch<IArticle[]>({
+	} = useFetch<IArticle[]>({
 		basePath: `/api/fetch-articles`,
 		ids: [],
 	});
@@ -48,7 +48,7 @@ export default function Home() {
 				{topics && topics?.length > 0 && (
 					<>
 						<RelatedTopicsSection
-							header="Check out other topics"
+							header="Explore Topics"
 							related_topics={topics}
 						/>
 					</>

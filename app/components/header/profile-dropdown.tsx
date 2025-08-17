@@ -63,7 +63,7 @@ const ProfileDropdown = () => {
 						width={24}
 						height={24}
 					/>
-					<h1 className="text-black  max-2xl:text-base  max-xs:text-sm text-base leading-0">
+					<h1 className="text-black  max-2xl:text-base  max-xs:text-sm text-base leading-0 max-sm:hidden flex ">
 						{user?.first_name ?? user?.email}
 					</h1>
 					<FaAngleDown

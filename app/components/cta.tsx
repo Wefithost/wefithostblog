@@ -9,7 +9,7 @@ import AsyncButton from './buttons/async-button';
 // import smoke from '~/public/images/smoke.jpg';
 // import websiteonline from '~/public/images/phone-hold.jpg';
 // import space from '~/public/images/Data-Centers-in-Space.jpg';
-// import { usePageFetch } from '~/utils/fetch-page-data';
+// import { useFetch } from '~/utils/fetch-page-data';
 
 const CtaSection = () => {
 	const [email, setEmail] = useState('');

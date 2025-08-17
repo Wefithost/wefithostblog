@@ -8,13 +8,10 @@ export async function GET(req: NextRequest) {
 		const { searchParams } = new URL(req.url);
 		const adminParam = searchParams.get('admin');
 		const admin = adminParam ? adminParam === 'true' : false;
-		const skip = parseInt(searchParams.get('skip') || '0', 10);
-		const limit = parseInt(searchParams.get('limit') || '9', 10);
 		let articles;
 		if (admin) {
 			articles = await Article.find({})
-				.skip(skip)
-				.limit(limit)
+				.limit(9)
 				.populate({
 					path: 'topic',
 					select: 'title',
@@ -25,9 +22,8 @@ export async function GET(req: NextRequest) {
 				})
 				.lean();
 		} else {
-			articles = await Article.find({ published: true })
-				.skip(skip)
-				.limit(limit)
+			articles = await Article.find({ published: true, featured: true })
+				.limit(9)
 				.populate({
 					path: 'topic',
 					select: 'title',
@@ -38,7 +34,7 @@ export async function GET(req: NextRequest) {
 				})
 				.lean();
 		}
-
+		console.log(articles);
 		const articlesLength = await Article.countDocuments({});
 		return NextResponse.json(
 			{ response: articles, articlesLength },

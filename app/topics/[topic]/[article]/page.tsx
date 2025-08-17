@@ -13,7 +13,7 @@ import AsyncButton from '../../../components/buttons/async-button';
 import Link from 'next/link';
 import ArticleViewer from '../../../rich-text-editor/viewer';
 import RelatedArticlesSection from '../../../components/related-articles';
-import { usePageFetch } from '~/utils/fetch-page-data';
+import { useFetch } from '~/utils/fetch-page-data';
 import { IArticle } from '~/types/article';
 import Loader from '~/app/components/loader';
 const Article = () => {
@@ -24,7 +24,7 @@ const Article = () => {
 		fetchedData: article_data,
 		isFetching,
 		error: errorFetching,
-	} = usePageFetch<IArticle>({
+	} = useFetch<IArticle>({
 		basePath: `/api/topics/${topic}/${article}`,
 		ids: [],
 		dataKey: 'selectedArticle',
@@ -76,12 +76,12 @@ const Article = () => {
 		fetchedData: articles,
 		isFetching: fetchingArticles,
 		error: errorFetchingArticles,
-	} = usePageFetch<IArticle[]>({
+	} = useFetch<IArticle[]>({
 		basePath: `/api/fetch-articles`,
 		ids: [],
 	});
 	const related_articles = articles?.filter(
-		(type) => slugify(type?.title) !== article,
+		(type) => slugify(type?.title) === article,
 	);
 	return (
 		<main className=" flex flex-col mx-auto max-w-[1500px] min-h-screen w-full gap-10 py-12 px-8 max-md:py-6 max-md:gap-5 max-xs:px-5">

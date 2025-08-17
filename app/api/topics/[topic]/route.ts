@@ -10,7 +10,9 @@ export async function GET(
 	try {
 		await connectMongo();
 		const { topic } = await params;
-
+		const { searchParams } = new URL(req.url);
+		const adminParam = searchParams.get('admin');
+		const admin = adminParam ? adminParam === 'true' : false;
 		console.log('topic', topic);
 		if (topic.trim() === '') {
 			return NextResponse.json(
@@ -28,16 +30,32 @@ export async function GET(
 				{ status: 404 },
 			);
 		}
+		let articles;
+		if (admin) {
+			articles = await Article.find({})
 
-		const articles = await Article.find({ topic: existingTopic._id })
-			.populate({
-				path: 'topic',
-				select: 'title',
-			})
-			.populate({
-				path: 'author',
-				select: 'profile first_name last_name',
-			});
+				.populate({
+					path: 'topic',
+					select: 'title',
+				})
+				.populate({
+					path: 'author',
+					select: 'profile first_name last_name',
+				})
+				.lean();
+		} else {
+			articles = await Article.find({ published: true })
+
+				.populate({
+					path: 'topic',
+					select: 'title',
+				})
+				.populate({
+					path: 'author',
+					select: 'profile first_name last_name',
+				})
+				.lean();
+		}
 
 		const topicDetails = {
 			title: existingTopic.title,

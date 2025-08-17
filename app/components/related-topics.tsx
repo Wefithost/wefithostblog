@@ -1,7 +1,10 @@
 import { useMemo } from 'react';
 import { ITopic } from '~/types/topic';
 import TopicCard from './cards/topic-card/topic-card';
-
+import { Swiper, SwiperSlide } from 'swiper/react';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
 interface RelatedProps {
 	header?: string;
 	related_topics: ITopic[];
@@ -11,7 +14,7 @@ const RelatedTopicsSection = ({ header, related_topics }: RelatedProps) => {
 	const shuffledTopics = useMemo(() => {
 		if (!related_topics) return [];
 		const copy = [...related_topics];
-		return copy.sort(() => Math.random() - 0.5).slice(0, 3);
+		return copy.sort(() => Math.random() - 0.5);
 		// eslint-disable-next-line
 	}, []);
 
@@ -20,11 +23,40 @@ const RelatedTopicsSection = ({ header, related_topics }: RelatedProps) => {
 			{header && (
 				<h3 className="text-[28px] poppins-bold max-xl:text-xl">{header}</h3>
 			)}
-			<div className="grid grid-cols-3 max-2xs:flex max-2xs:flex-col  max-xl:grid-cols-2 max-md:grid-cols-1 gap-x-5 gap-y-8 max-xs:gap-2 ">
+			<Swiper
+				pagination={{
+					clickable: true,
+				}}
+				spaceBetween={10}
+				breakpoints={{
+					// when window width is >= 320px
+					320: {
+						slidesPerView: 1.1,
+						spaceBetween: 15,
+					},
+					// when window width is >= 640px
+					640: {
+						slidesPerView: 2.1,
+						spaceBetween: 10,
+					},
+					// when window width is >= 1024px
+					1024: {
+						slidesPerView: 3.1,
+						spaceBetween: 10,
+					},
+					// when window width is >= 1440px
+					1440: {
+						slidesPerView: 3.1,
+						spaceBetween: 10,
+					},
+				}}
+			>
 				{shuffledTopics.map((topic) => (
-					<TopicCard key={topic._id} topic={topic} />
+					<SwiperSlide key={topic._id}>
+						<TopicCard key={topic._id} topic={topic} />
+					</SwiperSlide>
 				))}
-			</div>
+			</Swiper>
 		</aside>
 	);
 };

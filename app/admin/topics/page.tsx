@@ -6,7 +6,7 @@ import TopicCard from '~/app/components/cards/topic-card/topic-card';
 import { useAuthContext } from '~/app/context/auth-context';
 import Loader from '~/app/components/loader';
 import EmptyState from '~/app/components/empty-state';
-import { usePageFetch } from '~/utils/fetch-page-data';
+import { useFetch } from '~/utils/fetch-page-data';
 
 const Topics = () => {
 	const { loading, user } = useAuthContext();
@@ -16,7 +16,7 @@ const Topics = () => {
 		isFetching,
 		error,
 		refetch,
-	} = usePageFetch<ITopic[]>({
+	} = useFetch<ITopic[]>({
 		basePath: `/api/topics`,
 		ids: [],
 		eventKey: 'topicsUpdated',

@@ -7,7 +7,7 @@ import Loader from '~/app/components/loader';
 import RelatedTopicsSection from '~/app/components/related-topics';
 import { useTopicsContext } from '~/app/context/topics-context';
 import { IArticle } from '~/types/article';
-import { usePageFetch } from '~/utils/fetch-page-data';
+import { useFetch } from '~/utils/fetch-page-data';
 import { slugify } from '~/utils/slugify';
 interface topicProps {
 	articles: IArticle[];
@@ -21,7 +21,7 @@ export default function Topic() {
 		fetchedData: topic_data,
 		isFetching,
 		error,
-	} = usePageFetch<topicProps>({
+	} = useFetch<topicProps>({
 		basePath: `/api/topics/${topic}`,
 		ids: [],
 		dataKey: 'topicDetails',

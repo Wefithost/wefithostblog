@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 
-interface UsePageFetchProps {
+interface useFetchProps {
 	basePath: string;
 	ids: (string | number)[];
 	eventKey?: string;
@@ -10,7 +10,7 @@ interface UsePageFetchProps {
 	dataKey?: string;
 }
 
-export function usePageFetch<T = unknown>({
+export function useFetch<T = unknown>({
 	basePath,
 	ids,
 	eventKey = '',
@@ -18,7 +18,7 @@ export function usePageFetch<T = unknown>({
 	enabled = true,
 	dep,
 	dataKey = 'response',
-}: UsePageFetchProps) {
+}: useFetchProps) {
 	const [fetchedData, setFetchedData] = useState<T | null>(null);
 	const [isFetching, setIsFetching] = useState(true);
 	const [hasError, setHasError] = useState(false);
