@@ -60,7 +60,7 @@ const Articles = () => {
 	}, [currentPage, topic, user]);
 	return (
 		<main className="px-4 py-6 bg-white min-h-screen flex flex-col gap-8 ">
-			<Breadcrumbs />
+			{/* <Breadcrumbs /> */}
 			<div className="flex items-start justify-between w-full">
 				<div className="flex flex-col gap-3">
 					<h1 className="max-xs:text-2xl capitalize  text-3xl font-semibold">

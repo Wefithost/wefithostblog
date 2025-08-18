@@ -2,10 +2,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
-import { FaAngleDown, FaAngleLeft, FaAngleRight } from 'react-icons/fa';
+import {  FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import loadingIcon from '~/public/icons/spin-purple.svg';
 import { useTopicsContext } from '~/app/context/topics-context';
 import { usePopup } from '~/utils/toggle-popups';
+import { TfiAngleDown } from 'react-icons/tfi';
 
 const Breadcrumbs = () => {
 	const { topic: topic_param } = useParams();
@@ -36,7 +37,7 @@ const Breadcrumbs = () => {
 					onClick={toggleDropdown}
 				>
 					<span className="text-xs uppercase">{currentTopic}</span>
-					<FaAngleDown
+					<TfiAngleDown
 						className={`duration-150 ${dropdownVisible ? 'rotate-180' : ''}`}
 					/>
 				</button>
