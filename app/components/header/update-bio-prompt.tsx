@@ -68,9 +68,9 @@ const UpdateBioPrompt = ({
 	};
 	return (
 		isActive && (
-			<div className="fixed top-[0px]  h-full w-full  z-50 left-0 flex  justify-center  items-center        backdrop-brightness-50  px-8     xs:px-0">
+			<div className="fixed top-[0px]  h-full w-full  z-50 left-0 flex  justify-center  items-center backdrop-brightness-50  px-8     xs:px-0">
 				<div
-					className={`w-[350px]     mid-popup   duration-300 ease-in-out flex flex-col py-6 px-6  gap-4   rounded-lg bg-white   items-center font-normal     ${
+					className={`w-[350px]  mid-popup   duration-300 ease-in-out flex flex-col py-6 px-6  gap-6   rounded-lg bg-white   items-center font-normal     ${
 						isVisible ? '' : 'mid-popup-hidden'
 					}`}
 					ref={ref}
@@ -92,7 +92,7 @@ const UpdateBioPrompt = ({
 						error={error}
 						setError={setError}
 						placeholder="John Doe is a Lagos-based UX Designer creating intuitive digital experiences for global brands."
-						classname_override="!bg-lightGrey"
+						classname_override="!bg-lightGrey !text-xs"
 						autofocus={true}
 						name="bio"
 						errorContent="Bio is required"

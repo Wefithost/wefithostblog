@@ -3,39 +3,69 @@
 import { useParams } from 'next/navigation';
 import { IArticle } from '~/types/article';
 import Loader from '~/app/components/loader';
-import ArticleCard from '~/app/components/cards/article-card/article-card';
 import { useAuthContext } from '~/app/context/auth-context';
 
 import NewArticle from '../../components/new-article';
-import { useFetch } from '~/utils/fetch-page-data';
 import EmptyState from '~/app/components/empty-state';
+import ArticlesContainer from '~/app/components/articles-container/articles-container';
+import { useEffect, useState } from 'react';
+import { apiRequest } from '~/utils/api-request';
+import Breadcrumbs from '../../components/bread-crumbs';
 const Articles = () => {
 	const { topic } = useParams();
-	const { user, loading } = useAuthContext();
+	const { user } = useAuthContext();
 	interface topicProps {
 		articles: IArticle[];
 		title: string;
 		desc: string;
 	}
-	const {
-		fetchedData: topic_data,
-		isFetching,
-		error,
-		refetch,
-	} = useFetch<topicProps>({
-		basePath: `/api/topics/${topic}?`,
-		ids: [],
-		eventKey: 'articlesUpdated',
-		enabled: !!user && !loading,
-		dataKey: 'topicDetails',
-		//  deps:[loading,user]
-	});
 
+	const [currentPage, setCurrentPage] = useState(1);
+	const pageSize = 9; // articles per page
+
+	const [pagedArticles, setPagedArticles] = useState<topicProps | null>(null);
+	const [totalArticles, setTotalArticles] = useState(0);
+	const [fetching, setFetching] = useState(true);
+	const [error, setError] = useState('');
+
+	useEffect(() => {
+		if (!user) {
+			return;
+		}
+		const fetchPage = async () => {
+			setFetching(true);
+			setError('');
+
+			await apiRequest({
+				url: `/api/topics/${topic}?skip=${
+					(currentPage - 1) * pageSize
+				}&limit=${pageSize}&admin=true`,
+				method: 'GET',
+				onSuccess: (res) => {
+					setPagedArticles(res.topicDetails);
+					setTotalArticles(res.totalArticles);
+				},
+				onError: (error) => {
+					setError(error);
+				},
+				onFinally: () => {
+					setFetching(false);
+				},
+			});
+		};
+		const refetchHandler = () => fetchPage();
+		window.addEventListener('refetchArticles', refetchHandler);
+		fetchPage();
+		return () => window.removeEventListener('refetchArticles', refetchHandler);
+	}, [currentPage, topic, user]);
 	return (
-		<main className="px-4 py-6 bg-white min-h-screen flex flex-col gap-16 ">
-			<div className="flex items-center justify-between w-full">
+		<main className="px-4 py-6 bg-white min-h-screen flex flex-col gap-8 ">
+			<Breadcrumbs />
+			<div className="flex items-start justify-between w-full">
 				<div className="flex flex-col gap-3">
-					<h1 className="text-3xl font-semibold">All Articles in {topic}</h1>
+					<h1 className="max-xs:text-2xl capitalize  text-3xl font-semibold">
+						All Articles in {pagedArticles?.title}
+					</h1>
 					<p className="text-base max-w-[600px]">
 						Manage all your articles in one place—edit, publish, or delete with
 						ease to keep your content fresh and organized.
@@ -43,17 +73,29 @@ const Articles = () => {
 				</div>
 				<NewArticle />
 			</div>
-			<Loader fetching={isFetching} error={error} try_again={refetch}>
-				{topic_data?.articles && topic_data?.articles.length > 0 ? (
-					<div className="grid grid-cols-3  gap-4">
-						{topic_data?.articles.map((article) => (
-							<ArticleCard article={article} key={article?._id} admin={true} />
-						))}
-					</div>
-				) : (
-					<EmptyState message="No article has been created for this topic" />
-				)}
-			</Loader>
+			<div className="min-h-screen w-full py-8 gap-16 flex flex-col  max-w-[1500px] max-2xl:py-6 max-2xl:gap-10 ">
+				<Loader fetching={fetching} error={error}>
+					{pagedArticles?.articles && pagedArticles.articles?.length > 0 ? (
+						<>
+							<ArticlesContainer
+								pagedArticles={pagedArticles?.articles}
+								showFilters={false}
+								query={'admin=true'}
+								admin={true}
+								totalArticles={totalArticles}
+								currentPage={currentPage}
+								setCurrentPage={setCurrentPage}
+								pageSize={pageSize}
+							/>
+						</>
+					) : (
+						<EmptyState message="No articles has been created for this topic yet" />
+					)}
+				</Loader>
+
+				{/* CTA Section */}
+				{/* <CtaSection /> */}
+			</div>
 		</main>
 	);
 };

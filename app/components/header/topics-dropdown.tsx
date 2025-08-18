@@ -5,7 +5,9 @@ import { useTopicsContext } from '~/app/context/topics-context';
 
 import { usePopup } from '~/utils/toggle-popups';
 import loadingIcon from '~/public/icons/spin-purple.svg';
+import { useParams } from 'next/navigation';
 const TopicsDropdown = () => {
+	const { topic: topic_param } = useParams();
 	const {
 		isActive: dropdown,
 		isVisible: dropdownVisible,
@@ -42,7 +44,11 @@ const TopicsDropdown = () => {
 							<Link
 								href={`/topics/${topic.title}`}
 								key={topic?.title}
-								className="py-1.5 text-start px-2 hover:bg-[#f1f1f4] duration-150 uppercase"
+								className={`py-1.5 text-start px-2 duration-150 uppercase ${
+									topic.title === topic_param
+										? 'bg-purple-100 text-black'
+										: 'hover:bg-[#f1f1f4] '
+								}`}
 							>
 								{topic?.title}
 							</Link>

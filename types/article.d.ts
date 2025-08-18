@@ -6,7 +6,6 @@ export interface IArticle {
 		title: string;
 		_id: string;
 	};
-	duration: string;
 	description: string;
 	createdAt: string;
 	article: JSONContent;
@@ -22,5 +21,7 @@ export interface IArticle {
 	title: string;
 	description: string;
 	article: JSONContent;
+	featured: boolean;
+	published: boolean;
 }
 

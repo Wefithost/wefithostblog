@@ -27,6 +27,8 @@ const RelatedTopicsSection = ({ header, related_topics }: RelatedProps) => {
 				pagination={{
 					clickable: true,
 				}}
+				touchRatio={2} // makes it swipe more easily
+				threshold={10}
 				spaceBetween={10}
 				breakpoints={{
 					// when window width is >= 320px
@@ -53,7 +55,12 @@ const RelatedTopicsSection = ({ header, related_topics }: RelatedProps) => {
 			>
 				{shuffledTopics.map((topic) => (
 					<SwiperSlide key={topic._id}>
-						<TopicCard key={topic._id} topic={topic} />
+						<TopicCard
+							key={topic._id}
+							topic={topic}
+							classname_override="flex flex-col items-start overflow-hidden hover:bg-gray-100 duration-300 bg-gray-50 max-xs:gap-2  max-2xs:h-auto rounded-lg relative min-h-[430px] max-xl:min-h-[340px]  max-xs:min-h-[300px]
+ "
+						/>
 					</SwiperSlide>
 				))}
 			</Swiper>

@@ -11,6 +11,7 @@ import DeleteArticlePrompt from './delete-article-prompt';
 import * as motion from 'motion/react-client';
 
 import EditArticlePrompt from './edit-article-prompt';
+import { getReadingTime } from '~/utils/get-reading-time';
 interface articleProps {
 	article: IArticle;
 	admin?: boolean;
@@ -108,6 +109,11 @@ const ArticleCard = ({ article, admin = false }: articleProps) => {
 									)}
 								</div>
 							)}
+							{admin && !article?.published && (
+								<button className="flex items-center justify-center   bg-[#000000c2] absolute top-6 left-[50%] translate-x-[-50%] z-10 text-xs py-1 px-3 rounded-sm text-white">
+									Unpublished
+								</button>
+							)}
 							<div className="min-h-[300px] max-h-[300px] w-full overflow-hidden rounded-xl blog-img relative   max-2xs:max-h-auto max-2xs:min-h-[200px] ">
 								{/* eslint-disable-next-line */}
 								<img
@@ -124,12 +130,14 @@ const ArticleCard = ({ article, admin = false }: articleProps) => {
 							</div>
 							<div className="flex gap-4 items-center text-lg  max-md:text-base">
 								<span>{formatDate(article?.createdAt)}</span>
-								{article?.duration && (
-									<>
-										<FaCircle className="text-[10px] " />
-										<span>{article?.duration} mins read</span>
-									</>
-								)}
+
+								<FaCircle className="text-[10px] " />
+
+								<span>
+									{(article?.article && getReadingTime(article?.article)) ||
+										'2'}{' '}
+									mins read
+								</span>
 							</div>
 							<h1 className="text-lg poppins-bold line-clamp-2 max-2xs:text-base">
 								{article?.title}

@@ -7,6 +7,7 @@ import TextStyle from '@tiptap/extension-text-style';
 import Image from '@tiptap/extension-image';
 
 import Link from '@tiptap/extension-link';
+import { useEffect } from 'react';
 interface ArticleViewerProps {
 	content?: JSONContent;
 	className?: string;
@@ -51,6 +52,11 @@ export default function ArticleViewer({
 		},
 		immediatelyRender: false,
 	});
+	useEffect(() => {
+		if (editor && content) {
+			editor.commands.setContent(content, false);
+		}
+	}, [content, editor]);
 
 	if (!editor) return null;
 

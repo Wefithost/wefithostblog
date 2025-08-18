@@ -4,13 +4,10 @@ import { useAuthContext } from '~/app/context/auth-context';
 import Loader from '~/app/components/loader';
 import EmptyState from '~/app/components/empty-state';
 import { user_type } from '~/types/user';
-import { formatDate } from '~/utils/format-date';
 import { useEffect, useState } from 'react';
 import { apiRequest } from '~/utils/api-request';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
-import { FaEllipsisH, FaUserAlt } from 'react-icons/fa';
-import { usePopup } from '~/utils/toggle-popups';
-import { GrUserAdmin } from 'react-icons/gr';
+import Member from '../components/members-row/member';
 const Members = () => {
 	const { user } = useAuthContext();
 	const [currentPage, setCurrentPage] = useState(1);
@@ -31,7 +28,7 @@ const Members = () => {
 			setFetching(true);
 			setError('');
 			await apiRequest({
-				url: `/api/fetch-members?adminId=${user._id}&skip=${
+				url: `/api/members/fetch-members?adminId=${user._id}&skip=${
 					(currentPage - 1) * pageSize
 				}&limit=${pageSize}`,
 				method: 'GET',
@@ -53,20 +50,7 @@ const Members = () => {
 			window.removeEventListener('membersUpdated', handleMembersUpdated);
 		};
 	}, [currentPage, user]);
-	const {
-		isActive: memberPrompt,
-		isVisible: memberPromptVisible,
-		ref: memberPromptRef,
-		setDisableToggle: disablememberPrompt,
-		togglePopup: toggleMemberPrompt,
-	} = usePopup();
-	const {
-		isActive: setRolePrompt,
-		isVisible: setRolePromptVisible,
-		ref: setRolePromptRef,
-		setDisableToggle: disableSetRolePrompt,
-		togglePopup: toggleSetRolePrompt,
-	} = usePopup();
+
 	return (
 		<section className="flex flex-col gap-4  py-6 px-4 ">
 			<div className="flex items-center justify-between w-full max-2xs:flex-col max-2xs:gap-2 max-2xs:items-start ">
@@ -87,76 +71,7 @@ const Members = () => {
 						pagedMembers && (
 							<>
 								{pagedMembers.map((member) => (
-									<div
-										className="w-full flex gap-1 bg-white border-t    border-t-lightGrey hover:bg-gray-50"
-										key={member._id}
-									>
-										<div className="w-[30%] h-[40px] flex items-center  px-3  gap-2">
-											{/* eslint-disable-next-line */}
-											<img
-												src={member?.profile ?? '/icons/default-user.svg'}
-												className="w-7 h-7 object-cover rounded-full max-sm:w-6 max-sm:h-6"
-												alt=""
-											/>
-											<span className="text-sm  text-gray-700 max-sm:text-xs ">
-												{member?.first_name} {member?.last_name}
-											</span>
-										</div>
-										<div className="w-[30%] h-[40px] flex items-center  px-3 text-sm">
-											{member?.email}
-										</div>
-										<div className="w-[15%] h-[40px]  px-3 text-sm flex items-center">
-											<h1
-												className={`text-xs px-2 rounded-sm
-    ${
-			member?.role === 'super_admin'
-				? 'bg-[hsl(308,100%,97%)] text-[#783A71]' // Red
-				: member?.role === 'admin'
-				? 'bg-[#FFFBDB] text-[#a37a00]' // Yellow
-				: 'bg-[#DBEAFE] text-[#2563EB]' // Blue (member)
-		}`}
-											>
-												{member?.role}
-											</h1>
-										</div>
-										<div className="w-[15%] h-[40px] flex items-center  px-3 text-sm">
-											{formatDate(member?.createdAt as string)}
-										</div>
-										<div className="w-[10%] h-[40px] flex items-center  px-3 text-sm text-end justify-end relative">
-											<FaEllipsisH
-												className="text-gray-500 cursor-pointer "
-												onClick={toggleMemberPrompt}
-											/>
-											{memberPrompt && (
-												<div
-													className={`flex  flex-col bg-white shadow-lg  w-[130px] rounded-md   duration-150 absolute top-2 right-10  divide-y divide-lightGrey overflow-hidden border border-lightGrey z-20   ${
-														memberPromptVisible ? 'opacity-100' : 'opacity-0 '
-													}`}
-													ref={memberPromptRef}
-												>
-													<button
-														className="py-2 w-full text-[13px]  text-grey flex items-center gap-2  px-3 hover:bg-lightGrey duration-150"
-														onClick={(e) => {
-															e.preventDefault();
-															e.stopPropagation();
-															toggleSetRolePrompt();
-														}}
-													>
-														{member?.role === 'member' ? (
-															<FaUserAlt />
-														) : (
-															<GrUserAdmin />
-														)}
-														<span>
-															{member?.role !== 'member'
-																? 'Set as user'
-																: 'Set as admin'}
-														</span>
-													</button>
-												</div>
-											)}
-										</div>
-									</div>
+									<Member key={member?._id} member={member} />
 								))}
 								{placeholders.map((_, i) => (
 									<div

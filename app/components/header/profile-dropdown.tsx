@@ -52,7 +52,7 @@ const ProfileDropdown = () => {
 		<>
 			<div className="relative">
 				<div
-					className="text-sm  flex gap-2 items-center  py-1 px-2 rounded-full bg-lightGrey  cursor-pointer border-purple-100 border hover:bg-grey-"
+					className="text-sm  flex gap-2 items-center  py-1 px-2 rounded-full bg-lightGrey  cursor-pointer border-purple-100 border max-sm:py-0 max-sm:px-0"
 					onClick={toggleProfileDropdown}
 				>
 					{/* eslint-disable-next-line */}
@@ -60,21 +60,19 @@ const ProfileDropdown = () => {
 						src={user?.profile ? user.profile : '/icons/default-user.svg'}
 						className="w-6 h-6 object-cover rounded-full "
 						alt=""
-						width={24}
-						height={24}
 					/>
 					<h1 className="text-black  max-2xl:text-base  max-xs:text-sm text-base leading-0 max-sm:hidden flex ">
 						{user?.first_name ?? user?.email}
 					</h1>
 					<FaAngleDown
-						className={`duration-150 text-black text-base font-light  ${
+						className={`duration-150 text-black text-base font-light max-sm:hidden ${
 							profileDropdownVisible ? 'rotate-180' : ''
 						}`}
 					/>
 				</div>
 				{profileDropdown && (
 					<div
-						className={`w-[400px]  border border-gray-200   rounded-lg  py-4 px-6  flex flex-col gap-4  bg-lightGrey    shadow-lg duration-300 absolute top-10 right-0    max-lg:left-1/2  lg:transform   max-lg:-translate-x-1/2  font-normal ${
+						className={`w-[400px]  border border-gray-200   rounded-lg  py-4 px-6  flex flex-col gap-4  bg-lightGrey    shadow-lg duration-300 absolute top-10 right-0  z-20   font-normal max-2xs:right-[50%] max-2xs:translate-x-[-50%] max-2xs:transform max-2xs:left-[50%] max-2xs:fixed max-2xs:top-14 max-2xs:w-[350px] ${
 							profileDropdownVisible ? 'opacity-100' : 'opacity-0'
 						}`}
 						ref={profileDropdownRef}
@@ -107,12 +105,20 @@ const ProfileDropdown = () => {
 										{formatDate(user?.createdAt as string)}
 									</span>
 								</h1>
-								<Link
-									href="/admin"
-									className="ext-xs  bg-[#FFFBDB] neue-light px-2 border border-[#a37a00]   rounded-full text-[#a37a00] text-xs "
-								>
-									{user?.role}
-								</Link>
+
+								{user?.role !== 'member' && (
+									<Link
+										href="/admin"
+										className={`text-xs px-2 rounded-sm
+    ${
+			user?.role === 'super_admin'
+				? 'bg-[hsl(308,100%,97%)] text-[#783A71]' // Red
+				: 'bg-[#FFFBDB] text-[#a37a00]'
+		}`}
+									>
+										{user?.role}
+									</Link>
+								)}
 							</div>
 							<div className="w-full flex flex-col gap-2 ">
 								<button

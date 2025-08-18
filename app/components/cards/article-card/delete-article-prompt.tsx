@@ -79,11 +79,10 @@ const DeleteArticlePrompt = ({
 					<IoTrashBinOutline className="text-4xl  text-red-400 object-cover" />
 					<div className="flex items-center flex-col gap-1 w-full leading-none">
 						<h1 className="text-2xl sf-bold text-center text-black">
-							Delete topic
+							Delete Article
 						</h1>
 						<p className="text-sm text-center ">
-							Your&apos;re about to delete this topic. All articles under this
-							topic will be deleted also. Is that what you want?
+							Your&apos;re about to delete this article. Is that what you want?
 						</p>
 					</div>
 

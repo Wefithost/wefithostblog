@@ -11,9 +11,14 @@ import DeleteTopicPrompt from './delete-topic-prompt';
 interface TopicProps {
 	topic: ITopic;
 	admin?: boolean;
+	classname_override?: string;
 }
 
-const TopicCard = ({ topic, admin = false }: TopicProps) => {
+const TopicCard = ({
+	topic,
+	admin = false,
+	classname_override,
+}: TopicProps) => {
 	const {
 		isActive: adminPrompt,
 		isVisible: adminPromptVisible,
@@ -40,7 +45,10 @@ const TopicCard = ({ topic, admin = false }: TopicProps) => {
 		<>
 			<Link
 				href={admin ? `/admin/topics/${topic?.slug}` : `/topics/${topic?.slug}`}
-				className="flex flex-col items-start overflow-hidden hover:bg-gray-100 duration-300 bg-gray-50 max-xs:gap-2  max-2xs:h-auto rounded-lg relative min-h-[430px] max-xl:min-h-[340px]  max-xs:min-h-[300px]"
+				className={`${
+					classname_override ??
+					'flex flex-col items-start overflow-hidden    hover:shadow-md duration-300 bg-gray-50 max-xs:gap-2  max-2xs:h-auto rounded-lg relative'
+				}      `}
 			>
 				{admin && (
 					<div className="absolute top-3 right-3 z-20">

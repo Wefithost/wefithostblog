@@ -67,7 +67,7 @@ const NewArticle = () => {
 				toast.success(response.message, {
 					icon: <FaCheck color="white" />,
 				});
-				window.dispatchEvent(new CustomEvent('articlesUpdated'));
+				window.dispatchEvent(new CustomEvent('refetchArticles'));
 				setTimeout(() => {
 					toggleNewArticlePrompt();
 					cancelCreation();

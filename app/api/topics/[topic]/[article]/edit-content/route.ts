@@ -96,7 +96,11 @@ export async function POST(
 		await existingArticle.save();
 
 		return NextResponse.json(
-			{ message: 'Article updated successfully' },
+			{
+				message: 'Article updated successfully',
+				article_content: fullArticleContent,
+			},
+
 			{ status: 200 },
 		);
 	} catch (error) {

@@ -11,11 +11,12 @@ import { toast } from 'react-toastify';
 import { useState } from 'react';
 import AsyncButton from '../../../components/buttons/async-button';
 import Link from 'next/link';
-import ArticleViewer from '../../../rich-text-editor/viewer';
+import ArticleViewer from '../../../components/rich-text-editor/viewer';
 import RelatedArticlesSection from '../../../components/related-articles';
 import { useFetch } from '~/utils/fetch-page-data';
 import { IArticle } from '~/types/article';
 import Loader from '~/app/components/loader';
+import { getReadingTime } from '~/utils/get-reading-time';
 const Article = () => {
 	const params = useParams();
 
@@ -81,25 +82,33 @@ const Article = () => {
 		ids: [],
 	});
 	const related_articles = articles?.filter(
-		(type) => slugify(type?.title) === article,
+		(type) => slugify(type?.title) !== article,
 	);
 	return (
 		<main className=" flex flex-col mx-auto max-w-[1500px] min-h-screen w-full gap-10 py-12 px-8 max-md:py-6 max-md:gap-5 max-xs:px-5">
 			<Loader fetching={isFetching} error={errorFetching}>
 				<section className="flex w-full flex-col gap-3 items-start">
 					<div className="flex w-full  bg-[#14132b] rounded-2xl overflow-hidden max-md:flex-col  max-md:rounded-sm max-md:bg-transparent">
-						{/* eslint-disable-next-line */}
-						<img
-							src={article_data?.image}
-							className="min-h-[500px] max-h-[500px] max-lg:min-h-[400px]  max-lg:max-h-[400px] bg-[#ffffff] object-cover w-1/2 max-md:w-full max-md:min-h-[200px]  max-md:max-h-auto "
-						/>
-						<div className="flex items-start flex-col justify-between p-20 w-1/2 max-2xl:p-5 max-md:w-full  max-md:gap-1 max-md:bg-white max-md:p-0 max-md:py-2 ">
-							<button className="bg-purple hover:bg-darkPurple text-white text-lg h-[40px] px-2.5 duration-150 rounded-sm max-md:text-sm max-md:h-[35px]">
+						<div className="relative w-1/2 max-md:w-full">
+							{/* eslint-disable-next-line */}
+							<img
+								src={article_data?.image}
+								className="min-h-[500px] max-h-[500px] max-lg:min-h-[400px]  max-lg:max-h-[400px] bg-[#ffffff] object-cover  max-md:min-h-[200px]  max-md:max-h-auto w-full"
+							/>
+							<button className="bg-purple hover:bg-darkPurple text-white text-lg h-[40px] px-2.5 duration-150 rounded-sm max-md:text-sm max-md:h-[35px] absolute bottom-4 left-4 z-10 max-md:block hidden ">
+								{article_data?.topic.title}
+							</button>
+						</div>
+						<div className="flex items-start flex-col justify-between p-20 w-1/2 max-2xl:p-5 max-md:w-full    max-md:bg-white max-md:p-0 max-md:py-2 ">
+							<button className="bg-purple hover:bg-darkPurple text-white text-lg h-[40px] px-2.5 duration-150 rounded-sm max-md:text-sm max-md:h-[35px] max-md:hidden">
 								{article_data?.topic.title}
 							</button>
 							<h1 className="text-[32px] poppins-bold  text-white max-lg:text-2xl max-md:text-black max-md:text-lg">
 								{article_data?.title}
 							</h1>
+							<p className="text-lg  text-white  max-md:text-black max-md:text-sm">
+								{article_data?.description}
+							</p>
 							<div className=" items-center gap-2 hidden md:flex">
 								{/* eslint-disable-next-line */}
 								<img
@@ -117,10 +126,15 @@ const Article = () => {
 									<div className="flex gap-4 items-center text-sm  text-white max-md:text-black max-md:text-sm">
 										<span>{formatDate(article_data?.createdAt as string)}</span>
 
-										{article_data && article_data.duration && (
+										{article_data && (
 											<>
 												<FaCircle className="text-[10px] " />
-												<span>{article_data?.duration} mins read</span>
+												<span>
+													{(article_data?.article &&
+														getReadingTime(article_data?.article)) ||
+														'2'}{' '}
+													mins read
+												</span>
 											</>
 										)}
 									</div>
@@ -134,34 +148,42 @@ const Article = () => {
 				<div className="flex flex-col gap-10 max-w-[750px] w-full">
 					<ArticleViewer content={article_data?.article} />
 					{!isFetching && !error && (
-						<div className=" border-t-1 border-gray-400 w-full  flex flex-col gap-2 py-2">
+						<div className=" border-t-1 border-gray-400 w-full  flex flex-col gap-2 py-4">
+							<h1 className=" text-base">About the author</h1>
 							<div className=" items-center gap-2 flex">
 								{/* eslint-disable-next-line */}
 								<img
 									src={
 										article_data?.author?.profile ?? '/icons/default-user.svg'
 									}
-									className="w-9 h-9 object-cover rounded-full border border-gray-700"
+									className="w-9 h-9 object-cover rounded-full border border-gray-400"
 									alt=""
 								/>
 								<div className="flex items-start gap-0  flex-col">
-									<span className="text-base font-semibold text-black">
+									<span className="text-base font-semibold text-black max-md:text-sm">
 										{article_data?.author?.first_name}{' '}
 										{article_data?.author?.last_name}
 									</span>
-									<div className="flex gap-4 items-center text-sm  text-black max-md:text-black max-md:text-sm">
+									<div className="flex gap-4 items-center text-sm  text-black max-md:text-black max-md:text-xs">
 										<span>{formatDate(article_data?.createdAt as string)}</span>
 
-										{article_data && article_data.duration && (
+										{article_data && (
 											<>
 												<FaCircle className="text-[10px] " />
-												<span>{article_data?.duration} mins read</span>
+												<span>
+													{(article_data?.article &&
+														getReadingTime(article_data?.article)) ||
+														'2'}{' '}
+													mins read
+												</span>
 											</>
 										)}
 									</div>
 								</div>
 							</div>
-							{article_data?.author?.bio && <p>{article_data?.author?.bio}</p>}
+							{article_data?.author?.bio && (
+								<p className="max-md:text-sm">{article_data?.author?.bio}</p>
+							)}
 						</div>
 					)}
 				</div>

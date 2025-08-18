@@ -14,7 +14,7 @@ export default function RootLayout({
 	useEffect(() => {
 		if (loading) return;
 
-		if (!user || user.role === 'member') {
+		if (!user || (user.role !== 'admin' && user.role !== 'super_admin')) {
 			router.push('/');
 		}
 	}, [loading, user, router]);

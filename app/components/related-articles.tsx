@@ -30,12 +30,9 @@ const RelatedArticlesSection = ({ header, related_articles }: RelatedProps) => {
 				}}
 				spaceBetween={10}
 				slidesPerView={1.1}
+				touchRatio={2} // makes it swipe more easily
+				threshold={10}
 				breakpoints={{
-					// when window width is >= 320px
-					// 320: {
-					// 	slidesPerView: 1.1,
-					// 	spaceBetween: 15,
-					// },
 					// when window width is >= 640px
 					800: {
 						slidesPerView: 2.1,

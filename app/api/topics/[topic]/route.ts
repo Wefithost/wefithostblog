@@ -13,6 +13,8 @@ export async function GET(
 		const { searchParams } = new URL(req.url);
 		const adminParam = searchParams.get('admin');
 		const admin = adminParam ? adminParam === 'true' : false;
+		const skip = parseInt(searchParams.get('skip') || '0', 10);
+		const limit = parseInt(searchParams.get('limit') || '9', 10);
 		console.log('topic', topic);
 		if (topic.trim() === '') {
 			return NextResponse.json(
@@ -31,9 +33,11 @@ export async function GET(
 			);
 		}
 		let articles;
+		let totalArticles;
 		if (admin) {
-			articles = await Article.find({})
-
+			articles = await Article.find({ topic: existingTopic._id })
+				.skip(skip)
+				.limit(limit)
 				.populate({
 					path: 'topic',
 					select: 'title',
@@ -42,10 +46,17 @@ export async function GET(
 					path: 'author',
 					select: 'profile first_name last_name',
 				})
+				.sort({ createdAt: -1 })
 				.lean();
+
+			totalArticles = await Article.countDocuments({});
 		} else {
-			articles = await Article.find({ published: true })
-
+			articles = await Article.find({
+				published: true,
+				topic: existingTopic._id,
+			})
+				.skip(skip)
+				.limit(limit)
 				.populate({
 					path: 'topic',
 					select: 'title',
@@ -54,13 +65,17 @@ export async function GET(
 					path: 'author',
 					select: 'profile first_name last_name',
 				})
+				.sort({ createdAt: -1 })
 				.lean();
+
+			totalArticles = await Article.countDocuments({ published: true });
 		}
 
 		const topicDetails = {
 			title: existingTopic.title,
 			desc: existingTopic.description,
 			articles,
+			totalArticles,
 		};
 		return NextResponse.json(
 			{

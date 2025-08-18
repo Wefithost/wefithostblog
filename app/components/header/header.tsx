@@ -55,16 +55,23 @@ const Header = () => {
 						</motion.button>
 					)}
 				</div>
-				<button
-					className=" p-2  rounded-sm  hidden max-2xs:flex"
-					onClick={handleToggleOverlay}
-				>
-					{overlayOpen ? (
-						<IoMdClose className="text-2xl text-black " />
-					) : (
-						<IoMdMenu className="text-2xl text-black" />
-					)}
-				</button>
+				<div className="max-2xs:flex items-center gap-1 hidden">
+					<div className="max-2xs:flex">
+						{' '}
+						<ProfileDropdown />
+					</div>
+
+					<button
+						className=" p-2  rounded-sm  max-2xs:flex"
+						onClick={handleToggleOverlay}
+					>
+						{overlayOpen ? (
+							<IoMdClose className="text-2xl text-black " />
+						) : (
+							<IoMdMenu className="text-2xl text-black" />
+						)}
+					</button>
+				</div>
 			</div>
 		</header>
 	);

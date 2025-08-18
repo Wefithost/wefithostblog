@@ -1,8 +1,7 @@
-import RichTextEditor from '~/app/rich-text-editor/editor';
+import RichTextEditor from '~/app/components/rich-text-editor/editor';
 import type { JSONContent } from '@tiptap/react';
-import { IArticle } from '~/types/article';
 import AsyncButton from '~/app/components/buttons/async-button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuthContext } from '~/app/context/auth-context';
 import { apiRequest } from '~/utils/api-request';
 import { toast } from 'react-toastify';
@@ -16,7 +15,11 @@ interface Props {
 		React.SetStateAction<boolean>
 	>;
 	toggleEditArticleContentPrompt: () => void;
-	article: IArticle;
+
+	articleContent: JSONContent | undefined;
+	setArticleContent: React.Dispatch<
+		React.SetStateAction<JSONContent | undefined>
+	>;
 }
 const EditArticleContentPrompt = ({
 	editArticleContentPrompt,
@@ -24,16 +27,21 @@ const EditArticleContentPrompt = ({
 	editArticleContentPromptVisible,
 	disableEditArticleContentPrompt,
 	toggleEditArticleContentPrompt,
-	article,
+
+	articleContent,
+	setArticleContent,
 }: Props) => {
 	const [error, setError] = useState('');
-	const [articleContent, setArticleContent] = useState<JSONContent | null>(
-		article?.article,
-	);
 	const { topic, article: articleParam } = useParams();
 	const { user } = useAuthContext();
+	const [editedContent, setEditedContent] = useState<JSONContent | undefined>(
+		articleContent,
+	);
 	const [loading, setLoading] = useState(false);
 	const [successful, setSuccessful] = useState(false);
+	useEffect(() => {
+		setEditedContent(articleContent);
+	}, [articleContent]);
 	const hasValidContent = (nodes: JSONContent[]): boolean => {
 		return nodes?.some((node) => {
 			if (node.type === 'image') return true;
@@ -53,7 +61,7 @@ const EditArticleContentPrompt = ({
 			return;
 		}
 
-		if (!hasValidContent(articleContent?.content || [])) {
+		if (!hasValidContent(editedContent?.content || [])) {
 			setError('Article must contain text or an image');
 			return;
 		}
@@ -65,17 +73,18 @@ const EditArticleContentPrompt = ({
 		await apiRequest({
 			url: `/api/topics/${topic}/${articleParam}/edit-content`,
 			method: 'POST',
-			body: { content: articleContent, adminId: user?._id },
+			body: { content: editedContent, adminId: user?._id },
 			onSuccess: (response) => {
 				setSuccessful(true);
 				toast.success(response.message, {
 					icon: <FaCheck color="white" />,
 				});
-				window.dispatchEvent(new CustomEvent('articleUpdated'));
+				setArticleContent(response.article_content);
 				setTimeout(() => {
 					toggleEditArticleContentPrompt();
 
 					setSuccessful(false);
+					console.log(response.article_content);
 				}, 1000);
 			},
 			onError: (error) => {
@@ -97,9 +106,9 @@ const EditArticleContentPrompt = ({
 					ref={editArticleContentPromptRef}
 				>
 					<RichTextEditor
-						default_content={article?.article}
+						default_content={editedContent}
 						onContentChange={(json) => {
-							setArticleContent(json);
+							setEditedContent(json);
 							setError('');
 						}}
 					/>
@@ -107,9 +116,9 @@ const EditArticleContentPrompt = ({
 					<div className="flex gap-2 ">
 						<AsyncButton
 							classname_override={` !rounded-md px-6`}
-							action="Create"
+							action="Update"
 							disabled={
-								!hasValidContent(articleContent?.content || []) || loading
+								!hasValidContent(editedContent?.content || []) || loading
 							}
 							loading={loading}
 							success={successful}

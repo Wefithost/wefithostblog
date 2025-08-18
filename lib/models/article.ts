@@ -5,7 +5,7 @@ interface IArticle extends Document {
 	slug: string;
 	title: string;
 	topic: Types.ObjectId;
-	duration: string;
+
 	description: string;
 	article: JSONContent;
 	author: Types.ObjectId;
@@ -21,7 +21,7 @@ const ArticleSchema = new Schema<IArticle>(
 		description: { type: String, required: true },
 		image: { type: String, required: true },
 		slug: { type: String },
-		duration: { type: String, required: false },
+
 		featured: { type: Boolean, default: false },
 		published: { type: Boolean, default: false },
 		article: { type: Schema.Types.Mixed },

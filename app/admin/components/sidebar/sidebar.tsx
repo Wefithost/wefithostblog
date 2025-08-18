@@ -25,13 +25,6 @@ const Sidebar = ({ hidden }: SidebarProps) => {
 			icon: <FaUsers className="text-black" />,
 			activeIcon: <FaUsers className="text-purple" />,
 		},
-		{
-			id: 3,
-			dir: 'Transactions',
-			href: '/admin/transactions',
-			icon: <MdArticle className="text-black" />,
-			activeIcon: <MdArticle className="text-black" />,
-		},
 	];
 	return (
 		<section

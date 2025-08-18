@@ -128,7 +128,8 @@
 // export default Admin;
 
 const Admin = () => {
-	return <h1>Admin Home page</h1>;
+	return <h1>Populating Here Soon</h1>;
 };
 
 export default Admin;
+

@@ -23,6 +23,8 @@ export async function GET(req: NextRequest) {
 					path: 'author',
 					select: 'profile first_name last_name',
 				})
+				.sort({ createdAt: -1 })
+				.select('')
 				.lean();
 		} else {
 			articles = await Article.find({ published: true })
@@ -36,6 +38,7 @@ export async function GET(req: NextRequest) {
 					path: 'author',
 					select: 'profile first_name last_name',
 				})
+				.sort({ createdAt: -1 })
 				.lean();
 		}
 
