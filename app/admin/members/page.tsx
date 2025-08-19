@@ -1,13 +1,11 @@
 'use client';
 
 import { useAuthContext } from '~/app/context/auth-context';
-import Loader from '~/app/components/loader';
-import EmptyState from '~/app/components/empty-state';
 import { user_type } from '~/types/user';
 import { useEffect, useState } from 'react';
 import { apiRequest } from '~/utils/api-request';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
-import Member from '../components/members-row/member';
+import MembersTable from '../components/members-table';
 const Members = () => {
 	const { user } = useAuthContext();
 	const [currentPage, setCurrentPage] = useState(1);
@@ -17,10 +15,9 @@ const Members = () => {
 	const [totalMembers, setTotalMembers] = useState(0);
 	const [fetching, setFetching] = useState(true);
 	const [error, setError] = useState('');
+	const [searchTerm, setSearchTerm] = useState('');
 	const totalPages = Math.ceil(totalMembers / pageSize);
-	const placeholders = Array(Math.max(0, pageSize - pagedMembers.length)).fill(
-		null,
-	);
+
 	useEffect(() => {
 		if (!user) return;
 
@@ -30,7 +27,7 @@ const Members = () => {
 			await apiRequest({
 				url: `/api/members/fetch-members?adminId=${user._id}&skip=${
 					(currentPage - 1) * pageSize
-				}&limit=${pageSize}`,
+				}&limit=${pageSize}&search=${searchTerm}`,
 				method: 'GET',
 				onSuccess: (res) => {
 					setPagedMembers(res.members);
@@ -42,14 +39,11 @@ const Members = () => {
 		};
 
 		fetchMembers();
+		const refetchHandler = () => fetchMembers();
+		window.addEventListener('refetchMembers', refetchHandler);
 
-		const handleMembersUpdated = () => fetchMembers();
-		window.addEventListener('membersUpdated', handleMembersUpdated);
-
-		return () => {
-			window.removeEventListener('membersUpdated', handleMembersUpdated);
-		};
-	}, [currentPage, user]);
+		return () => window.removeEventListener('refetchMembers', refetchHandler);
+	}, [currentPage, user, searchTerm]);
 
 	return (
 		<section className="flex flex-col gap-4  py-6 px-4 ">
@@ -58,34 +52,15 @@ const Members = () => {
 					Members ({totalMembers})
 				</h1>
 			</div>
-			<Loader error={error} fetching={fetching} classname_override="!h-[450px]">
-				<div className="flex flex-col w-full  rounded-md  border overflow-hidden  border-[#dfdde3]">
-					<div className="w-full flex gap-1 bg-[#EAEAEC]">
-						<div className="w-[30%] py-2 px-3 text-sm">Name</div>
-						<div className="w-[30%] py-2 px-3 text-sm">Email</div>
-						<div className="w-[15%] py-2 px-3 text-sm">Role</div>
-						<div className="w-[15%] py-2 px-3 text-sm">Joined</div>
-						<div className="w-[10%] py-2 px-3 text-sm"></div>
-					</div>
-					{pagedMembers && pagedMembers.length > 0 ? (
-						pagedMembers && (
-							<>
-								{pagedMembers.map((member) => (
-									<Member key={member?._id} member={member} />
-								))}
-								{placeholders.map((_, i) => (
-									<div
-										className=" h-[40px] flex items-center  px-3 text-sm border-t    border-t-lightGrey bg-white w-full"
-										key={i}
-									></div>
-								))}
-							</>
-						)
-					) : (
-						<EmptyState message="No members yet" />
-					)}
-				</div>
-			</Loader>
+
+			<MembersTable
+				pagedMembers={pagedMembers}
+				pageSize={pageSize}
+				searchTerm={searchTerm}
+				setSearchTerm={setSearchTerm}
+				fetching={fetching}
+				error={error}
+			/>
 
 			{pagedMembers && pagedMembers.length > 0 && (
 				<div className="flex items-center gap-2">

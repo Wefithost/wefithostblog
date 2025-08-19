@@ -1,7 +1,7 @@
 'use client';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
-import { FaAngleRight, FaPen, FaStar } from 'react-icons/fa';
+import { FaAngleRight, FaPen } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import AsyncButton from '~/app/components/buttons/async-button';
 import { useAuthContext } from '~/app/context/auth-context';
@@ -73,6 +73,37 @@ const EditSection = ({
 		});
 	};
 
+	const [featuring, setFeaturing] = useState(false);
+	const [errorFeaturing, setErrorFeaturing] = useState('');
+	const [featured, setFeatured] = useState(false);
+
+	const updateFeaturedState = async () => {
+		if (featuring) {
+			return;
+		}
+
+		setFeaturing(true);
+		setErrorFeaturing('');
+
+		await apiRequest({
+			url: `/api/topics/${topic}/${article_param}/feature`,
+			method: 'PATCH',
+			body: { adminId: user?._id },
+			onSuccess: (response) => {
+				setFeaturing(true);
+				window.dispatchEvent(new CustomEvent('articleUpdated'));
+				toast.success(response.message);
+				setTimeout(() => setFeatured(false), 3000);
+			},
+			onError: (error) => {
+				setErrorFeaturing(error);
+			},
+			onFinally: () => {
+				setFeaturing(false);
+			},
+		});
+	};
+
 	return (
 		<section className="w-full gap-24 flex justify-end max-2xl:gap-12 max-xl:flex-col  max-xl:items-center">
 			<div className="flex flex-col gap-10 max-w-[750px] w-full">
@@ -123,13 +154,21 @@ const EditSection = ({
 								disabled={updating}
 								onClick={updatePublishedState}
 							/>
-							<button className="h-12 text-white bg-gray-700 hover:bg-gray-800 duration-150 px-4 flex items-center justify-center gap-2 rounded-md">
-								<h1>Feature</h1>
-								<FaStar />
-							</button>
+
+							<AsyncButton
+								action={article?.featured ? 'Unfeature' : 'Feature'}
+								loading={featuring}
+								success={featured}
+								classname_override=" !bg-gray-700 hover:!bg-gray-800"
+								disabled={featuring}
+								onClick={updateFeaturedState}
+							/>
 						</div>
 						{errorUpdating && (
 							<p className="text-xs text-red">{errorUpdating}</p>
+						)}
+						{errorFeaturing && (
+							<p className="text-xs text-red">{errorFeaturing}</p>
 						)}
 					</div>
 				</div>

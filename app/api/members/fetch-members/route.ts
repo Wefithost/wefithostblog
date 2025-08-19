@@ -7,15 +7,15 @@ export async function GET(req: NextRequest) {
 	try {
 		await connectMongo();
 		const { searchParams } = new URL(req.url);
+
 		const adminId = searchParams.get('adminId');
 		const skip = parseInt(searchParams.get('skip') || '0', 10);
 		const limit = parseInt(searchParams.get('limit') || '10', 10);
+		const search = searchParams.get('search') || '';
 
 		if (!isValidObjectId(adminId)) {
 			return NextResponse.json(
-				{
-					error: 'Invalid or missing admin ID',
-				},
+				{ error: 'Invalid or missing admin ID' },
 				{ status: 400 },
 			);
 		}
@@ -35,7 +35,20 @@ export async function GET(req: NextRequest) {
 			);
 		}
 
+		//eslint-disable-next-line
+		let matchStage: any = {};
+		if (search) {
+			matchStage = {
+				$or: [
+					{ first_name: { $regex: search, $options: 'i' } },
+					{ last_name: { $regex: search, $options: 'i' } },
+					{ email: { $regex: search, $options: 'i' } },
+				],
+			};
+		}
+
 		const members = await User.aggregate([
+			{ $match: matchStage }, // ✅ Apply search filter here
 			{
 				$addFields: {
 					rolePriority: {
@@ -49,11 +62,14 @@ export async function GET(req: NextRequest) {
 					},
 				},
 			},
-			{ $sort: { rolePriority: -1, createdAt: -1 } }, // super_admin first, then admin, then others
+			{ $sort: { rolePriority: -1, createdAt: -1 } },
 			{ $skip: skip },
 			{ $limit: limit },
 		]);
-		const membersLength = await User.countDocuments({});
+
+		// count matches too
+		const membersLength = await User.countDocuments(matchStage);
+
 		return NextResponse.json(
 			{ members, members_length: membersLength },
 			{ status: 200 },
@@ -61,9 +77,7 @@ export async function GET(req: NextRequest) {
 	} catch (error) {
 		console.log(error);
 		return NextResponse.json(
-			{
-				error: 'Could not fetch members data',
-			},
+			{ error: 'Could not fetch members data' },
 			{ status: 500 },
 		);
 	}

@@ -6,27 +6,27 @@ import AsyncButton from '~/app/components/buttons/async-button';
 import { useAuthContext } from '~/app/context/auth-context';
 import { user_type } from '~/types/user';
 import { apiRequest } from '~/utils/api-request';
-interface setRoleProps {
-	rolePromptVisible: boolean;
-	rolePrompt: boolean;
-	toggleSetRole: () => void;
-	setRoleRef: React.RefObject<HTMLDivElement | null>;
+interface DeletePromptProps {
+	deletePromptVisible: boolean;
+	deletePrompt: boolean;
+	toggleDeletePrompt: () => void;
+	deletePromptRef: React.RefObject<HTMLDivElement | null>;
 	member: user_type;
 	setDisableToggle: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const SetRole = ({
-	rolePromptVisible,
-	rolePrompt,
-	toggleSetRole,
-	setRoleRef,
+const DeletePrompt = ({
+	deletePromptVisible,
+	deletePrompt,
+	toggleDeletePrompt,
+	deletePromptRef,
 	member,
 	setDisableToggle,
-}: setRoleProps) => {
+}: DeletePromptProps) => {
 	const [error, setError] = useState('');
 	const [submitting, setSubmitting] = useState(false);
 	const [successful, setSuccessful] = useState(false);
 	const { user } = useAuthContext();
-	const handleSetRole = async () => {
+	const handleDeletePrompt = async () => {
 		if (submitting) return;
 
 		if (!member?._id) {
@@ -37,23 +37,20 @@ const SetRole = ({
 		setSubmitting(true);
 		setDisableToggle(true);
 		await apiRequest({
-			url: '/api/members/set-role',
-			method: 'PATCH',
+			url: '/api/members/delete-account',
+			method: 'DELETE',
 			body: {
 				memberId: member?._id,
 				adminId: user?._id,
 			},
 			onSuccess: () => {
-				window.dispatchEvent(new CustomEvent('userUpdated'));
 				window.dispatchEvent(new CustomEvent('refetchMembers'));
 				setSuccessful(true);
 				setTimeout(() => {
-					toggleSetRole();
+					toggleDeletePrompt();
 				}, 500);
 				toast.success(
-					`${member?.first_name} ${member?.last_name} made ${
-						member?.role === 'member' ? 'an admin' : 'a '
-					}`,
+					`${member?.first_name} ${member?.last_name} account deleted successfully`,
 					{
 						icon: <FaCheck color="white" />,
 					},
@@ -70,40 +67,26 @@ const SetRole = ({
 		});
 	};
 	return (
-		rolePrompt && (
+		deletePrompt && (
 			<div className="fixed bottom-[0px]  h-full w-full  z-50 left-0 flex  justify-center  items-center        backdrop-brightness-50  px-8     xs:px-0">
 				<div
 					className={`w-[350px]     mid-popup   duration-300 ease-in-out flex flex-col py-6 px-6  gap-4   rounded-lg bg-white  items-center      ${
-						rolePromptVisible ? '' : 'mid-popup-hidden'
+						deletePromptVisible ? '' : 'mid-popup-hidden'
 					}  `}
-					ref={setRoleRef}
+					ref={deletePromptRef}
 				>
 					<div className="flex flex-col gap-3 items-center w-full">
 						<GrUserAdmin className="text-2xl" />
 
 						<div className="flex flex-col gap-2 ">
-							<h1 className="text-2xl text-center">
-								{member?.role !== 'member' ? 'Demote' : 'Promote'}
-							</h1>
-							{member?.role !== 'member' ? (
-								<p className="text-sm  text-center">
-									You’re about to set{' '}
-									<span className="neue-bold">
-										{` ${member?.first_name} ${member?.last_name} `}{' '}
-									</span>
-									to a member. He/She would be will no longer be able to edit,
-									delete and add articles. Are you sure you want to?
-								</p>
-							) : (
-								<p className="text-sm  text-center">
-									You’re about to set{' '}
-									<span className="neue-bold">
-										{`${member?.first_name} ${member?.last_name}`}{' '}
-									</span>
-									to an admin. He/She would be able to edit, delete and add
-									topics or articles. Are you sure you want to?
-								</p>
-							)}
+							<h1 className="text-2xl text-center">Delete Account</h1>
+							<p className="text-sm  text-center">
+								You’re about to delete
+								<span className="neue-bold">
+									{` ${member?.first_name} ${member?.last_name} `}{' '}
+								</span>{' '}
+								account. Are you sure you want to?
+							</p>
 						</div>
 					</div>
 					{error && (
@@ -118,12 +101,12 @@ const SetRole = ({
 							loading={submitting}
 							success={successful}
 							disabled={submitting}
-							onClick={handleSetRole}
+							onClick={handleDeletePrompt}
 						/>
 
 						<button
 							className="flex items-center justify-center  gap-2  h-[40px]  px-2 rounded-md bg-gray-700     duration-150 hover:bg-gray-800    text-center w-[40%] text-white  text-xs "
-							onClick={toggleSetRole}
+							onClick={toggleDeletePrompt}
 						>
 							Cancel
 						</button>
@@ -134,5 +117,5 @@ const SetRole = ({
 	);
 };
 
-export default SetRole;
+export default DeletePrompt;
 

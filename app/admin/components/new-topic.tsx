@@ -183,6 +183,7 @@ const NewTopic = () => {
 								errorContent="Description is required"
 								name="desc"
 								label="Description"
+								maxlength={160}
 							/>
 							{error && (
 								<h1 className="text-xs text-center text-red">{error}</h1>

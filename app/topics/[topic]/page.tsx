@@ -2,9 +2,7 @@
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ArticlesContainer from '~/app/components/articles-container/articles-container';
-import EmptyState from '~/app/components/empty-state';
 import HeroPreview from '~/app/components/hero-preview';
-import Loader from '~/app/components/loader';
 import RelatedTopicsSection from '~/app/components/related-topics';
 import { useTopicsContext } from '~/app/context/topics-context';
 import { IArticle } from '~/types/article';
@@ -14,10 +12,12 @@ interface topicProps {
 	articles: IArticle[];
 	title: string;
 	desc: string;
+	totalArticles: number;
 }
 
 export default function Topic() {
 	const { topic } = useParams();
+
 	const { topics } = useTopicsContext();
 
 	const [currentPage, setCurrentPage] = useState(1);
@@ -27,20 +27,22 @@ export default function Topic() {
 	const [totalArticles, setTotalArticles] = useState(0);
 	const [fetching, setFetching] = useState(true);
 	const [error, setError] = useState('');
+	const [selectedSort, setSelectedSort] = useState('newest');
+	const [searchTerm, setSearchTerm] = useState('');
+	const [activeFilter, setActiveFilter] = useState('all');
 
 	useEffect(() => {
 		const fetchPage = async () => {
 			setFetching(true);
 			setError('');
-
 			await apiRequest({
 				url: `/api/topics/${topic}?skip=${
 					(currentPage - 1) * pageSize
-				}&limit=${pageSize}`,
+				}&limit=${pageSize}&sort=${selectedSort}&search=${searchTerm}&filter=${activeFilter}`,
 				method: 'GET',
 				onSuccess: (res) => {
 					setPagedArticles(res.topicDetails);
-					setTotalArticles(res.totalArticles);
+					setTotalArticles(res.topicDetails.totalArticles);
 				},
 				onError: (error) => {
 					setError(error);
@@ -52,38 +54,45 @@ export default function Topic() {
 		};
 
 		fetchPage();
-	}, [currentPage, topic]);
+	}, [currentPage, selectedSort, searchTerm, activeFilter, topic]);
+
+	useEffect(() => {
+		setCurrentPage(1);
+	}, [searchTerm]);
+
 	const other_topics = topics?.filter((type) => slugify(type?.title) !== topic);
 
 	return (
-		<main className="  mx-auto px-16 max-2xl:px-10 max-xs:px-5 w-full">
-			<div className="min-h-screen w-full py-8 gap-16 flex flex-col  max-w-[1500px] max-2xl:py-6 max-2xl:gap-10 ">
-				<Loader fetching={fetching} error={error}>
-					{pagedArticles && pagedArticles.articles?.length > 0 ? (
-						<>
-							<HeroPreview articles={pagedArticles?.articles} />
-							<section className="flex flex-col gap-4 max-w-[900px]">
-								<h1 className="text-4xl poppins-bold max-2xl:text-3xl max-xs:text-2xl capitalize">
-									{pagedArticles?.title}
-								</h1>
-								<p className="text-lg max-2xl:text-base">
-									{pagedArticles?.desc}
-								</p>
-							</section>
-							<ArticlesContainer
-								pagedArticles={pagedArticles?.articles}
-								showFilters={false}
-								totalArticles={totalArticles}
-								currentPage={currentPage}
-								setCurrentPage={setCurrentPage}
-								pageSize={pageSize}
-							/>
-						</>
-					) : (
-						<EmptyState message="No articles has been created for this topic yet" />
-					)}
-				</Loader>
+		<main className="mx-auto w-full">
+			<div className="min-h-screen w-full py-8 gap-16 flex flex-col  max-w-[1500px] max-2xl:py-6 max-2xl:gap-10    px-16 max-2xl:px-10 max-xs:px-5 ">
+				<HeroPreview articles={pagedArticles?.articles as IArticle[]} />
 
+				{pagedArticles && pagedArticles?.title && (
+					<>
+						<section className="flex flex-col gap-4 max-w-[900px]">
+							<h1 className="text-4xl poppins-bold max-2xl:text-3xl max-xs:text-2xl capitalize">
+								{pagedArticles?.title}
+							</h1>
+							<p className="text-lg max-2xl:text-base">{pagedArticles?.desc}</p>
+						</section>
+					</>
+				)}
+				<ArticlesContainer
+					pagedArticles={pagedArticles?.articles as IArticle[]}
+					totalArticles={totalArticles}
+					currentPage={currentPage}
+					setCurrentPage={setCurrentPage}
+					pageSize={pageSize}
+					showFilters={false}
+					selectedSort={selectedSort}
+					setSelectedSort={setSelectedSort}
+					searchTerm={searchTerm}
+					setSearchTerm={setSearchTerm}
+					activeFilter={activeFilter}
+					setActiveFilter={setActiveFilter}
+					fetching={fetching}
+					error={error}
+				/>
 				{other_topics && other_topics?.length > 0 && (
 					<>
 						<RelatedTopicsSection

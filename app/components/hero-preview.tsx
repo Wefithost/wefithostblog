@@ -4,31 +4,41 @@ import { useEffect, useState } from 'react';
 import { FaCircle } from 'react-icons/fa';
 import { IArticle } from '~/types/article';
 import { formatDate } from '~/utils/format-date';
+import { getReadingTime } from '~/utils/get-reading-time';
 import { slugify } from '~/utils/slugify';
+
 interface previewProps {
 	articles: IArticle[] | null;
 }
 const HeroPreview = ({ articles }: previewProps) => {
 	const [isHovered, setIsHovered] = useState(false);
+	let rendered_articles;
+
+	if (!articles || articles.length === 0) {
+		rendered_articles = backup_data;
+	} else {
+		rendered_articles = articles;
+	}
 	const [currentIndex, setCurrentIndex] = useState(() => {
-		if (!articles || articles.length === 0) return 0;
-		return Math.floor(Math.random() * articles.length);
+		if (!rendered_articles || rendered_articles.length === 0) return 0;
+		return Math.floor(Math.random() * rendered_articles.length);
 	});
 
 	const [fadeOut, setFadeOut] = useState(false);
 
 	useEffect(() => {
-		if (!articles || articles.length === 0 || isHovered) return;
+		if (!rendered_articles || rendered_articles.length === 0 || isHovered)
+			return;
 
 		const interval = setInterval(() => {
 			setFadeOut(true); // start fade out
 
 			setTimeout(() => {
-				let newIndex = Math.floor(Math.random() * articles.length);
+				let newIndex = Math.floor(Math.random() * rendered_articles.length);
 
 				// avoid repeating the same article
-				while (articles.length > 1 && newIndex === currentIndex) {
-					newIndex = Math.floor(Math.random() * articles.length);
+				while (rendered_articles.length > 1 && newIndex === currentIndex) {
+					newIndex = Math.floor(Math.random() * rendered_articles.length);
 				}
 
 				setCurrentIndex(newIndex);
@@ -37,9 +47,9 @@ const HeroPreview = ({ articles }: previewProps) => {
 		}, 2000); // every 20s
 
 		return () => clearInterval(interval);
-	}, [articles, currentIndex, isHovered]);
+	}, [rendered_articles, currentIndex, isHovered]);
 
-	const article = articles?.[currentIndex] ?? null;
+	const article = rendered_articles?.[currentIndex] ?? null;
 
 	return (
 		<section
@@ -74,7 +84,10 @@ const HeroPreview = ({ articles }: previewProps) => {
 				<div className="flex gap-4 items-center text-lg max-2xl:text-base max-xl:text-sm max-2xs:hidden">
 					<span>{formatDate(article?.createdAt as string)}</span>
 					<FaCircle className="text-[10px] " />
-					<span>{article?.duration} mins read</span>
+					<span>
+						{(article?.article && getReadingTime(article?.article)) || '2'} mins
+						read
+					</span>
 				</div>
 				<Link
 					href={`/${slugify(article?.title as string)}`}
@@ -88,4 +101,46 @@ const HeroPreview = ({ articles }: previewProps) => {
 };
 
 export default HeroPreview;
+
+const backup_data = [
+	{
+		_id: '68a3561ce3e3587a0679a6da',
+		title: 'WordPress Hosting Optimization Guide',
+		topic: {
+			_id: '689cd4904bacf1c677fec353',
+			title: 'Featured',
+		},
+		author: {
+			_id: '689713a37d49f07172e6ad0b',
+			first_name: 'Darlington',
+			profile:
+				'https://res.cloudinary.com/dl6pa30kz/image/upload/v1755011493/wefithost_blog_profiles/cf2liu64t5rjrsfguflv.png',
+			last_name: 'John',
+		},
+		description:
+			'Specialized techniques to optimize your servers for WordPress hosting.',
+		image:
+			'https://res.cloudinary.com/dl6pa30kz/image/upload/v1755504195/wefithost_articles/yqamh0clabsz10aznnjv.png',
+		slug: 'wordpress-hosting-optimization-guide',
+		featured: true,
+		published: true,
+		createdAt: '2025-08-22T08:03:15.879Z',
+		updatedAt: '2025-08-19T14:19:49.831Z',
+		__v: 0,
+		article: {
+			type: 'doc',
+			content: [
+				{
+					type: 'paragraph',
+					content: [
+						{
+							type: 'text',
+							text: 'no content',
+						},
+					],
+				},
+			],
+		},
+	},
+];
 

@@ -34,7 +34,7 @@ export async function GET(req: NextRequest) {
 				})
 				.lean();
 		}
-		console.log(articles);
+	
 		const articlesLength = await Article.countDocuments({});
 		return NextResponse.json(
 			{ response: articles, articlesLength },

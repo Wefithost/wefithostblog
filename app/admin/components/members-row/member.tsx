@@ -4,6 +4,8 @@ import { user_type } from '~/types/user';
 import { GrUserAdmin } from 'react-icons/gr';
 import { FaEllipsisH, FaUserAlt } from 'react-icons/fa';
 import { formatDate } from '~/utils/format-date';
+import DeletePrompt from './delete-account';
+import { IoTrashBinOutline } from 'react-icons/io5';
 interface memberProps {
 	member: user_type;
 }
@@ -22,7 +24,13 @@ const Member = ({ member }: memberProps) => {
 		ref: setRolePromptRef,
 		setDisableToggle: disableRolePrompt,
 	} = usePopup();
-
+	const {
+		isVisible: deletePromptVisible,
+		isActive: deletePrompt,
+		togglePopup: toggleDeletePrompt,
+		ref: deletePromptRef,
+		setDisableToggle: disableDeletePrompt,
+	} = usePopup();
 	return (
 		<>
 			<div
@@ -67,7 +75,7 @@ const Member = ({ member }: memberProps) => {
 					/>
 					{prompt && (
 						<div
-							className={`flex  flex-col bg-white shadow-lg  w-[130px] rounded-md   duration-150 absolute top-2 right-10  divide-y divide-lightGrey overflow-hidden border border-lightGrey z-20   ${
+							className={`flex  flex-col bg-white shadow-lg  w-[180px] rounded-md   duration-150 absolute top-2 right-10  divide-y divide-lightGrey overflow-hidden border border-lightGrey z-20   ${
 								promptVisible ? 'opacity-100' : 'opacity-0 '
 							}`}
 							ref={promptRef}
@@ -85,6 +93,17 @@ const Member = ({ member }: memberProps) => {
 									{member?.role !== 'member' ? 'Set as user' : 'Set as admin'}
 								</span>
 							</button>
+							<button
+								className="py-2 w-full text-[13px]  text-red flex items-center gap-2  px-3 hover:bg-lightGrey duration-150"
+								onClick={(e) => {
+									e.preventDefault();
+									e.stopPropagation();
+									toggleDeletePrompt();
+								}}
+							>
+								<IoTrashBinOutline />
+								<span>Delete account</span>
+							</button>
 						</div>
 					)}
 				</div>
@@ -96,6 +115,14 @@ const Member = ({ member }: memberProps) => {
 				setRoleRef={setRolePromptRef}
 				member={member}
 				setDisableToggle={disableRolePrompt}
+			/>
+			<DeletePrompt
+				deletePromptVisible={deletePromptVisible}
+				deletePrompt={deletePrompt}
+				toggleDeletePrompt={toggleDeletePrompt}
+				deletePromptRef={deletePromptRef}
+				member={member}
+				setDisableToggle={disableDeletePrompt}
 			/>
 		</>
 	);

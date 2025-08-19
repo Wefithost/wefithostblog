@@ -5,7 +5,8 @@ import { useTopicsContext } from '~/app/context/topics-context';
 
 import { usePopup } from '~/utils/toggle-popups';
 import loadingIcon from '~/public/icons/spin-purple.svg';
-import { useParams } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 const TopicsDropdown = () => {
 	const { topic: topic_param } = useParams();
 	const {
@@ -14,7 +15,14 @@ const TopicsDropdown = () => {
 		togglePopup: toggleDropdown,
 		ref: dropdownRef,
 	} = usePopup();
+	const pathname = usePathname();
 	const { topics, isFetching, error } = useTopicsContext();
+	useEffect(() => {
+		if (dropdown) {
+			toggleDropdown();
+		}
+		// eslint-disable-next-line
+	}, [pathname]);
 	return (
 		<div className="relative">
 			<button

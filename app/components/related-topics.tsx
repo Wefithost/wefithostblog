@@ -27,7 +27,7 @@ const RelatedTopicsSection = ({ header, related_topics }: RelatedProps) => {
 				pagination={{
 					clickable: true,
 				}}
-				touchRatio={2} // makes it swipe more easily
+				// touchRatio={} // makes it swipe more easily
 				threshold={10}
 				spaceBetween={10}
 				breakpoints={{

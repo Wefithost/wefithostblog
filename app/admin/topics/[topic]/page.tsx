@@ -2,24 +2,20 @@
 
 import { useParams } from 'next/navigation';
 import { IArticle } from '~/types/article';
-import Loader from '~/app/components/loader';
-import { useAuthContext } from '~/app/context/auth-context';
 
 import NewArticle from '../../components/new-article';
-import EmptyState from '~/app/components/empty-state';
 import ArticlesContainer from '~/app/components/articles-container/articles-container';
 import { useEffect, useState } from 'react';
 import { apiRequest } from '~/utils/api-request';
-import Breadcrumbs from '../../components/bread-crumbs';
+// import Breadcrumbs from '../../components/bread-crumbs';
 const Articles = () => {
 	const { topic } = useParams();
-	const { user } = useAuthContext();
 	interface topicProps {
 		articles: IArticle[];
 		title: string;
 		desc: string;
+		totalArticles: number;
 	}
-
 	const [currentPage, setCurrentPage] = useState(1);
 	const pageSize = 9; // articles per page
 
@@ -27,23 +23,22 @@ const Articles = () => {
 	const [totalArticles, setTotalArticles] = useState(0);
 	const [fetching, setFetching] = useState(true);
 	const [error, setError] = useState('');
+	const [selectedSort, setSelectedSort] = useState('newest');
+	const [searchTerm, setSearchTerm] = useState('');
+	const [activeFilter, setActiveFilter] = useState('all');
 
 	useEffect(() => {
-		if (!user) {
-			return;
-		}
 		const fetchPage = async () => {
 			setFetching(true);
 			setError('');
-
 			await apiRequest({
 				url: `/api/topics/${topic}?skip=${
 					(currentPage - 1) * pageSize
-				}&limit=${pageSize}&admin=true`,
+				}&limit=${pageSize}&sort=${selectedSort}&search=${searchTerm}&filter=${activeFilter}&admin=true`,
 				method: 'GET',
 				onSuccess: (res) => {
 					setPagedArticles(res.topicDetails);
-					setTotalArticles(res.totalArticles);
+					setTotalArticles(res.topicDetails.totalArticles);
 				},
 				onError: (error) => {
 					setError(error);
@@ -53,11 +48,17 @@ const Articles = () => {
 				},
 			});
 		};
+
 		const refetchHandler = () => fetchPage();
 		window.addEventListener('refetchArticles', refetchHandler);
 		fetchPage();
 		return () => window.removeEventListener('refetchArticles', refetchHandler);
-	}, [currentPage, topic, user]);
+	}, [currentPage, selectedSort, searchTerm, activeFilter, topic]);
+
+	useEffect(() => {
+		setCurrentPage(1);
+	}, [searchTerm]);
+
 	return (
 		<main className="px-4 py-6 bg-white min-h-screen flex flex-col gap-8 ">
 			{/* <Breadcrumbs /> */}
@@ -73,25 +74,25 @@ const Articles = () => {
 				</div>
 				<NewArticle />
 			</div>
+
 			<div className="min-h-screen w-full py-8 gap-16 flex flex-col  max-w-[1500px] max-2xl:py-6 max-2xl:gap-10 ">
-				<Loader fetching={fetching} error={error}>
-					{pagedArticles?.articles && pagedArticles.articles?.length > 0 ? (
-						<>
-							<ArticlesContainer
-								pagedArticles={pagedArticles?.articles}
-								showFilters={false}
-								query={'admin=true'}
-								admin={true}
-								totalArticles={totalArticles}
-								currentPage={currentPage}
-								setCurrentPage={setCurrentPage}
-								pageSize={pageSize}
-							/>
-						</>
-					) : (
-						<EmptyState message="No articles has been created for this topic yet" />
-					)}
-				</Loader>
+				<ArticlesContainer
+					pagedArticles={pagedArticles?.articles as IArticle[]}
+					totalArticles={totalArticles}
+					currentPage={currentPage}
+					setCurrentPage={setCurrentPage}
+					pageSize={pageSize}
+					showFilters={false}
+					selectedSort={selectedSort}
+					setSelectedSort={setSelectedSort}
+					searchTerm={searchTerm}
+					setSearchTerm={setSearchTerm}
+					activeFilter={activeFilter}
+					setActiveFilter={setActiveFilter}
+					fetching={fetching}
+					error={error}
+					admin={true}
+				/>
 
 				{/* CTA Section */}
 				{/* <CtaSection /> */}

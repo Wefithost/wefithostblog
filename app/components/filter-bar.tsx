@@ -1,66 +1,32 @@
 'use client';
-import Fuse from 'fuse.js';
+
 import { SetStateAction } from 'react';
-import { IArticle } from '~/types/article';
 import { ITopic } from '~/types/topic';
 interface filterProps {
-	activeFilter: string;
-	setActiveFilter: React.Dispatch<SetStateAction<string>>;
-	articles: IArticle[] | null;
-	searchTerm: string;
-	setSearchTerm: React.Dispatch<SetStateAction<string>>;
-
-	setSearchResults: React.Dispatch<SetStateAction<IArticle[]>>;
-
-	setNoResults: React.Dispatch<SetStateAction<boolean>>;
-	selectedSort: string;
-	setSelectedSort: React.Dispatch<SetStateAction<string>>;
+	activeFilter?: string;
+	setActiveFilter?: React.Dispatch<SetStateAction<string>>;
+	searchTerm?: string;
+	setSearchTerm?: React.Dispatch<SetStateAction<string>>;
+	selectedSort?: string;
+	setSelectedSort?: React.Dispatch<SetStateAction<string>>;
 	topics: ITopic[] | null;
 	showFilters: boolean;
 }
 const FilterBar = ({
 	activeFilter,
 	setActiveFilter,
-	articles,
 	searchTerm,
 	setSearchTerm,
-	setSearchResults,
-	setNoResults,
 	selectedSort,
 	setSelectedSort,
 	topics,
 	showFilters,
 }: filterProps) => {
-	const handleSearch = (query: string) => {
-		if (!query.trim()) {
-			setSearchResults([]);
-			setNoResults(false);
-			return;
-		}
-
-		const fuse = new Fuse(articles ?? [], {
-			keys: ['title', 'description'], // Fields to search
-			threshold: 0.3,
-			includeScore: true,
-		});
-
-		const results = fuse.search(query).map((result) => result.item); // Extract matched items
-
-		if (results.length === 0) {
-			setNoResults(true);
-		} else {
-			setNoResults(false);
-		}
-
-		setSearchResults(results);
-	};
-
 	const handleSearchChange = (
 		event: React.ChangeEvent<HTMLInputElement>,
 	): void => {
 		const query = event.target.value;
-		setSearchTerm(query);
-		handleSearch(query);
+		setSearchTerm?.(query);
 	};
 
 	const sorts = ['newest', 'oldest'];
@@ -74,7 +40,7 @@ const FilterBar = ({
 				<div className="flex items-center gap-3 max-2xl:gap-1  max-lg:justify-self-start max-lg:self-start">
 					<>
 						<button
-							onClick={() => setActiveFilter('all')}
+							onClick={() => setActiveFilter?.('all')}
 							className={`capitalize text-lg h-[33px] px-3 rounded-sm duration-150 max-2xl:text-sm max-xs:px-2 max-xs:h-[30px] max-xs:text-xs ${
 								'all' === activeFilter
 									? 'bg-purple text-white '
@@ -87,9 +53,9 @@ const FilterBar = ({
 							topics.map((data) => (
 								<button
 									key={data._id}
-									onClick={() => setActiveFilter(data.title)}
+									onClick={() => setActiveFilter?.(data._id)}
 									className={`capitalize text-lg h-[33px] px-3 rounded-sm duration-150 max-2xl:text-sm max-xs:px-2 max-xs:h-[30px] max-xs:text-xs ${
-										data.title === activeFilter
+										data._id === activeFilter
 											? 'bg-purple text-white '
 											: 'hover:bg-lightGrey'
 									}`}
@@ -121,7 +87,7 @@ pr-8
 									? 'bg-white text-black shadow-sm '
 									: 'hover:text-black text-[#464646]'
 							}`}
-							onClick={() => setSelectedSort(sort)}
+							onClick={() => setSelectedSort?.(sort)}
 						>
 							{sort}
 						</button>
