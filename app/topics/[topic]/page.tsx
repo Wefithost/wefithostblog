@@ -64,7 +64,7 @@ export default function Topic() {
 
 	return (
 		<main className="mx-auto w-full">
-			<div className="min-h-screen w-full py-8 gap-16 flex flex-col  max-w-[1500px] max-2xl:py-6 max-2xl:gap-10    px-16 max-2xl:px-10 max-xs:px-5 ">
+			<div className="min-h-screen w-full py-8 gap-16 flex flex-col  max-w-[1500px] max-2xl:py-6 max-2xl:gap-10    px-16 max-2xl:px-10 max-xs:px-5 mx-auto ">
 				<HeroPreview articles={pagedArticles?.articles as IArticle[]} />
 
 				{pagedArticles && pagedArticles?.title && (

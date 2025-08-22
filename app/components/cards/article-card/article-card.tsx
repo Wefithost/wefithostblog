@@ -109,10 +109,20 @@ const ArticleCard = ({ article, admin = false }: articleProps) => {
 									)}
 								</div>
 							)}
-							{admin && !article?.published && (
-								<button className="flex items-center justify-center   bg-[#000000c2] absolute top-6 left-[50%] translate-x-[-50%] z-10 text-xs py-1 px-3 rounded-sm text-white">
-									Unpublished
-								</button>
+
+							{admin && (!article?.published || article?.featured) && (
+								<div className="flex items-center flex-col gap-3  absolute top-6 left-[50%] translate-x-[-50%] z-10">
+									{admin && !article?.published && (
+										<button className="flex items-center justify-center   bg-[#080708] text-xs py-1 px-3 rounded-sm text-white">
+											Unpublished
+										</button>
+									)}
+									{admin && article?.featured && (
+										<button className="flex items-center justify-center   bg-[#000000] text-xs py-1 px-3 rounded-sm text-white">
+											Featured
+										</button>
+									)}
+								</div>
 							)}
 							<div className="min-h-[300px] max-h-[300px] w-full overflow-hidden rounded-xl blog-img relative   max-2xs:max-h-auto max-2xs:min-h-[200px] ">
 								{/* eslint-disable-next-line */}

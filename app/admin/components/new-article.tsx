@@ -68,6 +68,7 @@ const NewArticle = () => {
 					icon: <FaCheck color="white" />,
 				});
 				window.dispatchEvent(new CustomEvent('refetchArticles'));
+				window.dispatchEvent(new CustomEvent('refetchAdminArticles'));
 				setTimeout(() => {
 					toggleNewArticlePrompt();
 					cancelCreation();
@@ -115,10 +116,10 @@ const NewArticle = () => {
 				className="h-[40px] rounded-md px-4 bg-purple hover:bg-darkPurple duration-150 flex items-center justify-center text-white gap-2 text-center "
 				onClick={toggleNewArticlePrompt}
 			>
-				<span>
+				<span className="text-base">
 					<FaPlus />
 				</span>
-				<span>New Article</span>
+				<span className="text-base">New Article</span>
 			</button>
 			{newArticlePrompt && (
 				<div className="fixed top-[0px]  h-full w-full  z-50 left-0 flex  justify-center  items-center        backdrop-brightness-50  px-8     xs:px-0">
@@ -141,7 +142,7 @@ const NewArticle = () => {
 							ref={newArticlePromptRef}
 						>
 							<div className="flex items-center flex-col gap-0 w-full leading-none">
-								<h1 className="text-2xl sf-bold text-center text-black">
+								<h1 className="text-2xl  text-center text-black">
 									Create a new Article
 								</h1>
 							</div>

@@ -86,7 +86,7 @@ const EditArticlePrompt = ({
 					icon: <FaCheck color="white" />,
 				});
 				window.dispatchEvent(new CustomEvent('articlesUpdated'));
-
+				window.dispatchEvent(new CustomEvent('refetchAdminArticles'));
 				setTimeout(() => {
 					togglePopup();
 					cancelCreation();
