@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { apiRequest } from '~/utils/api-request';
 import { IArticle } from '~/types/article';
 import ArticlesContainer from '../components/articles-container/articles-container';
-import NewArticle from './components/new-article';
+
 import Stats from './components/stats';
 import Topics from './topics/page';
 
@@ -81,7 +81,6 @@ const Admin = () => {
 								with ease to keep your content fresh and organized.
 							</p>
 						</div>
-						<NewArticle />
 					</div>
 					<ArticlesContainer
 						pagedArticles={pagedArticles}

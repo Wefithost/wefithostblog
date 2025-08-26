@@ -4,6 +4,7 @@ import connectMongo from '~/lib/connect-mongo';
 import User from '~/lib/models/user';
 import Topic from '~/lib/models/topic';
 import Article from '~/lib/models/article';
+import Alert from '~/lib/models/alerts';
 
 export async function PATCH(
 	req: NextRequest,
@@ -57,7 +58,18 @@ export async function PATCH(
 		const message = existingArticle.featured
 			? 'Article featured successfully'
 			: 'Article unfeatured successfully';
-
+		await Alert.create({
+			type: 'article_featured',
+			message: `${
+				existingArticle.featured ? 'featured' : 'unfeatured'
+			} an article: ${existingArticle?.title}`,
+			triggered_by: admin?._id,
+			link: {
+				url: `/topics/${selectedTopic?.slug}/${existingArticle?.slug}`,
+				label: 'Edited article',
+			},
+			status: 'info',
+		});
 		return NextResponse.json(
 			{
 				message,

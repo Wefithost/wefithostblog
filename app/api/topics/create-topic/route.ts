@@ -5,6 +5,7 @@ import cloudinary from 'cloudinary';
 import User from '~/lib/models/user';
 import Topic from '~/lib/models/topic';
 import { slugify } from '~/utils/slugify';
+import Alert from '~/lib/models/alerts';
 
 cloudinary.v2.config({
 	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -92,13 +93,22 @@ export async function POST(req: NextRequest) {
 		);
 
 		// Create topic
-		await Topic.create({
+		const newTopic = await Topic.create({
 			title: title,
 			description,
 			image: uploadResult?.secure_url,
 			slug: slugify(title),
 		});
-
+		await Alert.create({
+			type: 'topic_created',
+			message: `created a new topic: '${title}'`,
+			triggered_by: admin._id,
+			link: {
+				url: `/topics/${newTopic.slug}`,
+				label: 'View topic',
+			},
+			status: 'create',
+		});
 		return NextResponse.json({ message: 'Topic created successfully' });
 	} catch (error) {
 		console.error(error);

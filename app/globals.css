@@ -132,14 +132,41 @@ button {
     }
 }
 
-.mid-popup {
+@keyframes moveIn {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0px);
+    }
+}
+
+@keyframes moveOut {
+    from {
+        transform: translateY(0%);
+    }
+    to {
+        transform: translateY(100%);
+    }
+}
+
+
+/* .mid-popup {
     transform: scale(0);
     animation: scaleIn 0.3s forwards;
 }
 
 .mid-popup-hidden {
     animation: scaleOut 0.3s forwards;
-    opacity: 0;
+    opacity: 0;} */
+
+.mid-popup {
+    transform: translateY(100%);
+    animation: moveIn 0.5s forwards;
+}
+
+.mid-popup-hidden {
+    animation: moveOut 0.5s forwards;
 }
 
 .Toastify__toast-container {

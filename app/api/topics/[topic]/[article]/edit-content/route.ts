@@ -8,6 +8,7 @@ import Article from '~/lib/models/article';
 import type { JSONContent } from '@tiptap/react';
 import { base64ToBuffer } from '~/utils/base64-to-buffer';
 import { uploadToCloudinary } from '~/utils/upload-to-cloud';
+import Alert from '~/lib/models/alerts';
 
 cloudinary.v2.config({
 	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -94,7 +95,16 @@ export async function POST(
 		// Update article content
 		existingArticle.article = fullArticleContent;
 		await existingArticle.save();
-
+		await Alert.create({
+			type: 'article_edited',
+			message: `Edited an article '${existingArticle.title}'`,
+			triggered_by: admin._id,
+			link: {
+				url: `/topics/${topic}/${existingArticle.slug}`,
+				label: 'View article',
+			},
+			status: 'edit',
+		});
 		return NextResponse.json(
 			{
 				message: 'Article updated successfully',

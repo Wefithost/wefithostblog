@@ -6,6 +6,7 @@ import User from '~/lib/models/user';
 import Topic from '~/lib/models/topic';
 import { slugify } from '~/utils/slugify';
 import Article from '~/lib/models/article';
+import Alert from '~/lib/models/alerts';
 
 cloudinary.v2.config({
 	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -99,7 +100,7 @@ export async function POST(
 		);
 
 		// Create topic
-		await Article.create({
+		const newArticle = await Article.create({
 			image: uploadResult?.secure_url || '',
 			slug: slugify(title),
 			title: title,
@@ -110,6 +111,16 @@ export async function POST(
 			author: adminId,
 		});
 
+		await Alert.create({
+			type: 'article_created',
+			message: `created a new article: '${title}'`,
+			triggered_by: admin._id,
+			link: {
+				url: `/topics/${selectedTopic.slug}/${newArticle.slug}`,
+				label: 'View article',
+			},
+			status: 'create',
+		});
 		return NextResponse.json(
 			{ message: 'Topic created successfully' },
 			{ status: 200 },

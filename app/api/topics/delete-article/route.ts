@@ -1,6 +1,7 @@
 import { isValidObjectId } from 'mongoose';
 import { NextRequest, NextResponse } from 'next/server';
 import connectMongo from '~/lib/connect-mongo';
+import Alert from '~/lib/models/alerts';
 import Article from '~/lib/models/article';
 import User from '~/lib/models/user';
 
@@ -37,7 +38,12 @@ export async function DELETE(req: NextRequest) {
 				{ status: 404 },
 			);
 		}
-
+		await Alert.create({
+			type: 'article_deleted',
+			message: `deleted an article: '${article.title ?? 'unknown'}'`,
+			triggered_by: adminId,
+			status: 'delete', // this is where you can use your status to color alerts
+		});
 		return NextResponse.json(
 			{ message: 'Article deleted successfully' },
 			{ status: 200 },
@@ -50,3 +56,4 @@ export async function DELETE(req: NextRequest) {
 		);
 	}
 }
+

@@ -4,6 +4,7 @@ import connectMongo from '~/lib/connect-mongo';
 import User from '~/lib/models/user';
 import Topic from '~/lib/models/topic';
 import Article from '~/lib/models/article';
+import Alert from '~/lib/models/alerts';
 
 export async function PATCH(
 	req: NextRequest,
@@ -53,7 +54,18 @@ export async function PATCH(
 		// Update article content
 		existingArticle.published = !existingArticle.published;
 		await existingArticle.save();
-
+		await Alert.create({
+			type: 'article_published',
+			message: `${
+				existingArticle.published ? 'published' : 'unpublished'
+			} an article: ${existingArticle?.title}`,
+			triggered_by: admin?._id,
+			link: {
+				url: `/topics/${selectedTopic?.slug}/${existingArticle?.slug}`,
+				label: 'Published article',
+			},
+			status: 'info',
+		});
 		const message = existingArticle.published
 			? 'Article published successfully'
 			: 'Article unpublished successfully';

@@ -14,7 +14,7 @@ const FeaturedArticlesPreview = () => {
 		ids: [],
 		// dataKey: 'topicDetails',
 	});
-	console.log(featured_articles);
+	
 
 	let articles;
 	if (isFetching) {

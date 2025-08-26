@@ -97,6 +97,7 @@ const Article = () => {
 						</div>
 					</div>
 				</section>
+
 				<EditSection
 					articleContent={articleContent}
 					article={article}

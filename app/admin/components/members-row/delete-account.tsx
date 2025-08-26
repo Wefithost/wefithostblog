@@ -50,7 +50,9 @@ const DeletePrompt = ({
 					toggleDeletePrompt();
 				}, 500);
 				toast.success(
-					`${member?.first_name} ${member?.last_name} account deleted successfully`,
+					`${member?.first_name} ${
+						member?.last_name || ''
+					} account deleted successfully`,
 					{
 						icon: <FaCheck color="white" />,
 					},
@@ -94,9 +96,7 @@ const DeletePrompt = ({
 					)}
 					<div className="flex gap-4 w-full">
 						<AsyncButton
-							action={
-								member?.role !== 'member' ? 'Set as member' : 'Set as admin'
-							}
+							action="Delete account"
 							classname_override="!h-[40px] text-xs"
 							loading={submitting}
 							success={successful}

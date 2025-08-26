@@ -1,6 +1,7 @@
 import { isValidObjectId } from 'mongoose';
 import { NextRequest, NextResponse } from 'next/server';
 import connectMongo from '~/lib/connect-mongo';
+import Alert from '~/lib/models/alerts';
 import User from '~/lib/models/user';
 
 export async function PATCH(req: NextRequest) {
@@ -43,8 +44,16 @@ export async function PATCH(req: NextRequest) {
 		}
 
 		member.role = member.role === 'member' ? 'admin' : 'member';
-		await member.save();
 
+		await member.save();
+		await Alert.create({
+			type: 'role_changed',
+			message: `made ${member?.first_name} ${
+				member.role === 'member' ? 'an admin' : 'a member'
+			}`,
+			triggered_by: admin._id,
+			status: 'info',
+		});
 		return NextResponse.json(
 			{ message: 'Role updated successfully', member },
 			{ status: 200 },

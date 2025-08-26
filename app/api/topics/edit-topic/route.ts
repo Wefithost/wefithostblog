@@ -5,6 +5,7 @@ import cloudinary from 'cloudinary';
 import User from '~/lib/models/user';
 import Topic from '~/lib/models/topic';
 import { slugify } from '~/utils/slugify';
+import Alert from '~/lib/models/alerts';
 
 cloudinary.v2.config({
 	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -100,7 +101,16 @@ export async function PATCH(req: NextRequest) {
 		existingTopic.image = imageUrl;
 
 		await existingTopic.save();
-
+		await Alert.create({
+			type: 'topic_edited',
+			message: `edited a topic: '${title}'`,
+			triggered_by: admin._id,
+			link: {
+				url: `/topics/${existingTopic.slug}`,
+				label: 'View topic',
+			},
+			status: 'edit',
+		});
 		return NextResponse.json(
 			{ message: 'Topic updated successfully' },
 			{ status: 200 },

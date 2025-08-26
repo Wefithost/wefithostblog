@@ -15,7 +15,7 @@ const SidebarList = ({ href, icon, activeIcon, dir }: ListProps) => {
 		<div className="relative flex  items-center">
 			<Link
 				href={`${href}`}
-				className={`  h-[55px] pl-3 pr-5  text-[22px]  flex items-center  gap-2  w-full max-xl:text-xl relative hover:bg-purple-50      ${
+				className={`  h-[55px] pl-4 pr-5  text-[22px]  flex items-center  gap-2  w-full max-xl:text-xl relative hover:bg-purple-50      ${
 					linkname.startsWith(`${href}`)
 						? ' bg-purple-50  text-purple'
 						: ' text-gray-600'

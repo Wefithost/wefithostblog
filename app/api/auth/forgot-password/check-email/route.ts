@@ -1,36 +1,36 @@
-import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
-import connectMongo from "~/lib/connect-mongo";
-import { mailOptions, transporter } from "~/lib/nodemailer";
-import User from "~/lib/models/user";
+import { NextRequest, NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
+import connectMongo from '~/lib/connect-mongo';
+import { mailOptions, transporter } from '~/lib/nodemailer';
+import User from '~/lib/models/user';
 
 export async function POST(req: NextRequest) {
-  try {
-    await connectMongo();
-    const { email } = await req.json();
+	try {
+		await connectMongo();
+		const { email } = await req.json();
 
-    const user = await User.findOne({ email });
-    if (!user) {
-      return NextResponse.json(
-        { error: "No account found with this email address." },
-        { status: 404 }
-      );
-    }
+		const user = await User.findOne({ email });
+		if (!user) {
+			return NextResponse.json(
+				{ error: 'No account found with this email address.' },
+				{ status: 404 },
+			);
+		}
 
-    const verificationCode = Math.floor(1000 + Math.random() * 9000);
-    const hashedVerificationCode = await bcrypt.hash(
-      verificationCode.toString(),
-      10
-    );
+		const verificationCode = Math.floor(1000 + Math.random() * 9000);
+		const hashedVerificationCode = await bcrypt.hash(
+			verificationCode.toString(),
+			10,
+		);
 
-    user.verification_hash = hashedVerificationCode;
-    await user.save();
+		user.verification_hash = hashedVerificationCode;
+		await user.save();
 
-    await transporter.sendMail({
-      ...mailOptions,
-      to: email,
-      subject: "Your Password Reset Code",
-      html: `
+		await transporter.sendMail({
+			...mailOptions,
+			to: email,
+			subject: 'Your Password Reset Code',
+			html: `
 <table
 	style="
 		background-color: #fbfbff;
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
 	<tr>
 		<td align="center" style="padding-bottom: 10px">
 			<img
-				src="https://res.cloudinary.com/dl6pa30kz/image/upload/v1754743573/logo_hdvqjb.svg"
+				src="https://res.cloudinary.com/dl6pa30kz/image/upload/v1756039608/logo_hdvqjb_1_1_u8ljxj.png"
 				style="width: 150px"
 			/>
 		</td>
@@ -94,20 +94,21 @@ export async function POST(req: NextRequest) {
 </table>
 
       `,
-    });
+		});
 
-    return NextResponse.json(
-      {
-        message: "Reset email sent, if the email exists.",
-        email: email,
-      },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json(
-      { error: "Oops! An error occurred. Please try again later." },
-      { status: 500 }
-    );
-  }
+		return NextResponse.json(
+			{
+				message: 'Reset email sent, if the email exists.',
+				email: email,
+			},
+			{ status: 200 },
+		);
+	} catch (error) {
+		console.log(error);
+		return NextResponse.json(
+			{ error: 'Oops! An error occurred. Please try again later.' },
+			{ status: 500 },
+		);
+	}
 }
+

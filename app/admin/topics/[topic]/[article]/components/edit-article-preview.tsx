@@ -78,6 +78,7 @@ const EditArticlePreviewPrompt = ({
 		formData.append('description', desc);
 		formData.append('uploaded_image', imageBlob as Blob);
 		formData.append('article_id', articleToEdit?._id);
+		formData.append('topic', topic as string);
 		await apiRequest({
 			url: '/api/topics/edit-article',
 			method: 'PATCH',
@@ -129,7 +130,7 @@ const EditArticlePreviewPrompt = ({
 	};
 	return (
 		isActive && (
-			<div className="fixed top-[0px]  h-full w-full  z-50 left-0 flex  justify-center  items-center        backdrop-brightness-50  px-8     xs:px-0">
+			<div className="fixed top-[0px]  h-full w-full  z-50 left-0 flex  justify-center  items-center        backdrop-brightness-50  px-8     max-xs:px-0">
 				{selecting ? (
 					<CropImage
 						selecting={selecting}

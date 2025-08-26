@@ -12,6 +12,7 @@ import EditArticleContentPrompt from './edit-article-content-prompt';
 import EditArticlePreviewPrompt from './edit-article-preview';
 import { IArticle } from '~/types/article';
 import type { JSONContent } from '@tiptap/react';
+import CommentsSection from '~/app/components/comments/comments-section';
 interface sectionProps {
 	articleContent: JSONContent | undefined;
 	article: IArticle | null;
@@ -108,6 +109,7 @@ const EditSection = ({
 		<section className="w-full gap-24 flex justify-end max-2xl:gap-12 max-xl:flex-col  max-xl:items-center">
 			<div className="flex flex-col gap-10 max-w-[750px] w-full">
 				<ArticleViewer content={articleContent} />
+				<CommentsSection />
 			</div>
 
 			<div className="flex flex-col justify-between max-xl:flex-row  gap-5 max-md:flex-col">

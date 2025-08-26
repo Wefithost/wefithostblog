@@ -1,4 +1,8 @@
+'use client';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { useAuthContext } from '~/app/context/auth-context';
+import { apiRequest } from '~/utils/api-request';
 import { useFetch } from '~/utils/fetch-page-data';
 interface membersProps {
 	totalMembers: number;
@@ -9,12 +13,7 @@ interface membersProps {
 const Stats = () => {
 	const { loading, user } = useAuthContext();
 
-	const {
-		fetchedData: stats,
-		isFetching,
-		error,
-		refetch,
-	} = useFetch<membersProps>({
+	const { fetchedData: stats } = useFetch<membersProps>({
 		basePath: `/api/stats?adminId=${user?._id}`,
 		ids: [],
 		eventKey: 'statsUpdated',
@@ -22,6 +21,26 @@ const Stats = () => {
 		enabled: !!user && !loading,
 		//  deps:[loading,user]
 	});
+
+	const [lastMonthVisitors, setLastMonthVisitors] = useState(null);
+	const [todayVisitors, setTodayVisitors] = useState(null);
+	useEffect(() => {
+		const fetchAnalytics = async () => {
+			await apiRequest({
+				url: '/api/analytics',
+				method: 'GET',
+				onSuccess: (res) => {
+					setTodayVisitors(res.today);
+					setLastMonthVisitors(res.lastMonth);
+					console.log('response', res);
+				},
+				onError: (error) => {
+					toast.error(error);
+				},
+			});
+		};
+		fetchAnalytics();
+	}, []);
 	return (
 		<div className=" grid grid-cols-3      justify-between  rounded-[40px]  w-full gap-3 max-sm:grid-cols-2 max-2xs:grid-cols-1">
 			<div className=" p-5  rounded-lg bg-gray-50  flex flex-col gap-2 items-start  w-full  max-md:p-2">
@@ -53,11 +72,20 @@ const Stats = () => {
 				)}
 			</div>
 			<div className=" p-5  rounded-lg bg-gray-50  flex flex-col gap-2 items-start  w-full  max-md:p-2">
-				<h1 className="text-sm text-gray-600  leading-none ">Total Visitors</h1>
-				<h1 className="text-3xl  ">100</h1>
-				<div className="bg-[#ECFCF3]     px-3 py-1 rounded-full text-xs   ">
-					10 visited today
-				</div>
+				<h1 className="text-sm text-gray-600  leading-none ">
+					Total Visitors in the last month
+				</h1>
+				<h1 className="text-3xl  ">{lastMonthVisitors ?? 0}</h1>
+
+				{todayVisitors && todayVisitors > 0 ? (
+					<div className="bg-[#ECFCF3]     px-3 py-1 rounded-full text-xs   ">
+						{todayVisitors} visited today
+					</div>
+				) : (
+					<div className="bg-[#FFFBDB]  text-[#a37a00] px-3 py-1 rounded-full text-xs   ">
+						{todayVisitors} visited today
+					</div>
+				)}
 			</div>
 		</div>
 	);

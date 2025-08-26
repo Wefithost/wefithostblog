@@ -5,6 +5,7 @@ import cloudinary from 'cloudinary';
 import User from '~/lib/models/user';
 import { slugify } from '~/utils/slugify';
 import Article from '~/lib/models/article';
+import Alert from '~/lib/models/alerts';
 
 cloudinary.v2.config({
 	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -22,7 +23,7 @@ export async function PATCH(req: NextRequest) {
 		const description = formData.get('description') as string;
 		const uploaded_image = formData.get('uploaded_image');
 		const article_id = formData.get('article_id');
-
+		const topic = formData.get('topic');
 		// Validate IDs
 		if (!isValidObjectId(adminId)) {
 			return NextResponse.json(
@@ -100,6 +101,16 @@ export async function PATCH(req: NextRequest) {
 		existingArticle.image = imageUrl;
 
 		await existingArticle.save();
+		await Alert.create({
+			type: 'article_edited',
+			message: `Edited an article '${title}'`,
+			triggered_by: admin._id,
+			link: {
+				url: `/topics/${slugify(topic as string)}/${existingArticle.slug}`,
+				label: 'View article',
+			},
+			status: 'edit', // this is where you can use your status to color alerts
+		});
 
 		return NextResponse.json(
 			{ message: 'article updated successfully' },

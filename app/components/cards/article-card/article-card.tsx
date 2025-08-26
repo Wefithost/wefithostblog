@@ -39,7 +39,6 @@ const ArticleCard = ({ article, admin = false }: articleProps) => {
 	} = usePopup();
 	const [articleToEdit, setArticleToEdit] = useState<IArticle | null>(null);
 
-	console.log('article', article);
 	return (
 		<>
 			<motion.div

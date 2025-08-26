@@ -17,6 +17,7 @@ import { useFetch } from '~/utils/fetch-page-data';
 import { IArticle } from '~/types/article';
 import Loader from '~/app/components/loader';
 import { getReadingTime } from '~/utils/get-reading-time';
+import CommentsSection from '~/app/components/comments/comments-section';
 const Article = () => {
 	const params = useParams();
 
@@ -148,43 +149,36 @@ const Article = () => {
 				<div className="flex flex-col gap-10 max-w-[750px] w-full">
 					<ArticleViewer content={article_data?.article} />
 					{!isFetching && !error && (
-						<div className=" border-t-1 border-gray-400 w-full  flex flex-col gap-2 py-4">
-							<h1 className=" text-base">About the author</h1>
-							<div className=" items-center gap-2 flex">
-								{/* eslint-disable-next-line */}
-								<img
-									src={
-										article_data?.author?.profile ?? '/icons/default-user.svg'
-									}
-									className="w-9 h-9 object-cover rounded-full border border-gray-400"
-									alt=""
-								/>
-								<div className="flex items-start gap-0  flex-col">
-									<span className="text-base font-semibold text-black max-md:text-sm">
-										{article_data?.author?.first_name}{' '}
-										{article_data?.author?.last_name}
-									</span>
-									<div className="flex gap-4 items-center text-sm  text-black max-md:text-black max-md:text-xs">
-										<span>{formatDate(article_data?.createdAt as string)}</span>
-
-										{article_data && (
-											<>
-												<FaCircle className="text-[10px] " />
-												<span>
-													{(article_data?.article &&
-														getReadingTime(article_data?.article)) ||
-														'2'}{' '}
-													mins read
-												</span>
-											</>
-										)}
+						<>
+							<div className=" border-t-1 border-gray-400 w-full  flex flex-col gap-2 py-4">
+								<h1 className=" text-base">About the author</h1>
+								<div className=" items-center gap-2 flex">
+									{/* eslint-disable-next-line */}
+									<img
+										src={
+											article_data?.author?.profile ?? '/icons/default-user.svg'
+										}
+										className="w-9 h-9 object-cover rounded-full border border-gray-400"
+										alt=""
+									/>
+									<div className="flex items-start gap-0  flex-col">
+										<span className="text-base font-semibold text-black max-md:text-sm">
+											{article_data?.author?.first_name}{' '}
+											{article_data?.author?.last_name}
+										</span>
+										<div className="flex gap-4 items-center text-sm  text-black max-md:text-black max-md:text-xs">
+											<span>
+												{formatDate(article_data?.createdAt as string)}
+											</span>
+										</div>
 									</div>
 								</div>
+								{article_data?.author?.bio && (
+									<p className="max-md:text-sm">{article_data?.author?.bio}</p>
+								)}
 							</div>
-							{article_data?.author?.bio && (
-								<p className="max-md:text-sm">{article_data?.author?.bio}</p>
-							)}
-						</div>
+							<CommentsSection />
+						</>
 					)}
 				</div>
 				<div className="flex flex-col justify-between max-xl:flex-row  gap-5 max-md:flex-col">

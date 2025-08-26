@@ -11,6 +11,7 @@ import AuthPrompt from './components/auth/auth';
 import { AuthProvider } from './context/auth-context';
 import { NextAuthProvider } from './next-auth-provider';
 import { TopicsProvider } from './context/topics-context';
+import Script from 'next/script';
 const PoppinsReg = localFont({
 	src: './fonts/Poppins-Regular.ttf',
 	variable: '--font-poppins',
@@ -36,7 +37,20 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
+		<html lang="en" data-scroll-behavior="smooth">
+			<head>
+				<Script
+					async
+					src="https://www.googletagmanager.com/gtag/js?id=G-0TTFKMFS01"
+				></Script>
+				<Script id="google-analytics">
+					{` window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0TTFKMFS01');`}
+				</Script>
+			</head>
 			<body
 				className={`${PoppinsReg.variable}  ${PoppinsBold.variable}  ${QuicksandReg.variable} antialiased  flex flex-col mx-auto`}
 				id="body"

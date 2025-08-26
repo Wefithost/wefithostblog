@@ -1,69 +1,69 @@
-import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
-import connectMongo from "~/lib/connect-mongo";
-import { mailOptions, transporter } from "~/lib/nodemailer";
+import { NextRequest, NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
+import connectMongo from '~/lib/connect-mongo';
+import { mailOptions, transporter } from '~/lib/nodemailer';
 
-import User from "~/lib/models/user";
-import verification from "~/lib/models/verification";
+import User from '~/lib/models/user';
+import verification from '~/lib/models/verification';
 export async function POST(req: NextRequest) {
-  try {
-    await connectMongo();
+	try {
+		await connectMongo();
 
-    const { email, password, firstName, lastName } = await req.json();
+		const { email, password, firstName, lastName } = await req.json();
 
-    if (!firstName) {
-   return NextResponse.json(
-        { error: "First name is required" },
-        { status: 409 }
-      );
-    }
+		if (!firstName) {
+			return NextResponse.json(
+				{ error: 'First name is required' },
+				{ status: 409 },
+			);
+		}
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return NextResponse.json(
-        { error: "This email is already in use, login instead." },
-        { status: 409 }
-      );
-    }
+		const existingUser = await User.findOne({ email });
+		if (existingUser) {
+			return NextResponse.json(
+				{ error: 'This email is already in use, login instead.' },
+				{ status: 409 },
+			);
+		}
 
-    const verificationCode = Math.floor(1000 + Math.random() * 9000);
-    const hashedVerificationCode = await bcrypt.hash(
-      verificationCode.toString(),
-      10
-    );
+		const verificationCode = Math.floor(1000 + Math.random() * 9000);
+		const hashedVerificationCode = await bcrypt.hash(
+			verificationCode.toString(),
+			10,
+		);
 
-    const existingVerification = await verification.findOne({ email });
+		const existingVerification = await verification.findOne({ email });
 
-    if (existingVerification) {
-      await verification.updateOne(
-        { email },
-        {
-          hashed_code: hashedVerificationCode,
-          password: await bcrypt.hash(password, 10),
-          first_name: firstName,
-          last_name: lastName,
-          oauth_provider: "local",
-          createdAt: new Date(),
-        }
-      );
-    } else {
-      await verification.create({
-        email,
-        hashed_code: hashedVerificationCode,
-        password: await bcrypt.hash(password, 10),
-           first_name: firstName,
-          last_name: lastName,
-        oauth_provider: "local",
-        createdAt: new Date(),
-      });
-    }
+		if (existingVerification) {
+			await verification.updateOne(
+				{ email },
+				{
+					hashed_code: hashedVerificationCode,
+					password: await bcrypt.hash(password, 10),
+					first_name: firstName,
+					last_name: lastName,
+					oauth_provider: 'local',
+					createdAt: new Date(),
+				},
+			);
+		} else {
+			await verification.create({
+				email,
+				hashed_code: hashedVerificationCode,
+				password: await bcrypt.hash(password, 10),
+				first_name: firstName,
+				last_name: lastName,
+				oauth_provider: 'local',
+				createdAt: new Date(),
+			});
+		}
 
-    await transporter.sendMail({
-      ...mailOptions,
-      to: email,
-      text: "Hello. This mail is for your email verification.",
-      subject: "Welcome to wefithostblog,Verify Your Email",
-      html: `<table
+		await transporter.sendMail({
+			...mailOptions,
+			to: email,
+			text: 'Hello. This mail is for your email verification.',
+			subject: 'Welcome to WeFitHost blog,Verify Your Email',
+			html: `<table
 	style="
 		background-color: #fbfbff;
 		font-family: Arial, sans-serif;
@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
 	<tr>
 		<td align="center" style="padding-bottom: 10px">
 			<img
-				src="https://res.cloudinary.com/dl6pa30kz/image/upload/v1754743573/logo_hdvqjb.svg"
+				src="https://res.cloudinary.com/dl6pa30kz/image/upload/v1756039608/logo_hdvqjb_1_1_u8ljxj.png"
 				style="width: 150px"
 				alt="wefithost logo"
 			/>
@@ -125,18 +125,18 @@ export async function POST(req: NextRequest) {
 	</tr>
 </table>
 `,
-    });
+		});
 
-    return NextResponse.json(
-      { message: "Verification email sent successfully", email },
-      { status: 200 }
-    );
-  } catch (error) {
-        console.log(error)
-    return NextResponse.json(
-
-      { error: "An error occurred during signup."  },
-      { status: 500 }
-    );
-  }
+		return NextResponse.json(
+			{ message: 'Verification email sent successfully', email },
+			{ status: 200 },
+		);
+	} catch (error) {
+		console.log(error);
+		return NextResponse.json(
+			{ error: 'An error occurred during signup.' },
+			{ status: 500 },
+		);
+	}
 }
+

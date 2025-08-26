@@ -5,7 +5,9 @@ import { GrUserAdmin } from 'react-icons/gr';
 import { FaEllipsisH, FaUserAlt } from 'react-icons/fa';
 import { formatDate } from '~/utils/format-date';
 import DeletePrompt from './delete-account';
+import MessagePrompt from './message';
 import { IoTrashBinOutline } from 'react-icons/io5';
+import { FaRegMessage } from 'react-icons/fa6';
 interface memberProps {
 	member: user_type;
 }
@@ -30,6 +32,13 @@ const Member = ({ member }: memberProps) => {
 		togglePopup: toggleDeletePrompt,
 		ref: deletePromptRef,
 		setDisableToggle: disableDeletePrompt,
+	} = usePopup();
+	const {
+		isVisible: messagePromptVisible,
+		isActive: messagePrompt,
+		togglePopup: toggleMessagePrompt,
+		ref: messagePromptRef,
+		setDisableToggle: disableMessagePrompt,
 	} = usePopup();
 	return (
 		<>
@@ -69,10 +78,13 @@ const Member = ({ member }: memberProps) => {
 					{formatDate(member?.createdAt as string)}
 				</div>
 				<div className="w-[10%] h-[40px] flex items-center  px-3 text-sm text-end justify-end relative">
-					<FaEllipsisH
-						className="text-gray-500 cursor-pointer "
-						onClick={togglePrompt}
-					/>
+					{member?.role !== 'super_admin' && (
+						<FaEllipsisH
+							className="text-gray-500 cursor-pointer "
+							onClick={togglePrompt}
+						/>
+					)}
+
 					{prompt && (
 						<div
 							className={`flex  flex-col bg-white shadow-lg  w-[180px] rounded-md   duration-150 absolute top-2 right-10  divide-y divide-lightGrey overflow-hidden border border-lightGrey z-20   ${
@@ -81,7 +93,7 @@ const Member = ({ member }: memberProps) => {
 							ref={promptRef}
 						>
 							<button
-								className="py-2 w-full text-[13px]  text-grey flex items-center gap-2  px-3 hover:bg-lightGrey duration-150"
+								className="py-2 w-full text-[13px]   flex items-center gap-2  px-3 hover:bg-lightGrey duration-150"
 								onClick={(e) => {
 									e.preventDefault();
 									e.stopPropagation();
@@ -92,6 +104,17 @@ const Member = ({ member }: memberProps) => {
 								<span>
 									{member?.role !== 'member' ? 'Set as user' : 'Set as admin'}
 								</span>
+							</button>
+							<button
+								className="py-2 w-full text-[13px]   flex items-center gap-2  px-3 hover:bg-lightGrey duration-150"
+								onClick={(e) => {
+									e.preventDefault();
+									e.stopPropagation();
+									toggleMessagePrompt();
+								}}
+							>
+								<FaRegMessage />
+								<span>Message</span>
 							</button>
 							<button
 								className="py-2 w-full text-[13px]  text-red flex items-center gap-2  px-3 hover:bg-lightGrey duration-150"
@@ -123,6 +146,14 @@ const Member = ({ member }: memberProps) => {
 				deletePromptRef={deletePromptRef}
 				member={member}
 				setDisableToggle={disableDeletePrompt}
+			/>
+			<MessagePrompt
+				messagePromptVisible={messagePromptVisible}
+				messagePrompt={messagePrompt}
+				toggleMessagePrompt={toggleMessagePrompt}
+				messagePromptRef={messagePromptRef}
+				member={member}
+				setDisableToggle={disableMessagePrompt}
 			/>
 		</>
 	);

@@ -48,7 +48,7 @@ pr-8
 					<div className="w-[10%] py-2 px-3 text-sm"></div>
 				</div>
 				<Loader
-					classname_override="!h-[450px]"
+					classname_override="!h-[400px]"
 					fetching={fetching}
 					error={error}
 				>
