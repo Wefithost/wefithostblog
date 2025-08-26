@@ -9,14 +9,18 @@ import { getReadingTime } from '~/utils/get-reading-time';
 import { slugify } from '~/utils/slugify';
 
 const FeaturedArticlesPreview = () => {
-	const { fetchedData: featured_articles, isFetching } = useFetch<IArticle[]>({
+	const {
+		fetchedData: featured_articles,
+		isFetching,
+		hasError,
+	} = useFetch<IArticle[]>({
 		basePath: `/api/fetch-articles/fetch-featured-articles`,
 		ids: [],
 		// dataKey: 'topicDetails',
 	});
 
 	let articles;
-	if (isFetching) {
+	if (isFetching || hasError || !featured_articles) {
 		articles = backup_data;
 	} else {
 		articles = featured_articles;

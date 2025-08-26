@@ -79,7 +79,12 @@ export async function POST(req: NextRequest) {
 		const uploadResult = await new Promise<{ secure_url: string }>(
 			(resolve, reject) => {
 				const uploadStream = cloudinary.v2.uploader.upload_stream(
-					{ folder: 'wefithost_articles' },
+					{
+						folder: 'wefithost_articles',
+						transformation: [
+							{ quality: 'auto', fetch_format: 'auto' }, // auto compress + best format
+						],
+					},
 					(error, result) => {
 						if (error) {
 							reject(new Error(error.message || 'Upload failed'));
