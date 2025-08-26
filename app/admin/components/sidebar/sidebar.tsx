@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import SidebarList from './sidebar-lists';
 import { MdApps, MdArticle } from 'react-icons/md';
-import { FaBell, FaUsers } from 'react-icons/fa';
+import { FaUsers } from 'react-icons/fa';
 import { LuLogs } from 'react-icons/lu';
 interface SidebarProps {
 	hidden: boolean;

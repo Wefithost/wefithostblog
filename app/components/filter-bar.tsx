@@ -41,7 +41,7 @@ const FilterBar = ({
 					<>
 						<button
 							onClick={() => setActiveFilter?.('all')}
-							className={`capitalize text-lg h-[33px] px-3 rounded-sm duration-150 max-2xl:text-sm max-xs:px-2 max-xs:h-[30px] max-xs:text-xs ${
+							className={`capitalize text-lg h-[33px] px-3 rounded-sm duration-150 max-2xl:text-sm max-xs:px-2 max-xs:h-[25px] max-xs:text-xs ${
 								'all' === activeFilter
 									? 'bg-purple text-white '
 									: 'hover:bg-lightGrey'
@@ -54,7 +54,7 @@ const FilterBar = ({
 								<button
 									key={data._id}
 									onClick={() => setActiveFilter?.(data._id)}
-									className={`capitalize text-lg h-[33px] px-3 rounded-sm duration-150 max-2xl:text-sm max-xs:px-2 max-xs:h-[30px] max-xs:text-xs ${
+									className={`capitalize text-lg h-[33px] px-3 rounded-sm duration-150 max-2xl:text-sm max-xs:px-2 max-xs:h-[25px] max-xs:text-xs ${
 										data._id === activeFilter
 											? 'bg-purple text-white '
 											: 'hover:bg-lightGrey'
@@ -68,11 +68,12 @@ const FilterBar = ({
 			)}
 			<div className="flex  gap-4 max-2xl:gap-2 max-lg:justify-self-end max-lg:self-end  max-lg:w-full max-lg:justify-between">
 				<input
-					className={`  py-1 px-3 bg-grey  text-black   text-sm    focus:ring-[1px]    ring-purple    outline-none w-[350px]  duration-150 rounded-sm bg-lightGrey max-2xl:w-[250px] max-lg:w-[70%]
+					className={`  py-1 px-3 bg-grey  text-black   text-sm    focus:ring-[1px]    ring-purple    outline-none w-[350px]  duration-150 rounded-sm bg-lightGrey max-2xl:w-[250px] max-lg:w-[70%] max-xs:text-xs
 pr-8
             `}
 					placeholder="Search for an article"
 					value={searchTerm}
+					name="search"
 					onChange={(e) => {
 						handleSearchChange(e);
 					}}
@@ -82,7 +83,7 @@ pr-8
 					{sorts.map((sort) => (
 						<button
 							key={sort}
-							className={`flex items-center gap-2  border h-[40px] px-2 rounded-sm border-lightGrey text-center text-sm duration-150  ${
+							className={`flex items-center gap-2  border h-[40px] px-2 rounded-sm border-lightGrey text-center text-sm duration-150 max-xs:text-xs max-xs:h-[30px] ${
 								selectedSort === sort
 									? 'bg-white text-black shadow-sm '
 									: 'hover:text-black text-[#464646]'

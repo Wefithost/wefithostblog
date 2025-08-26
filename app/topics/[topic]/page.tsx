@@ -69,11 +69,13 @@ export default function Topic() {
 
 				{pagedArticles && pagedArticles?.title && (
 					<>
-						<section className="flex flex-col gap-4 max-w-[900px]">
+						<section className="flex flex-col gap-4 max-w-[900px] max-xs:gap-2">
 							<h1 className="text-4xl poppins-bold max-2xl:text-3xl max-xs:text-2xl capitalize">
 								{pagedArticles?.title}
 							</h1>
-							<p className="text-lg max-2xl:text-base">{pagedArticles?.desc}</p>
+							<p className="text-lg max-2xl:text-base max-xs:text-[15px]">
+								{pagedArticles?.desc}
+							</p>
 						</section>
 					</>
 				)}

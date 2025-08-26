@@ -19,7 +19,7 @@ const RelatedTopicsSection = ({ header, related_topics }: RelatedProps) => {
 	}, []);
 
 	return (
-		<aside className="flex w-full flex-col gap-5 max-2xl:gap-4  py-10 ">
+		<aside className="flex w-full flex-col gap-5 max-2xl:gap-4  py-10 max-xs:py-5">
 			{header && (
 				<h3 className="text-[28px] poppins-bold max-xl:text-xl">{header}</h3>
 			)}

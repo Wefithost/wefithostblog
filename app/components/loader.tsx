@@ -21,11 +21,11 @@ const Loader: React.FC<LoaderProps> = ({
 }) => {
 	const renderErrorState = () => (
 		<div className=" min-h-[50vh] w-full flex items-center justify-center  flex-col">
-			<div className="flex  flex-col gap-3 bg-purple-50    rounded-2xl  w-[400px] py-2">
+			<div className="flex  flex-col gap-3 bg-purple-50    rounded-2xl  w-[400px] py-2 max-xs:w-full max-xs:px-4">
 				<div className="flex gap-4 items-start    p-4  w-full">
-					<Image src={errorIcon} className="w-8" alt="Error icon" />
+					<Image src={errorIcon} className="w-8 max-sm:w-6" alt="Error icon" />
 					<div className="flex flex-col gap-1">
-						<p className=" text-xl text-black      spaced leading-none ">
+						<p className=" text-xl text-black      spaced leading-none max-sm:text-base">
 							{message}
 						</p>
 						<p className="text-sm  normal-case  tracking-normal text-gray-600 line-clamp-3">
@@ -51,7 +51,12 @@ const Loader: React.FC<LoaderProps> = ({
 		>
 			<div className=" flex items-center justify-center  w-20  h-20   relative  ">
 				<div className="bg-purple-50 p-5 absolute  animate-ping w-full h-full   "></div>
-				<Image src={logo} alt="Loading" className="w-16 relative z-10  " />
+				<Image
+					src={logo}
+					alt="Loading"
+					className="w-16 relative z-10 max-md:w-10 "
+					priority
+				/>
 			</div>
 		</div>
 	);

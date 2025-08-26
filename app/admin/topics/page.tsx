@@ -25,7 +25,7 @@ const Topics = () => {
 	});
 
 	return (
-		<main className="px-4 py-6 bg-white min-h-screen flex flex-col gap-16 ">
+		<main className="px-4 py-6 bg-white min-h-screen flex flex-col gap-16 w-full">
 			<div className="flex items-center justify-between w-full">
 				<div className="flex flex-col gap-3">
 					<h1 className="text-3xl font-semibold">All Topics</h1>

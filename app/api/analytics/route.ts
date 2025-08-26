@@ -69,7 +69,7 @@ export async function GET() {
 		const lastMonthRange = getLastMonthDateRange();
 
 		const [response] = await analyticsDataClient.runReport({
-			property: `properties/502419765`, // GA4 property ID
+			property: `properties/${process.env.GA_PROPERTY_ID}`, // GA4 property ID
 			dateRanges: [
 				{ ...lastMonthRange, name: 'last_month' },
 				{ startDate: 'today', endDate: 'today', name: 'today' },

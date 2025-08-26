@@ -12,6 +12,7 @@ import * as motion from 'motion/react-client';
 
 import EditArticlePrompt from './edit-article-prompt';
 import { getReadingTime } from '~/utils/get-reading-time';
+
 interface articleProps {
 	article: IArticle;
 	admin?: boolean;

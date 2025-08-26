@@ -14,7 +14,7 @@ import EmptyState from '~/app/components/empty-state';
 const Alerts = () => {
 	const { user } = useAuthContext();
 	const [currentPage, setCurrentPage] = useState(1);
-	const pageSize = 10; // Users per page
+	const pageSize = 10;
 
 	const [pagedAlerts, setPagedAlerts] = useState<alert_type[]>([]);
 	const [totalAlerts, setTotalAlerts] = useState(0);

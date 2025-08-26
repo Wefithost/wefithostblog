@@ -31,7 +31,7 @@ export const ArticleGrid = ({
 		scrollToArticles();
 		if (to < 1 || to > totalPages) return;
 
-		onPageChange(to);
+		setTimeout(() => onPageChange(to), 1000);
 	};
 	return (
 		<div className="w-full flex-col items-center gap-8 duration-300">
@@ -77,8 +77,7 @@ export const ArticleGrid = ({
 
 									<button
 										onClick={() => {
-											scrollToArticles();
-											onPageChange(page);
+											navigate(page);
 										}}
 										className={`px-4 py-2 rounded-md text-sm ${
 											page === currentPage

@@ -53,6 +53,7 @@ const ArticlesContainer = ({
 		<section
 			className="flex w-full flex-col gap-8 max-2xl:gap-4 bg-white"
 			id="articles-section"
+			style={{ scrollMarginTop: '200px' }}
 		>
 			{/* Filters */}
 			{(hasSearch || isFiltered || hasArticles) && (

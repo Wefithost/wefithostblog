@@ -71,11 +71,11 @@ const HeroPreview = ({ articles }: previewProps) => {
 					fadeOut ? 'opacity-0' : 'opacity-100'
 				}`}
 			/>
-			<div className="flex flex-col gap-3 relative z-30 max-w-[900px] items-start p-8 py-16 max-lg:py-8 max-lg:max-w-full  max-xl:gap-2 max-md:px-4 text-white  max-2xs:py-4 font-semibold max-2xs:font-normal">
-				<button className="bg-purple hover:bg-darkPurple text-white text-lg h-[40px] px-2.5 duration-150 rounded-sm max-md:h-[30px] max-md:text-sm">
-					{article?.topic.title}
+			<div className="flex flex-col gap-3 relative z-30 max-w-[900px] items-start p-8 py-16 max-lg:py-8 max-lg:max-w-full  max-xl:gap-2 max-md:px-4 text-white  max-2xs:py-4 font-semibold max-2xs:font-normal max-md:gap-0">
+				<button className="bg-purple hover:bg-darkPurple text-white text-lg h-[40px] px-2.5 duration-150 rounded-sm max-md:h-[25px] max-md:text-xs">
+					{article?.topic?.title}
 				</button>
-				<h1 className="text-[32px] poppins-bold max-2xl:text-2xl max-xl:text-xl max-2xs:text-base  line-clamp-1">
+				<h1 className="text-[32px] poppins-bold max-2xl:text-2xl max-xl:text-xl max-xs:text-base  line-clamp-2">
 					{article?.title}
 				</h1>
 				<p className="text-lg max-2xl:text-base max-xl:text-sm  line-clamp-1">
@@ -91,7 +91,7 @@ const HeroPreview = ({ articles }: previewProps) => {
 				</div>
 				<Link
 					href={`/${slugify(article?.title as string)}`}
-					className="link-style  text-lg max-2xl:text-base max-xl:text-sm"
+					className="link-style  text-lg max-2xl:text-base max-xl:text-sm max-xs:text-xs"
 				>
 					Read more...
 				</Link>
