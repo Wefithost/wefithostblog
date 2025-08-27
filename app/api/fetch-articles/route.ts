@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectMongo from '~/lib/connect-mongo';
 import Article from '~/lib/models/article';
-import Topic from '~/lib/models/topic';
 export async function GET(req: NextRequest) {
 	try {
 		await connectMongo();

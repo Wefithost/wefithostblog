@@ -30,7 +30,6 @@ const FeaturedArticlesPreview = () => {
 	} else {
 		articles = featured_articles;
 	}
-
 	const [isHovered, setIsHovered] = useState(false);
 	const [currentIndex, setCurrentIndex] = useState(() => {
 		if (!articles || articles.length === 0) return 0;
@@ -116,43 +115,134 @@ export default FeaturedArticlesPreview;
 
 const backup_data = [
 	{
-		_id: '68a3561ce3e3587a0679a6da',
-		title: 'WordPress Hosting Optimization Guide',
+		_id: '68aee7332d1722a1a2f99b38',
+		title: 'How to Scale Your Reseller Hosting Business',
 		topic: {
-			_id: '689cd4904bacf1c677fec353',
-			title: 'Featured',
+			_id: '68aee2f52d1722a1a2f99ae5',
+			title: 'hosting',
 		},
 		author: {
-			_id: '689713a37d49f07172e6ad0b',
+			_id: '68aee0442d1722a1a2f99ac1',
 			first_name: 'Darlington',
-			profile:
-				'https://res.cloudinary.com/dl6pa30kz/image/upload/v1755011493/wefithost_blog_profiles/cf2liu64t5rjrsfguflv.png',
 			last_name: 'John',
+			profile:
+				'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756291223/wefithost_blog_profiles/vmq5jhrmgipz99jw3o7l.png',
 		},
+		article: {},
 		description:
-			'Specialized techniques to optimize your servers for WordPress hosting.',
+			'Learn proven strategies to scale your reseller hosting business— boost profits, attract clients, and stand out in a competitive hosting market.',
 		image:
-			'https://res.cloudinary.com/dl6pa30kz/image/upload/v1755504195/wefithost_articles/yqamh0clabsz10aznnjv.png',
-		slug: 'wordpress-hosting-optimization-guide',
+			'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756292915/wefithost_articles/hnfuvgpxoaqrfwtdupep.jpg',
+		slug: 'how-to-scale-your-reseller-hosting-business',
 		featured: true,
 		published: true,
-		createdAt: '2025-08-22T08:03:15.879Z',
-		updatedAt: '2025-08-19T14:19:49.831Z',
+		createdAt: '2025-08-27T11:08:35.999Z',
+		updatedAt: '2025-08-27T11:46:03.538Z',
 		__v: 0,
-		article: {
-			type: 'doc',
-			content: [
-				{
-					type: 'paragraph',
-					content: [
-						{
-							type: 'text',
-							text: 'no content',
-						},
-					],
-				},
-			],
+	},
+	{
+		_id: '68aef3ee2d1722a1a2f99c92',
+		title: 'Hosting Business Marketing Strategies',
+		topic: {
+			_id: '68aee5412d1722a1a2f99b01',
+			title: 'marketing',
 		},
+		author: {
+			_id: '68aee0442d1722a1a2f99ac1',
+			first_name: 'Darlington',
+			last_name: 'John',
+			profile:
+				'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756291223/wefithost_blog_profiles/vmq5jhrmgipz99jw3o7l.png',
+		},
+		article: {},
+		description:
+			'Boost your hosting business with proven marketing strategies to attract new clients, increase visibility, and maximize growth.',
+		image:
+			'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756296174/wefithost_articles/rliotsrbkdlnlwttdgum.jpg',
+		slug: 'hosting-business-marketing-strategies',
+		featured: true,
+		published: true,
+		createdAt: '2025-08-27T12:02:54.701Z',
+		updatedAt: '2025-08-27T12:15:13.473Z',
+		__v: 0,
+	},
+	{
+		_id: '68aef8922d1722a1a2f99d05',
+		title: 'Shared Hosting vs. VPS: Which Is More Secure?',
+		topic: {
+			_id: '68aee4202d1722a1a2f99af3',
+			title: 'security',
+		},
+		author: {
+			_id: '68aee0442d1722a1a2f99ac1',
+			first_name: 'Darlington',
+			last_name: 'John',
+			profile:
+				'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756291223/wefithost_blog_profiles/vmq5jhrmgipz99jw3o7l.png',
+		},
+		article: {},
+		description:
+			'Choosing between shared hosting and VPS often comes down to performance and budget — but security should be a top priority too. In this article, we’ll compare both hosting types to help you understand which is more secure for your website and why.',
+		image:
+			'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756297361/wefithost_articles/wln8neduoiogio3zlxwe.jpg',
+		slug: 'shared-hosting-vs-vps-which-is-more-secure',
+		featured: true,
+		published: true,
+		createdAt: '2025-08-27T12:22:42.018Z',
+		updatedAt: '2025-08-27T12:47:13.684Z',
+		__v: 0,
+	},
+	{
+		_id: '68aeff8d2d1722a1a2f99d8d',
+		title: 'Tips for Building Rich SEO: A Complete Guide to Ranking Higher',
+		topic: {
+			_id: '68aee37c2d1722a1a2f99aec',
+			title: 'tips',
+		},
+		author: {
+			_id: '68aee0442d1722a1a2f99ac1',
+			first_name: 'Darlington',
+			last_name: 'John',
+			profile:
+				'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756291223/wefithost_blog_profiles/vmq5jhrmgipz99jw3o7l.png',
+		},
+		article: {},
+		description:
+			'Boost your website’s visibility with proven SEO tips that enhance ranking, increase traffic, and build a strong online presence.',
+		image:
+			'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756299939/wefithost_articles/s0bvngdbk0lc3wyw466a.png',
+		slug: 'tips-for-building-rich-seo-a-complete-guide-to-ranking-higher',
+		featured: true,
+		published: true,
+		createdAt: '2025-08-27T12:52:29.962Z',
+		updatedAt: '2025-08-27T13:05:56.730Z',
+		__v: 0,
+	},
+	{
+		_id: '68af085c2d1722a1a2f99e6c',
+		title: 'Dedicated Hosting Explained: Is It Worth the Cost?',
+		topic: {
+			_id: '68aee2f52d1722a1a2f99ae5',
+			title: 'hosting',
+		},
+		author: {
+			_id: '68aee0442d1722a1a2f99ac1',
+			first_name: 'Darlington',
+			last_name: 'John',
+			profile:
+				'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756291223/wefithost_blog_profiles/vmq5jhrmgipz99jw3o7l.png',
+		},
+		article: {},
+		description:
+			'Learn what dedicated hosting is, its benefits, drawbacks, and whether it’s worth the high cost. Perfect guide for businesses choosing the right hosting solution.',
+		image:
+			'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756301403/wefithost_articles/wtk4aecukpc8vtfvfprg.jpg',
+		slug: 'dedicated-hosting-explained-is-it-worth-the-cost',
+		featured: true,
+		published: true,
+		createdAt: '2025-08-27T13:30:04.216Z',
+		updatedAt: '2025-08-27T13:36:52.153Z',
+		__v: 0,
 	},
 ];
 
