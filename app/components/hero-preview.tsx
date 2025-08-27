@@ -12,7 +12,10 @@ interface previewProps {
 }
 const HeroPreview = ({ articles }: previewProps) => {
 	const [isHovered, setIsHovered] = useState(false);
-	const [rendered_articles, setRenderedArticles] = useState(backup_data);
+
+	const [rendered_articles, setRenderedArticles] =
+		//@ts-expect-error: typing not needed
+		useState<IArticle[]>(backup_data);
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [fadeOut, setFadeOut] = useState(false);
 
