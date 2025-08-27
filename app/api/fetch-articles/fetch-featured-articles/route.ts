@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectMongo from '~/lib/connect-mongo';
 import Article from '~/lib/models/article';
-
+import '~/lib/models/topic'; // ensures Topic model is registered
+import '~/lib/models/user';
 export async function GET(req: NextRequest) {
 	try {
 		await connectMongo();
@@ -34,7 +35,7 @@ export async function GET(req: NextRequest) {
 				})
 				.lean();
 		}
-	
+
 		const articlesLength = await Article.countDocuments({});
 		return NextResponse.json(
 			{ response: articles, articlesLength },

@@ -28,7 +28,6 @@ async function connectMongo() {
 		cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
 			return mongoose;
 		});
-		console.log('Mongoose models:', mongoose.modelNames());
 	}
 
 	cached.conn = await cached.promise;
