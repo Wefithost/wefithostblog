@@ -12,45 +12,43 @@ interface previewProps {
 }
 const HeroPreview = ({ articles }: previewProps) => {
 	const [isHovered, setIsHovered] = useState(false);
-	let rendered_articles;
-
-	if (!articles || articles.length === 0) {
-		rendered_articles = backup_data;
-	} else {
-		rendered_articles = articles;
-	}
-	const [currentIndex, setCurrentIndex] = useState(() => {
-		if (!rendered_articles || rendered_articles.length === 0) return 0;
-		return Math.floor(Math.random() * rendered_articles.length);
-	});
-
+	const [rendered_articles, setRenderedArticles] = useState(backup_data);
+	const [currentIndex, setCurrentIndex] = useState(0);
 	const [fadeOut, setFadeOut] = useState(false);
+
+	useEffect(() => {
+		if (articles && articles.length > 0) {
+			setRenderedArticles(articles);
+
+			// reset currentIndex safely
+			setCurrentIndex(Math.floor(Math.random() * articles.length));
+		}
+	}, [articles]);
 
 	useEffect(() => {
 		if (!rendered_articles || rendered_articles.length === 0 || isHovered)
 			return;
 
 		const interval = setInterval(() => {
-			setFadeOut(true); // start fade out
+			setFadeOut(true);
 
 			setTimeout(() => {
 				let newIndex = Math.floor(Math.random() * rendered_articles.length);
 
-				// avoid repeating the same article
 				while (rendered_articles.length > 1 && newIndex === currentIndex) {
 					newIndex = Math.floor(Math.random() * rendered_articles.length);
 				}
 
 				setCurrentIndex(newIndex);
-				setFadeOut(false); // start fade in
-			}, 500); // match fade transition
-		}, 2000); // every 20s
+				setFadeOut(false);
+			}, 500);
+		}, 2000);
 
 		return () => clearInterval(interval);
 	}, [rendered_articles, currentIndex, isHovered]);
 
-	const article = rendered_articles?.[currentIndex] ?? null;
-
+	const article =
+		rendered_articles?.[currentIndex] ?? rendered_articles[0] ?? null;
 	return (
 		<section
 			className={`flex min-h-[700px] max-h-[700px] w-full overflow-hidden relative items-end rounded-lg max-2xl:min-h-[500px]  max-2xl:max-h-[500px] max-md:min-h-[300px] max-md:max-h-[300px] duration-500`}

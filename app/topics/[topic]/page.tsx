@@ -2,11 +2,14 @@ import { getTopic } from '~/utils/getTopic';
 import { Metadata } from 'next';
 import Topic from './topic';
 type Props = {
-	params: { topic: string };
+	params: Promise<{
+		topic: string;
+	}>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-	const topic = await getTopic(params.topic);
+	const topicParam = await params;
+	const topic = await getTopic(topicParam?.topic);
 
 	if (!topic) {
 		return {
@@ -15,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		};
 	}
 
-	const url = `https://blog.wefithost.com/${params.topic}`;
+	const url = `https://blog.wefithost.com/${topicParam?.topic}`;
 
 	return {
 		title: topic.title,

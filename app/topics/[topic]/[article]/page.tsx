@@ -3,12 +3,15 @@ import Article from './article';
 import { Metadata } from 'next';
 
 type Props = {
-	params: { article: string; topic: string };
+	params: Promise<{
+		topic: string;
+		article: string;
+	}>;
 };
-
 // Generate metadata dynamically for SEO + sharing
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-	const article = await getArticle(params.article);
+	const articleParam = await params;
+	const article = await getArticle(articleParam?.article);
 
 	if (!article) {
 		return {
@@ -17,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		};
 	}
 
-	const url = `https://blog.wefithost.com/${params.topic}/${params.article}`;
+	const url = `https://blog.wefithost.com/${articleParam?.topic}/${articleParam?.article}`;
 
 	return {
 		title: article.title,
