@@ -17,6 +17,7 @@ const TopicSchema = new Schema<ITopic>(
 	{ timestamps: true },
 );
 
+// ✅ Clean single definition & export
 const Topic: Model<ITopic> =
 	mongoose.models.Topic || model<ITopic>('Topic', TopicSchema);
 
