@@ -39,7 +39,7 @@ export async function GET() {
 		});
 
 		const lastMonth = response.rows?.[0]?.metricValues?.[0]?.value ?? '0';
-		const today = response.rows?.[0]?.metricValues?.[1]?.value ?? '0';
+		const today = response.rows?.[1]?.metricValues?.[0]?.value ?? '0';
 
 		return NextResponse.json({
 			lastMonth,
