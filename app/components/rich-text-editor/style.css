@@ -61,8 +61,15 @@
 }
 
 .tiptap li {
-    list-style-type: disc;
-    list-style-position: inside;
+    list-style-type: none;
+    display: flex;
+}
+
+.tiptap li::before {
+    content: "•";
+    /* custom bullet */
+    margin-right: 0.5rem;
+    font-size: larger
 }
 
 .tiptap h1 {
@@ -87,11 +94,14 @@
 
 .tiptap h1 strong,
 .tiptap h2 strong,
-.tiptap h3 strong,
 .tiptap h4 strong,
 .tiptap h5 strong,
 .tiptap h6 strong {
     font-family: var(--font-poppinsextra) !important;
+}
+
+.tiptap h3 {
+    font-family: var(--font-quicksand) !important;
 }
 
 .tiptap h1 strong {

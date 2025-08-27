@@ -8,6 +8,7 @@ import {
 	CodeSquare,
 	Heading1,
 	Heading2,
+	Heading3,
 	Highlighter,
 	ImageIcon,
 	Italic,
@@ -81,6 +82,12 @@ export const MenuBar = ({ editor }: editorProps) => {
 			disabled: undefined,
 			pressed: editor.isActive('heading', { level: 2 }),
 			icon: <Heading2 size={15} />,
+		},
+		{
+			onClick: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
+			disabled: undefined,
+			pressed: editor.isActive('heading', { level: 3 }),
+			icon: <Heading3 size={15} />,
 		},
 		{
 			onClick: () => editor.chain().focus().toggleBulletList().run(),

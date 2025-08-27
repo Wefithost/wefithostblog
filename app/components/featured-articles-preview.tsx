@@ -20,7 +20,12 @@ const FeaturedArticlesPreview = () => {
 	});
 
 	let articles;
-	if (isFetching || hasError || !featured_articles) {
+	if (
+		isFetching ||
+		hasError ||
+		!featured_articles ||
+		featured_articles.length === 0
+	) {
 		articles = backup_data;
 	} else {
 		articles = featured_articles;
