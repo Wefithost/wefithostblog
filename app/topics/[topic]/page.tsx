@@ -1,112 +1,49 @@
-'use client';
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import ArticlesContainer from '~/app/components/articles-container/articles-container';
-import HeroPreview from '~/app/components/hero-preview';
-import RelatedTopicsSection from '~/app/components/related-topics';
-import { useTopicsContext } from '~/app/context/topics-context';
-import { IArticle } from '~/types/article';
-import { apiRequest } from '~/utils/api-request';
-import { slugify } from '~/utils/slugify';
-interface topicProps {
-	articles: IArticle[];
-	title: string;
-	desc: string;
-	totalArticles: number;
-}
+import { getTopic } from '~/utils/getTopic';
+import { Metadata } from 'next';
+import Topic from './topic';
+type Props = {
+	params: { topic: string };
+};
 
-export default function Topic() {
-	const { topic } = useParams();
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+	const topic = await getTopic(params.topic);
 
-	const { topics } = useTopicsContext();
-
-	const [currentPage, setCurrentPage] = useState(1);
-	const pageSize = 9; // articles per page
-
-	const [pagedArticles, setPagedArticles] = useState<topicProps | null>(null);
-	const [totalArticles, setTotalArticles] = useState(0);
-	const [fetching, setFetching] = useState(true);
-	const [error, setError] = useState('');
-	const [selectedSort, setSelectedSort] = useState('newest');
-	const [searchTerm, setSearchTerm] = useState('');
-	const [activeFilter, setActiveFilter] = useState('all');
-
-	useEffect(() => {
-		const fetchPage = async () => {
-			setFetching(true);
-			setError('');
-			await apiRequest({
-				url: `/api/topics/${topic}?skip=${
-					(currentPage - 1) * pageSize
-				}&limit=${pageSize}&sort=${selectedSort}&search=${searchTerm}&filter=${activeFilter}`,
-				method: 'GET',
-				onSuccess: (res) => {
-					setPagedArticles(res.topicDetails);
-					setTotalArticles(res.topicDetails.totalArticles);
-				},
-				onError: (error) => {
-					setError(error);
-				},
-				onFinally: () => {
-					setFetching(false);
-				},
-			});
+	if (!topic) {
+		return {
+			title: 'Topic not found',
+			description: 'This topic does not exist.',
 		};
+	}
 
-		fetchPage();
-	}, [currentPage, selectedSort, searchTerm, activeFilter, topic]);
+	const url = `https://blog.wefithost.com/${params.topic}`;
 
-	useEffect(() => {
-		setCurrentPage(1);
-	}, [searchTerm]);
-
-	const other_topics = topics?.filter((type) => slugify(type?.title) !== topic);
-
-	return (
-		<main className="mx-auto w-full">
-			<div className="min-h-screen w-full py-8 gap-16 flex flex-col  max-w-[1500px] max-2xl:py-6 max-2xl:gap-10   max-2xl:px-10 max-xs:px-5 mx-auto ">
-				<HeroPreview articles={pagedArticles?.articles as IArticle[]} />
-
-				{pagedArticles && pagedArticles?.title && (
-					<>
-						<section className="flex flex-col gap-4 max-w-[900px] max-xs:gap-2">
-							<h1 className="text-4xl poppins-bold max-2xl:text-3xl max-xs:text-2xl capitalize">
-								{pagedArticles?.title}
-							</h1>
-							<p className="text-lg max-2xl:text-base max-xs:text-[15px]">
-								{pagedArticles?.desc}
-							</p>
-						</section>
-					</>
-				)}
-				<ArticlesContainer
-					pagedArticles={pagedArticles?.articles as IArticle[]}
-					totalArticles={totalArticles}
-					currentPage={currentPage}
-					setCurrentPage={setCurrentPage}
-					pageSize={pageSize}
-					showFilters={false}
-					selectedSort={selectedSort}
-					setSelectedSort={setSelectedSort}
-					searchTerm={searchTerm}
-					setSearchTerm={setSearchTerm}
-					activeFilter={activeFilter}
-					setActiveFilter={setActiveFilter}
-					fetching={fetching}
-					error={error}
-				/>
-				{other_topics && other_topics?.length > 0 && (
-					<>
-						<RelatedTopicsSection
-							header="Check out our other topics"
-							related_topics={other_topics}
-						/>
-					</>
-				)}
-				{/* CTA Section */}
-				{/* <CtaSection /> */}
-			</div>
-		</main>
-	);
+	return {
+		title: topic.title,
+		description: topic.description,
+		openGraph: {
+			title: topic.title,
+			description: topic.description,
+			url,
+			images: [
+				{
+					url: topic.image,
+					width: 1200,
+					height: 630,
+					alt: topic.title,
+				},
+			],
+		},
+		twitter: {
+			card: 'summary_large_image',
+			title: topic.title,
+			description: topic.description,
+			images: [topic.image],
+		},
+	};
 }
+const TopicPage = () => {
+	return <Topic />;
+};
+
+export default TopicPage;
 
