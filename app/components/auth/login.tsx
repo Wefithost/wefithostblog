@@ -108,7 +108,7 @@ const Login = ({
 			<AsyncButton
 				action="Log In"
 				loading={loading}
-				classname_override="max-sm:!h-[35px] hover:!bg-darkPurple duration-150 "
+				classname_override="max-sm:!h-[40px] hover:!bg-darkPurple duration-150 "
 				success={success}
 				disabled={!email || !password}
 				onClick={() => submit('log-in')}

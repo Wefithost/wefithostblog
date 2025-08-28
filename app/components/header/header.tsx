@@ -49,7 +49,7 @@ const Header = () => {
 								toggleAuthPopup();
 								setCurrentAction('log-in');
 							}}
-							className=" h-[45px] text-center bg-purple text-white text-[20px] rounded-sm px-5 duration-150 hover:bg-darkPurple"
+							className=" h-[45px] text-center bg-purple text-white text-[20px] rounded-sm px-5 duration-150 hover:bg-darkPurple max-2xl:text-base  max-xs:text-sm max-lg:h-[35px] max-md:px-3 "
 						>
 							Sign In
 						</motion.button>
@@ -58,7 +58,20 @@ const Header = () => {
 				<div className="max-2xs:flex items-center gap-1 hidden">
 					<div className="max-2xs:flex">
 						{' '}
-						<ProfileDropdown />
+						{user ? (
+							<ProfileDropdown />
+						) : (
+							<motion.button
+								whileTap={{ scale: 0.9 }}
+								onClick={() => {
+									toggleAuthPopup();
+									setCurrentAction('log-in');
+								}}
+								className=" h-[45px] text-center bg-purple text-white text-[20px] rounded-sm px-5 duration-150 hover:bg-darkPurple max-2xl:text-base  max-xs:text-sm max-lg:h-[35px] max-xs:px-2"
+							>
+								Sign In
+							</motion.button>
+						)}
 					</div>
 
 					<button
