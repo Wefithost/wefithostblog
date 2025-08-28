@@ -10,14 +10,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		.lean();
 
 	const uniqueTopics = [
+		// @ts-expect-error: it's defined
 		...new Set((articles || []).map((a) => a?.topic?.slug).filter(Boolean)),
 	];
 
 	const articleUrls =
 		(articles || [])
+			// @ts-expect-error: it's defined
 			.filter((a) => a?.topic?.slug && a?.slug)
 			.map((article) => ({
+				// @ts-expect-error: it's defined
 				url: `https://blog.wefithost.com/topics/${article.topic.slug}/${article.slug}`,
+				// @ts-expect-error: it's defined
 				lastModified: new Date(article.updatedAt),
 			})) ?? [];
 
