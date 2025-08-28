@@ -152,7 +152,7 @@ const ArticleCard = ({ article, admin = false }: articleProps) => {
 							<h1 className="text-lg poppins-bold line-clamp-2 max-2xs:text-base">
 								{article?.title}
 							</h1>
-							<p className="text-lg line-clamp-2 article-desc max-md:text-base max-2xs:text-sm">
+							<p className="text-lg line-clamp-2 article-desc max-md:text-base max-xs:text-sm">
 								{article.description}
 							</p>
 							<div className="flex items-center justify-between w-full">

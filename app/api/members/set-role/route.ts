@@ -43,14 +43,14 @@ export async function PATCH(req: NextRequest) {
 			);
 		}
 
-		member.role = member.role === 'member' ? 'admin' : 'member';
+		const newRole = member.role === 'member' ? 'admin' : 'member';
+		member.role = newRole;
 
 		await member.save();
+
 		await Alert.create({
 			type: 'role_changed',
-			message: `made ${member?.first_name} ${
-				member.role === 'member' ? 'an admin' : 'a member'
-			}`,
+			message: `made ${member?.first_name} ${newRole}`,
 			triggered_by: admin._id,
 			status: 'info',
 		});

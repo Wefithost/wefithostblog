@@ -58,7 +58,7 @@ const RelatedTopicsSection = ({ header, related_topics }: RelatedProps) => {
 						<TopicCard
 							key={topic._id}
 							topic={topic}
-							classname_override="flex flex-col items-start overflow-hidden hover:bg-gray-100 duration-300 bg-gray-50 max-xs:gap-2  max-2xs:h-auto rounded-lg relative min-h-[430px] max-xl:min-h-[340px]  max-xs:min-h-[300px]
+							classname_override="flex flex-col items-start overflow-hidden hover:bg-gray-100 duration-300 bg-gray-50 max-xs:gap-2  max-2xs:h-auto rounded-lg relative min-h-[430px] max-xl:min-h-[340px] max-xs:min-h-[370px] max-xs:min-h-[300px]
  "
 						/>
 					</SwiperSlide>

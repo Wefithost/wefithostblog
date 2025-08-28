@@ -112,7 +112,7 @@ const ReplyComment = ({ comment }: replyProps) => {
 					}}
 				>
 					<BiSolidCommentDetail size={15} />
-					<span className=" text-sm ">Reply</span>
+					<span className=" text-sm max-md:text-xs">Reply</span>
 				</button>
 				{(comment?.comment_by._id === user?._id ||
 					user?.role === 'admin' ||

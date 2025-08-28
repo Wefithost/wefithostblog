@@ -11,22 +11,22 @@ const Footer = () => {
 	const mediaLink = [
 		{
 			icon: <FaFacebook />,
-			href: '/',
+			href: 'https://www.facebook.com/share/15kgJ8pdVq/?mibextid=wwXIfr',
 			id: 1,
 		},
 		{
 			icon: <FaInstagram />,
-			href: '/',
+			href: 'https://www.instagram.com/wefithost_ofiicial/',
 			id: 2,
 		},
 		{
 			icon: <FaYoutube />,
-			href: '/',
+			href: 'https://www.youtube.com/channel/UCs-G2Y6VH16oYk-aan1EX8A',
 			id: 3,
 		},
 		{
 			icon: <FaSlack />,
-			href: '/',
+			href: 'http://wefithost.slack.com',
 			id: 4,
 		},
 	];
@@ -36,27 +36,27 @@ const Footer = () => {
 			link: [
 				{
 					dir: 'Web hosting ',
-					href: '/',
+					href: 'https://wefithost.com/web',
 				},
 				{
-					dir: 'Domain registration',
-					href: '/',
+					dir: 'Domain transfer',
+					href: 'https://wefithost.com/domain-transfer',
 				},
 				{
 					dir: 'Cloud hosting',
-					href: '/',
+					href: 'https://wefithost.com/cloud-hosting',
 				},
 				{
 					dir: 'Professional email',
-					href: '/',
+					href: 'https://wefithost.com/email',
 				},
 				{
 					dir: 'SSL certificates',
-					href: '/',
+					href: 'https://wefithost.com/ssl-certificate',
 				},
 				{
-					dir: 'Website building',
-					href: '/',
+					dir: 'Wordpress Hosting',
+					href: 'https://wefithost.com/wordpress-hosting',
 				},
 			],
 		},
@@ -65,11 +65,11 @@ const Footer = () => {
 			link: [
 				{
 					dir: 'contact us',
-					href: '/',
+					href: 'https://wefithost.com/contact-us',
 				},
 				{
 					dir: 'agency',
-					href: '/',
+					href: 'https://wefithost.com/agency',
 				},
 				{
 					dir: 'system status',
@@ -77,15 +77,15 @@ const Footer = () => {
 				},
 				{
 					dir: 'free migration',
-					href: '/',
+					href: 'https://wefithost.com/free-migration',
 				},
 				{
 					dir: 'APIS',
 					href: '/',
 				},
 				{
-					dir: 'wordpress support',
-					href: '/',
+					dir: 'Digital marketing',
+					href: '/https://wefithost.com/digital-marketing',
 				},
 			],
 		},
@@ -94,15 +94,15 @@ const Footer = () => {
 			link: [
 				{
 					dir: 'About us',
-					href: '/',
+					href: 'https://wefithost.com/about',
 				},
 				{
 					dir: 'Customer reviews',
-					href: '/',
+					href: 'https://wefithost.com/reviews',
 				},
 				{
 					dir: 'Careers',
-					href: '/',
+					href: 'https://wefithost.com/careers',
 				},
 				{
 					dir: 'Affliates',

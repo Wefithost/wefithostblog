@@ -69,7 +69,7 @@ const CommentsSection = () => {
 	});
 	return (
 		<div className="flex flex-col gap-3 w-full ">
-			<h1 className="text-2xl poppins-bold">Comments</h1>
+			<h1 className="text-2xl poppins-bold max-md:text-xl">Comments</h1>
 			<div className="flex flex-col gap-1">
 				<div className="flex items-center gap-2">
 					<ClassicInput
@@ -83,7 +83,7 @@ const CommentsSection = () => {
 					/>
 					<AsyncButton
 						action="Comment"
-						classname_override="!w-[200px]"
+						classname_override="!w-[200px] max-md:!w-[100px] max-md:text-xs"
 						loading={commenting}
 						success={commentSuccessful}
 						onClick={addComment}

@@ -181,9 +181,13 @@ const Article = () => {
 						</>
 					)}
 				</div>
-				<div className="flex flex-col justify-between max-xl:flex-row  gap-5 max-md:flex-col">
-					<div className="w-[450px] bg-white border-purple rounded-2xl  shrink-0 flex flex-col gap-4 items-center justify-between sticky top-20 shadow-sm p-4 max-xl:w-1/2 max-xl:static max-md:w-full">
-						<Image src={logo} alt="wefithost logo" className="w-28" />
+				<div className="flex flex-col justify-between max-xl:flex-row  gap-5 max-md:flex-col max-xl:hidden">
+					<div className="w-[450px] bg-white border-purple rounded-2xl  shrink-0 flex flex-col gap-4 items-center justify-between sticky top-20 shadow-sm p-4 max-xl:w-1/2 max-xl:static max-md:w-full max-xs:gap-2">
+						<Image
+							src={logo}
+							alt="wefithost logo"
+							className="w-28 max-xs:w-18"
+						/>
 						<h1 className="text-lg poppins text-center">About our blog</h1>
 						<p className="text-center text-base text-gray-500">
 							Welcome to WeFitHost Insights where we share expert knowledge to
@@ -197,7 +201,7 @@ const Article = () => {
 						</Link>
 					</div>
 
-					<div className="w-[450px] bg-white border-purple rounded-2xl  shrink-0 flex flex-col gap-4 items-center justify-between sticky top-10 shadow-lg p-4 max-xl:w-1/2 max-xl:static max-md:w-full max-xl:shadow-sm">
+					<div className="w-[450px] bg-white border-purple rounded-2xl  shrink-0 flex flex-col gap-4 items-center justify-between sticky top-10 shadow-lg p-4 max-xl:w-1/2 max-xl:static max-md:w-full max-xl:shadow-sm max-xs:gap-2">
 						<FaEnvelope className="text-4xl text-purple " />
 						<h1 className="text-lg poppins text-center">
 							Subscribe to our newsletter
@@ -240,6 +244,54 @@ const Article = () => {
 					</>
 				)}
 			</Loader>
+			<div className=" flex-col justify-between max-xl:flex-row  gap-5 max-md:flex-col max-xl:flex hidden">
+				<div className="w-[450px] bg-white border-purple rounded-2xl  shrink-0 flex flex-col gap-4 items-center justify-between sticky top-20 shadow-sm p-4 max-xl:w-1/2 max-xl:static max-md:w-full max-xs:gap-2">
+					<Image src={logo} alt="wefithost logo" className="w-28 max-xs:w-18" />
+					<h1 className="text-lg poppins text-center">About our blog</h1>
+					<p className="text-center text-base text-gray-500">
+						Welcome to WeFitHost Insights where we share expert knowledge to
+						help you succeed in the hosting world.
+					</p>
+					<Link
+						href="/"
+						className="bg-purple hover:bg-darkPurple text-white  h-[40px] px-2.5 duration-150 rounded-sm w-full text-center flex items-center justify-center text-sm font-semibold"
+					>
+						Learn about us
+					</Link>
+				</div>
+
+				<div className="w-[450px] bg-white border-purple rounded-2xl  shrink-0 flex flex-col gap-4 items-center justify-between sticky top-10 shadow-lg p-4 max-xl:w-1/2 max-xl:static max-md:w-full max-xl:shadow-sm max-xs:gap-2">
+					<FaEnvelope className="text-4xl text-purple " />
+					<h1 className="text-lg poppins text-center">
+						Subscribe to our newsletter
+					</h1>
+					<p className="text-center">
+						Get the latest hosting tips and business insights
+					</p>
+					<div className="flex gap-2 flex-col w-full items-start justify-start">
+						<ClassicInput
+							value={email}
+							setValue={setEmail}
+							error={error}
+							setError={setError}
+							classname_override="!bg-lightGrey !text-black !w-full !self-start"
+							errorContent={'Please enter a valid email address'}
+							placeholder="Your email"
+						/>
+						<AsyncButton
+							action="Subscribe"
+							classname_override="!w-full"
+							loading={subscribing}
+							success={subscribeSuccess}
+							disabled={!email}
+							onClick={subscribe}
+						/>
+					</div>
+					<span className="text-xs ">
+						We&apos;ll never share your email. Unsubscribe anytime.
+					</span>
+				</div>
+			</div>
 		</main>
 	);
 };

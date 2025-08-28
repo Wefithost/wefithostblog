@@ -110,7 +110,7 @@ const TopicCard = ({
 					</h1>
 				</div>
 				<div className="p-6 max-md:p-3">
-					<p className="text-base line-clamp-2 article-desc max-md:text-sm max-2xs:text-sm  ">
+					<p className="text-base line-clamp-3 article-desc max-md:text-sm max-2xs:text-sm  ">
 						{topic?.description}
 					</p>
 				</div>
