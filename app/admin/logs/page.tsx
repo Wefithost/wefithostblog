@@ -151,12 +151,12 @@ const Alerts = () => {
 
 							return pages.map((page, idx) =>
 								page === '...' ? (
-									<span key={idx} className="px-2">
+									<span key={`dots-${idx}`} className="px-2">
 										…
 									</span>
 								) : (
 									<button
-										key={page}
+										key={`page-${page}-${idx}`}
 										onClick={() => {
 											setCurrentPage(page as number);
 										}}

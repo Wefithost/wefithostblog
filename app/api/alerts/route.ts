@@ -54,6 +54,22 @@ export async function GET(req: NextRequest) {
 			);
 		}
 
+		// --- CLEANUP STEP: ensure only latest 100 alerts remain ---
+		const totalAlerts = await Alert.countDocuments({});
+		if (totalAlerts > 100) {
+			const toDelete = totalAlerts - 100;
+
+			await Alert.find({})
+				.sort({ createdAt: 1 }) // oldest first
+				.limit(toDelete)
+				.then((oldest) => {
+					const ids = oldest.map((a) => a._id);
+					if (ids.length > 0) {
+						return Alert.deleteMany({ _id: { $in: ids } });
+					}
+				});
+		}
+
 		// BUILD QUERY
 		//eslint-disable-next-line
 		let query = Alert.find(filter)
