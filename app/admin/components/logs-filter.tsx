@@ -124,6 +124,7 @@ const LogsFilter = ({
 		togglePopup: toggleActionPrompt,
 		ref: actionPromptRef,
 	} = usePopup();
+
 	return (
 		<div className="flex items-center gap-2 w-full justify-end">
 			<div
@@ -131,7 +132,9 @@ const LogsFilter = ({
 				onClick={toggleStatusPrompt}
 			>
 				<span className="capitalize">Status: {activeStatus}</span>{' '}
-				<FaAngleDown />
+				<FaAngleDown
+					className={`${statusPrompt ? 'rotate-180' : ''} duration-150`}
+				/>
 				{statusPrompt && (
 					<div
 						className={`flex flex-col bg-white shadow-lg w-[150px] rounded-md duration-150 absolute top-[105%] right-0 divide-y divide-lightGrey overflow-hidden border border-lightGrey z-20 ${
@@ -162,7 +165,10 @@ const LogsFilter = ({
 				className="py-2 px-2 bg-white border border-gray-300 text-center text-sm flex items-center gap-1 rounded-sm relative cursor-pointer "
 				onClick={toggleRolePrompt}
 			>
-				<span className="capitalize">Role: {activeRole}</span> <FaAngleDown />
+				<span className="capitalize">Role: {activeRole}</span>{' '}
+				<FaAngleDown
+					className={`${rolePrompt ? 'rotate-180' : ''} duration-150`}
+				/>
 				{rolePrompt && (
 					<div
 						className={`flex flex-col bg-white shadow-lg w-[130px] rounded-md duration-150 absolute top-[105%] right-0 divide-y divide-lightGrey overflow-hidden border border-lightGrey z-20 ${
@@ -193,7 +199,9 @@ const LogsFilter = ({
 				onClick={toggleActionPrompt}
 			>
 				<span className="capitalize">Action: {activeAction}</span>{' '}
-				<FaAngleDown />
+				<FaAngleDown
+					className={`${actionPrompt ? 'rotate-180' : ''} duration-150`}
+				/>
 				{actionPrompt && (
 					<div
 						className={`grid grid-cols-2  bg-white shadow-lg w-[300px] rounded-md duration-150 absolute top-[105%] right-0 divide-y divide-lightGrey overflow-hidden border border-lightGrey z-20 ${

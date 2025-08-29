@@ -1,6 +1,6 @@
 'use client';
 import { useRef, useState } from 'react';
-import { FaCheck, FaPlus } from 'react-icons/fa';
+import { FaAngleDown, FaCheck, FaPlus } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import AsyncButton from '~/app/components/buttons/async-button';
 import CropImage from '~/app/components/crop-image';
@@ -9,7 +9,8 @@ import { useAuthContext } from '~/app/context/auth-context';
 import { apiRequest } from '~/utils/api-request';
 import { usePopup } from '~/utils/toggle-popups';
 import { IoImageSharp } from 'react-icons/io5';
-import { useParams } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
+import { useTopicsContext } from '~/app/context/topics-context';
 const NewArticle = () => {
 	const {
 		isActive: newArticlePrompt,
@@ -31,6 +32,8 @@ const NewArticle = () => {
 	const [imageBlob, setImageBlob] = useState<Blob | null>(null);
 	const [imagePreview, setImagePreview] = useState<string | null>(null);
 	const [imageUrl, setImageUrl] = useState<string | null>(null);
+	const [selectedTopic, setSelectedTopic] = useState('');
+	const { topics } = useTopicsContext();
 	const createArticle = async () => {
 		if (!user || loading) {
 			return;
@@ -56,6 +59,7 @@ const NewArticle = () => {
 		formData.append('adminId', user._id);
 		formData.append('title', title);
 		formData.append('description', desc);
+		formData.append('selected_topic', selectedTopic);
 		formData.append('uploaded_image', imageBlob as Blob);
 
 		await apiRequest({
@@ -63,6 +67,7 @@ const NewArticle = () => {
 			method: 'POST',
 			body: formData,
 			onSuccess: (response) => {
+				setSelectedTopic('');
 				setSuccessful(true);
 				toast.success(response.message, {
 					icon: <FaCheck color="white" />,
@@ -77,6 +82,7 @@ const NewArticle = () => {
 			},
 			onError: (error) => {
 				setError(error);
+				setSelectedTopic('');
 			},
 			onFinally: () => {
 				setLoading(false);
@@ -110,6 +116,13 @@ const NewArticle = () => {
 		setImagePreview(null);
 		setImageUrl(null);
 	};
+	const {
+		isVisible: topicPromptVisible,
+		isActive: topicPrompt,
+		togglePopup: toggleTopicPrompt,
+		ref: topicPromptRef,
+	} = usePopup();
+	const linkname = usePathname();
 	return (
 		<>
 			<button
@@ -160,6 +173,46 @@ const NewArticle = () => {
 									{imageUrl ? 'Choose another' : 'Select Image'}
 								</button>
 							</div>
+							{!linkname.startsWith('/admin/topics/') && (
+								<div
+									className="py-2 px-2 bg-white border border-gray-300 text-center text-sm flex items-center gap-1 rounded-sm relative cursor-pointer w-full justify-between"
+									onClick={toggleTopicPrompt}
+								>
+									<span className="capitalize">Topic: {selectedTopic}</span>{' '}
+									<FaAngleDown
+										className={`${
+											topicPrompt ? 'rotate-180' : ''
+										} duration-150`}
+									/>
+									{topicPrompt && (
+										<div
+											className={`flex flex-col bg-white shadow-lg w-full rounded-md duration-150 absolute top-[105%] right-0 divide-y divide-lightGrey overflow-hidden border border-lightGrey z-20 ${
+												topicPromptVisible ? 'opacity-100' : 'opacity-0'
+											}`}
+											ref={topicPromptRef}
+										>
+											{topics &&
+												topics.map((data) => (
+													<button
+														key={data.title}
+														className={`py-2 w-full text-[13px] flex items-center gap-3 px-3 duration-150  ${
+															selectedTopic === data.slug
+																? 'bg-gray-50'
+																: 'hover:bg-gray-50'
+														}`}
+														onClick={() => {
+															toggleTopicPrompt();
+															setSelectedTopic(data.slug);
+														}}
+													>
+														<span className="capitalize">{data.title}</span>
+													</button>
+												))}
+										</div>
+									)}
+								</div>
+							)}
+
 							<ClassicInput
 								value={title}
 								setValue={setTitle}
@@ -183,6 +236,7 @@ const NewArticle = () => {
 								errorContent="Description is required"
 								name="desc"
 							/>
+
 							{!error && (
 								<>
 									<h1 className="text-xs text-center text-gray-600">

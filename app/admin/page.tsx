@@ -9,6 +9,7 @@ import ArticlesContainer from '../components/articles-container/articles-contain
 
 import Stats from './components/stats';
 import Topics from './topics/page';
+import NewArticle from './components/new-article';
 
 const Admin = () => {
 	const { user } = useAuthContext();
@@ -59,7 +60,7 @@ const Admin = () => {
 
 	return (
 		<div className=" w-full  bg-white">
-			<div className="flex flex-col gap-10  items-start w-full px-4 ">
+			<div className="flex flex-col gap-12  items-start w-full px-4 ">
 				<div>
 					<h1 className="  text-black  text-xl flex items-center gap-2 max-sm:text-xl">
 						<Image src={wave} alt="" className="w-5" />
@@ -71,7 +72,7 @@ const Admin = () => {
 				</div>
 				<Stats />
 				<div className="w-full flex flex-col gap-4 ">
-					<div className="flex items-start justify-between w-full">
+					<div className="flex items-start justify-between w-full flex-wrap gap-3">
 						<div className="flex flex-col gap-3">
 							<h1 className="max-xs:text-2xl capitalize  text-3xl font-semibold">
 								All Articles
@@ -81,6 +82,7 @@ const Admin = () => {
 								with ease to keep your content fresh and organized.
 							</p>
 						</div>
+						<NewArticle />
 					</div>
 					<ArticlesContainer
 						pagedArticles={pagedArticles}

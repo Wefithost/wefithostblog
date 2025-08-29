@@ -27,7 +27,7 @@ export async function POST(
 		const title = formData.get('title') as string;
 		const description = formData.get('description') as string;
 		const uploaded_image = formData.get('uploaded_image');
-
+		const selected_topic = formData.get('selected_topic') as string | null;
 		// Validate IDs and required fields
 		if (!isValidObjectId(adminId)) {
 			return NextResponse.json(
@@ -69,7 +69,9 @@ export async function POST(
 				{ status: 403 },
 			);
 		}
-		const selectedTopic = await Topic.findOne({ slug: topic });
+		const topicSlug = selected_topic?.trim() ? selected_topic : topic;
+
+		const selectedTopic = await Topic.findOne({ slug: topicSlug });
 		if (!selectedTopic) {
 			return NextResponse.json({ error: 'Topic not found' }, { status: 404 });
 		}

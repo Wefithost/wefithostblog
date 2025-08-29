@@ -36,11 +36,11 @@ const Sidebar = ({ hidden }: SidebarProps) => {
 	];
 	return (
 		<section
-			className={`h-full w-[260px]  pt-3 pb-5 flex flex-col gap-10  items-start shrink-0   max-xl:pt-5 max-xl:px-2  bg-white max-lg:w-[260px] max-lg:px-0     ${
+			className={`h-full w-[260px]  pt-3 pb-5 flex flex-col gap-10  items-start shrink-0   max-xl:pt-5 max-xl:px-2  bg-white max-lg:bg-transparent max-lg:w-full max-lg:px-0    max-lg:pt-3 ${
 				hidden && 'max-lg:hidden'
 			}`}
 		>
-			<div className="flex  items-center justify-center   w-full flex-col">
+			<div className="flex  items-center justify-center   w-full flex-col max-lg:hidden">
 				<Link href={'/'}>
 					<Image
 						src={logo}
@@ -51,8 +51,8 @@ const Sidebar = ({ hidden }: SidebarProps) => {
 				</Link>
 				<h1 className="text-xs text-grey neue  ">Admin Dashboard</h1>
 			</div>
-			<div className="flex flex-col  w-full  gap-3">
-				<h1 className="text-grey text-xs pl-5">MAIN MENU</h1>
+			<div className="flex flex-col  w-full  gap-3 bg-white">
+				<h1 className="text-grey text-xs pl-5 max-lg:hidden">MAIN MENU</h1>
 				<div className="h-full  w-full flex flex-col gap-1">
 					<Link
 						href={'/admin'}

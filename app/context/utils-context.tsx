@@ -10,6 +10,8 @@ interface UtilsContextType {
 	setDisableToggle: React.Dispatch<React.SetStateAction<boolean>>;
 	overlayOpen: boolean;
 	setOverlayOpen: React.Dispatch<React.SetStateAction<boolean>>;
+	adminOverlayOpen: boolean;
+	setAdminOverlayOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	createArticlePopup: boolean;
 	createArticlePopupVisible: boolean;
 	createArticlePopupRef: React.RefObject<HTMLDivElement | null>;
@@ -37,6 +39,7 @@ export const UtilsProvider: React.FC<{ children: React.ReactNode }> = ({
 	const [currentAction, setCurrentAction] = useState<string>('log-in');
 	const [resetPassword, setResetPassword] = useState(false);
 	const [overlayOpen, setOverlayOpen] = useState(false);
+	const [adminOverlayOpen, setAdminOverlayOpen] = useState(false);
 	const [rerenderKey, setRerenderKey] = useState(0);
 	const {
 		isActive: createArticlePopup,
@@ -66,6 +69,8 @@ export const UtilsProvider: React.FC<{ children: React.ReactNode }> = ({
 			setCurrentAction,
 			resetPassword,
 			setResetPassword,
+			adminOverlayOpen,
+			setAdminOverlayOpen,
 		}),
 		[
 			authPopup,
@@ -86,6 +91,8 @@ export const UtilsProvider: React.FC<{ children: React.ReactNode }> = ({
 			setCurrentAction,
 			resetPassword,
 			setResetPassword,
+			adminOverlayOpen,
+			setAdminOverlayOpen,
 		],
 	);
 

@@ -26,7 +26,7 @@ const Topics = () => {
 
 	return (
 		<main className="px-4 py-6 bg-white min-h-screen flex flex-col gap-16 w-full">
-			<div className="flex items-center justify-between w-full">
+			<div className="flex items-center justify-between w-full flex-wrap gap-3">
 				<div className="flex flex-col gap-3">
 					<h1 className="text-3xl font-semibold">All Topics</h1>
 					<p className="text-base max-w-[600px]">
@@ -38,7 +38,7 @@ const Topics = () => {
 			</div>
 			<Loader fetching={isFetching} error={error} try_again={refetch}>
 				{topics && topics.length > 0 ? (
-					<div className="grid grid-cols-4  gap-4">
+					<div className="grid grid-cols-4  gap-4 max-xl:grid-cols-2 max-lg:grid-cols-2 max-md:grid-cols-1">
 						{topics &&
 							topics.map((topic) => (
 								<TopicCard topic={topic} key={topic?.title} admin={true} />

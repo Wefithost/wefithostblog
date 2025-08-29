@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import Sidebar from './components/sidebar/sidebar';
 import { useAuthContext } from '../context/auth-context';
 import Header from './components/header';
+import Overlay from './components/overlay';
 export default function RootLayout({
 	children,
 }: Readonly<{
@@ -21,7 +22,7 @@ export default function RootLayout({
 	return (
 		<main className="h-screen overflow-hidden  flex items-start  bg-white">
 			<Sidebar hidden />
-
+			<Overlay />
 			<section className="h-full overflow-auto  w-full bg-[#f1f1f4]    border-l-[2px] border-l-lightGrey">
 				<Header />
 

@@ -28,9 +28,9 @@ const MembersTable = ({
 	const hasMembers = pagedMembers && pagedMembers.length > 0;
 	const hasSearch = searchTerm && searchTerm.trim().length > 0;
 	return (
-		<section className="flex gap-3 flex-col w-full">
+		<>
 			<input
-				className={`h-[40px]  py-1 px-3 bg-white  text-black   text-sm    focus:ring-[1px]    ring-purple    outline-none w-[350px]  duration-150 rounded-sm max-2xl:w-[250px] max-lg:w-[70%] self-end
+				className={`h-[40px]  py-1 px-3 bg-white  text-black   text-sm    focus:ring-[1px]    ring-purple    outline-none w-[350px]  duration-150 rounded-sm max-2xl:w-[250px] max-lg:w-full self-end
 pr-8
             `}
 				placeholder="Search for a member"
@@ -39,43 +39,45 @@ pr-8
 					handleSearchChange(e);
 				}}
 			/>
-			<div className="flex flex-col w-full  rounded-md  border overflow-hidden  border-[#dfdde3]">
-				<div className="w-full flex gap-1 bg-[#EAEAEC]">
-					<div className="w-[30%] py-2 px-3 text-sm">Name</div>
-					<div className="w-[30%] py-2 px-3 text-sm">Email</div>
-					<div className="w-[15%] py-2 px-3 text-sm">Role</div>
-					<div className="w-[15%] py-2 px-3 text-sm">Joined</div>
-					<div className="w-[10%] py-2 px-3 text-sm"></div>
-				</div>
-				<Loader
-					classname_override="!h-[400px]"
-					fetching={fetching}
-					error={error}
-				>
-					{hasMembers ? (
-						<>
-							{pagedMembers.map((member) => (
-								<Member key={member?._id} member={member} />
-							))}
-							{Array(Math.max(0, pageSize - pagedMembers.length))
-								.fill(null)
-								.map((_, i) => (
-									<div
-										key={i}
-										className="h-[40px] flex items-center px-3 text-sm border-t border-t-lightGrey bg-white w-full"
-									></div>
+			<section className="flex gap-3 flex-col w-full  overflow-auto justify-end">
+				<div className="flex flex-col   rounded-md  border   border-[#dfdde3] w-full min-w-[1000px]">
+					<div className="w-full flex gap-1 bg-[#EAEAEC]">
+						<div className="w-[30%] py-2 px-3 text-sm">Name</div>
+						<div className="w-[30%] py-2 px-3 text-sm">Email</div>
+						<div className="w-[15%] py-2 px-3 text-sm">Role</div>
+						<div className="w-[15%] py-2 px-3 text-sm">Joined</div>
+						<div className="w-[10%] py-2 px-3 text-sm"></div>
+					</div>
+					<Loader
+						classname_override="!h-[400px]"
+						fetching={fetching}
+						error={error}
+					>
+						{hasMembers ? (
+							<>
+								{pagedMembers.map((member) => (
+									<Member key={member?._id} member={member} />
 								))}
-						</>
-					) : (
-						<EmptyState
-							message={
-								hasSearch ? 'No member matches your search' : 'No members yet'
-							}
-						/>
-					)}
-				</Loader>
-			</div>
-		</section>
+								{Array(Math.max(0, pageSize - pagedMembers.length))
+									.fill(null)
+									.map((_, i) => (
+										<div
+											key={i}
+											className="h-[40px] flex items-center px-3 text-sm border-t border-t-lightGrey bg-white w-full"
+										></div>
+									))}
+							</>
+						) : (
+							<EmptyState
+								message={
+									hasSearch ? 'No member matches your search' : 'No members yet'
+								}
+							/>
+						)}
+					</Loader>
+				</div>
+			</section>
+		</>
 	);
 };
 

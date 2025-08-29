@@ -42,7 +42,7 @@ const Stats = () => {
 		fetchAnalytics();
 	}, []);
 	return (
-		<div className=" grid grid-cols-3      justify-between  rounded-[40px]  w-full gap-3 max-sm:grid-cols-2 max-2xs:grid-cols-1">
+		<div className=" grid grid-cols-3      justify-between  rounded-[40px]  w-full gap-3 max-sm:grid-cols-2 max-2xs:grid-cols-1 pb-10">
 			<div className=" p-5  rounded-lg bg-gray-50  flex flex-col gap-2 items-start  w-full  max-md:p-2">
 				<h1 className="text-sm text-gray-600  leading-none ">Total Members</h1>
 				<h1 className="text-3xl  poppins">{stats?.totalMembers || 0}</h1>
