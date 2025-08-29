@@ -16,7 +16,7 @@ const Header = () => {
 	};
 	return (
 		<header className="py-4  mx-auto w-full  bg-white  z-50 flex items-center justify-between px-4 max-xl:px-10 max-xs:px-5 max-2xl:py-2 gap-3 sticky top-0">
-			<div className="items-center justify-center    flex-col hidden max-lg:flex">
+			<div className="items-center justify-center    flex-col invisible max-lg:flex max-lg:visible">
 				<Link href={'/'}>
 					<Image
 						src={logo}
@@ -27,7 +27,7 @@ const Header = () => {
 				</Link>
 				<h1 className="text-xs text-grey neue  ">Admin Dashboard</h1>
 			</div>
-			<div className="flex items-center gap-2">
+			<div className="flex items-center gap-2 justify-self-end">
 				<ProfileDropdown />
 
 				<button

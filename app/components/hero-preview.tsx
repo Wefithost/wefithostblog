@@ -91,7 +91,9 @@ const HeroPreview = ({ articles }: previewProps) => {
 					</span>
 				</div>
 				<Link
-					href={`/${slugify(article?.title as string)}`}
+				href={`/topics/${slugify(article?.topic?.title)}/${slugify(
+						article?.title as string,
+					)}`}
 					className="link-style  text-lg max-2xl:text-base max-xl:text-sm max-xs:text-xs"
 				>
 					Read more...
