@@ -45,7 +45,7 @@ const HeroPreview = ({ articles }: previewProps) => {
 				setCurrentIndex(newIndex);
 				setFadeOut(false);
 			}, 500);
-		}, 2000);
+		}, 6000);
 
 		return () => clearInterval(interval);
 	}, [rendered_articles, currentIndex, isHovered]);

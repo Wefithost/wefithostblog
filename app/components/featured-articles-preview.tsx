@@ -55,7 +55,7 @@ const FeaturedArticlesPreview = () => {
 				setCurrentIndex(newIndex);
 				setFadeOut(false); // start fade in
 			}, 500); // match fade transition
-		}, 2000); // every 20s
+		}, 8000);
 
 		return () => clearInterval(interval);
 	}, [articles, currentIndex, isHovered]);
