@@ -6,6 +6,7 @@ export interface IArticle {
 		title: string;
 		_id: string;
 	};
+	duration?: number;
 	description: string;
 	createdAt: string;
 	article: JSONContent;

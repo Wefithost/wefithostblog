@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectMongo from '~/lib/connect-mongo';
 import Article from '~/lib/models/article';
 import Topic from '~/lib/models/topic';
+import { getReadingTime } from '~/utils/get-reading-time';
 
 export async function GET(
 	req: NextRequest,
@@ -48,13 +49,21 @@ export async function GET(
 		}
 
 		// 🔹 Fetch articles
-		const articles = await Article.find(filter)
+		const rawArticles = await Article.find(filter)
 			.skip(skip)
 			.limit(limit)
 			.populate({ path: 'topic', select: 'title' })
 			.populate({ path: 'author', select: 'profile first_name last_name' })
 			.sort({ createdAt: sortOrder })
 			.lean();
+		const articles = rawArticles.map((article) => {
+			const duration = getReadingTime(article.article || '');
+			return {
+				...article,
+				duration,
+				article: undefined, // don’t return full article text
+			};
+		});
 
 		const totalArticles = await Article.countDocuments(filter);
 

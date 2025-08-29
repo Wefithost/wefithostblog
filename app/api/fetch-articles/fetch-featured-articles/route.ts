@@ -3,15 +3,17 @@ import connectMongo from '~/lib/connect-mongo';
 import Article from '~/lib/models/article';
 import '~/lib/models/topic'; // ensures Topic model is registered
 import '~/lib/models/user';
+import { getReadingTime } from '~/utils/get-reading-time';
 export async function GET(req: NextRequest) {
 	try {
 		await connectMongo();
 		const { searchParams } = new URL(req.url);
 		const adminParam = searchParams.get('admin');
 		const admin = adminParam ? adminParam === 'true' : false;
-		let articles;
+
+		let rawArticles;
 		if (admin) {
-			articles = await Article.find({})
+			rawArticles = await Article.find({})
 				.limit(9)
 				.populate({
 					path: 'topic',
@@ -23,7 +25,7 @@ export async function GET(req: NextRequest) {
 				})
 				.lean();
 		} else {
-			articles = await Article.find({ published: true, featured: true })
+			rawArticles = await Article.find({ published: true, featured: true })
 				.limit(9)
 				.populate({
 					path: 'topic',
@@ -35,6 +37,16 @@ export async function GET(req: NextRequest) {
 				})
 				.lean();
 		}
+
+		// Add duration field & strip out article body
+		const articles = rawArticles.map((article) => {
+			const duration = getReadingTime(article.article || '');
+			return {
+				...article,
+				duration,
+				article: undefined, // don’t return full article text
+			};
+		});
 
 		const articlesLength = await Article.countDocuments({});
 		return NextResponse.json(

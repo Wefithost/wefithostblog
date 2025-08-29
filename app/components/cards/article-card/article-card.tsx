@@ -11,7 +11,6 @@ import DeleteArticlePrompt from './delete-article-prompt';
 import * as motion from 'motion/react-client';
 
 import EditArticlePrompt from './edit-article-prompt';
-import { getReadingTime } from '~/utils/get-reading-time';
 
 interface articleProps {
 	article: IArticle;
@@ -143,11 +142,7 @@ const ArticleCard = ({ article, admin = false }: articleProps) => {
 
 								<FaCircle className="text-[10px] " />
 
-								<span>
-									{(article?.article && getReadingTime(article?.article)) ||
-										'2'}{' '}
-									mins read
-								</span>
+								<span>{article?.duration || '2'} mins read</span>
 							</div>
 							<h1 className="text-lg poppins-bold line-clamp-2 max-2xs:text-base">
 								{article?.title}

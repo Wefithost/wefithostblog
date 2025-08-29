@@ -5,7 +5,6 @@ import { FaCircle } from 'react-icons/fa';
 import { IArticle } from '~/types/article';
 import { useFetch } from '~/utils/fetch-page-data';
 import { formatDate } from '~/utils/format-date';
-import { getReadingTime } from '~/utils/get-reading-time';
 import { slugify } from '~/utils/slugify';
 
 const FeaturedArticlesPreview = () => {
@@ -95,10 +94,7 @@ const FeaturedArticlesPreview = () => {
 				<div className="flex gap-4 items-center text-lg max-2xl:text-base max-xl:text-sm max-2xs:hidden">
 					<span>{formatDate(article?.createdAt as string)}</span>
 					<FaCircle className="text-[10px] " />
-					<span>
-						{(article?.article && getReadingTime(article?.article)) || '2'} mins
-						read
-					</span>
+					<span>{article.duration || '2'} mins read</span>
 				</div>
 				<Link
 					href={`/topics/${slugify(article?.topic?.title)}/${slugify(
@@ -123,6 +119,7 @@ const backup_data = [
 			_id: '68aee2f52d1722a1a2f99ae5',
 			title: 'hosting',
 		},
+		duration: 3,
 		author: {
 			_id: '68aee0442d1722a1a2f99ac1',
 			first_name: 'Darlington',
@@ -149,6 +146,7 @@ const backup_data = [
 			_id: '68aee5412d1722a1a2f99b01',
 			title: 'marketing',
 		},
+		duration: 3,
 		author: {
 			_id: '68aee0442d1722a1a2f99ac1',
 			first_name: 'Darlington',
@@ -175,6 +173,7 @@ const backup_data = [
 			_id: '68aee4202d1722a1a2f99af3',
 			title: 'security',
 		},
+		duration: 3,
 		author: {
 			_id: '68aee0442d1722a1a2f99ac1',
 			first_name: 'Darlington',
@@ -201,6 +200,7 @@ const backup_data = [
 			_id: '68aee37c2d1722a1a2f99aec',
 			title: 'tips',
 		},
+		duration: 3,
 		author: {
 			_id: '68aee0442d1722a1a2f99ac1',
 			first_name: 'Darlington',
@@ -227,6 +227,7 @@ const backup_data = [
 			_id: '68aee2f52d1722a1a2f99ae5',
 			title: 'hosting',
 		},
+		duration: 3,
 		author: {
 			_id: '68aee0442d1722a1a2f99ac1',
 			first_name: 'Darlington',

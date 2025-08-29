@@ -3,6 +3,8 @@ import connectMongo from '~/lib/connect-mongo';
 import Article from '~/lib/models/article';
 import '~/lib/models/topic'; // ensures Topic model is registered
 import '~/lib/models/user';
+import { getReadingTime } from '~/utils/get-reading-time';
+
 export async function GET(req: NextRequest) {
 	try {
 		await connectMongo();
@@ -12,11 +14,12 @@ export async function GET(req: NextRequest) {
 		const admin = adminParam ? adminParam === 'true' : false;
 		const skip = parseInt(searchParams.get('skip') || '0', 10);
 		const limit = parseInt(searchParams.get('limit') || '9', 10);
-
 		const sortOrder = searchParams.get('sort') === 'oldest' ? 1 : -1;
 		const search = searchParams.get('search') || '';
 		const filterParam = searchParams.get('filter') || 'all';
-		// eslint-disable-next-line
+
+		// Build filter
+		//eslint-disable-next-line
 		let filter: any = {};
 		if (search) {
 			filter = {
@@ -28,22 +31,30 @@ export async function GET(req: NextRequest) {
 		}
 		if (filterParam && filterParam !== 'all') {
 			const topics = filterParam.split(',');
-			if (topics.length > 1) {
-				filter.topic = { $in: topics };
-			} else {
-				filter.topic = topics[0];
-			}
+			filter.topic = topics.length > 1 ? { $in: topics } : topics[0];
 		}
+
 		const baseFilter = admin ? {} : { published: true };
 		const finalFilter = { ...baseFilter, ...filter };
 
-		const articles = await Article.find(finalFilter)
+		// Fetch with article field for duration calculation
+		const rawArticles = await Article.find(finalFilter)
 			.skip(skip)
 			.limit(limit)
 			.populate({ path: 'topic', select: 'title' })
 			.populate({ path: 'author', select: 'profile first_name last_name' })
 			.sort({ createdAt: sortOrder })
 			.lean();
+
+		// Add duration field and remove article body
+		const articles = rawArticles.map((article) => {
+			const stats = getReadingTime(article.article || '');
+			return {
+				...article,
+				duration: stats, // or stats.text for "3 min read"
+				article: undefined, // strip the article body from response
+			};
+		});
 
 		const articlesLength = await Article.countDocuments(finalFilter);
 
@@ -54,7 +65,7 @@ export async function GET(req: NextRequest) {
 	} catch (error) {
 		console.log(error);
 		return NextResponse.json(
-			{ error: 'A server error occured' },
+			{ error: 'A server error occurred' },
 			{ status: 500 },
 		);
 	}
