@@ -51,7 +51,7 @@ const SetRole = ({
 					toggleSetRole();
 				}, 500);
 				toast.success(
-					`${member?.first_name} ${member?.last_name} made ${
+					`${member?.first_name} ${member?.last_name || ''} made ${
 						member?.role === 'member' ? 'an admin' : 'a member'
 					}`,
 					{
