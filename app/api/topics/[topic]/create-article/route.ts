@@ -129,7 +129,7 @@ export async function POST(
 			status: 'create',
 		});
 		return NextResponse.json(
-			{ message: 'Topic created successfully' },
+			{ message: 'Article created successfully' },
 			{ status: 200 },
 		);
 	} catch (error) {

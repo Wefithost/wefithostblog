@@ -235,6 +235,7 @@ const NewArticle = () => {
 								placeholder="Everything hosting"
 								errorContent="Description is required"
 								name="desc"
+								maxlength={160}
 							/>
 
 							{!error && (
