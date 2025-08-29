@@ -18,6 +18,7 @@ import { IArticle } from '~/types/article';
 import Loader from '~/app/components/loader';
 import { getReadingTime } from '~/utils/get-reading-time';
 import CommentsSection from '~/app/components/comments/comments-section';
+import * as motion from 'motion/react-client';
 const Article = () => {
 	const params = useParams();
 
@@ -86,7 +87,14 @@ const Article = () => {
 		(type) => slugify(type?.title) !== article,
 	);
 	return (
-		<main className=" flex flex-col mx-auto max-w-[1500px] min-h-screen w-full gap-10 py-12 px-8 max-md:py-6 max-md:gap-5 max-xs:px-5">
+		<motion.main
+			className=" flex flex-col mx-auto max-w-[1500px] min-h-screen w-full gap-10 py-12 px-8 max-md:py-6 max-md:gap-5 max-xs:px-5"
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			transition={{
+				scale: { type: 'spring', visualDuration: 0.2, bounce: 0.2 },
+			}}
+		>
 			<Loader fetching={isFetching} error={errorFetching}>
 				<section className="flex w-full flex-col gap-3 items-start">
 					<div className="flex w-full  bg-[#14132b] rounded-2xl overflow-hidden max-md:flex-col  max-md:rounded-sm max-md:bg-transparent">
@@ -292,7 +300,7 @@ const Article = () => {
 					</span>
 				</div>
 			</div>
-		</main>
+		</motion.main>
 	);
 };
 
