@@ -156,7 +156,7 @@ const Article = () => {
 			<section className="w-full gap-24 flex justify-end max-2xl:gap-12 max-xl:flex-col  max-xl:items-center">
 				<div className="flex flex-col gap-10 max-w-[750px] w-full">
 					<ArticleViewer content={article_data?.article} />
-					{!isFetching && !error && (
+					{!isFetching && !error && article_data?.author && (
 						<>
 							<div className=" border-t-1 border-gray-400 w-full  flex flex-col gap-2 py-4">
 								<h1 className=" text-base">About the author</h1>
