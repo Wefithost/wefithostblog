@@ -71,21 +71,18 @@ const Footer = () => {
 					dir: 'agency',
 					href: 'https://wefithost.com/agency',
 				},
-				{
-					dir: 'system status',
-					href: '/',
-				},
+				// {
+				// 	dir: 'system status',
+				// 	href: '/',
+				// },
 				{
 					dir: 'free migration',
 					href: 'https://wefithost.com/free-migration',
 				},
-				{
-					dir: 'APIS',
-					href: '/',
-				},
+
 				{
 					dir: 'Digital marketing',
-					href: '/https://wefithost.com/digital-marketing',
+					href: 'https://wefithost.com/digital-marketing',
 				},
 			],
 		},
@@ -104,10 +101,10 @@ const Footer = () => {
 					dir: 'Careers',
 					href: 'https://wefithost.com/careers',
 				},
-				{
-					dir: 'Affiliates',
-					href: '/',
-				},
+				// {
+				// 	dir: 'Affiliates',
+				// 	href: '/',
+				// },
 			],
 		},
 	];
