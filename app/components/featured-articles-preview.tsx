@@ -68,6 +68,7 @@ const FeaturedArticlesPreview = () => {
 				backgroundImage: `url(${article?.image})`,
 				backgroundSize: 'cover',
 				backgroundPosition: 'center',
+				backgroundColor: '#1f13467d',
 			}}
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
@@ -76,7 +77,7 @@ const FeaturedArticlesPreview = () => {
 			{/*eslint-disable-next-line */}
 			<img
 				src={article?.image}
-				alt="hero-img"
+				alt=""
 				className={`absolute top-0 left-0 w-full h-full object-cover z-2 duration-150 ${
 					fadeOut ? 'opacity-0' : 'opacity-100'
 				}`}
@@ -92,9 +93,11 @@ const FeaturedArticlesPreview = () => {
 					{article?.description}
 				</p>
 				<div className="flex gap-4 items-center text-lg max-2xl:text-base max-xl:text-sm max-2xs:hidden">
-					<span>{formatDate(article?.createdAt as string)}</span>
+					<span>
+						{formatDate((article?.createdAt || ('' as string)) ?? '')}
+					</span>
 					<FaCircle className="text-[10px] " />
-					<span>{article.duration || '2'} mins read</span>
+					<span>{article?.duration || '2'} mins read</span>
 				</div>
 				<Link
 					href={`/topics/${slugify(article?.topic?.title)}/${slugify(

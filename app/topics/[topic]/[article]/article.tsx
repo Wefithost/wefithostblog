@@ -104,9 +104,9 @@ const Article = () => {
 								src={article_data?.image}
 								className="min-h-[500px] max-h-[500px] max-lg:min-h-[400px]  max-lg:max-h-[400px] bg-[#ffffff] object-cover  max-md:min-h-[200px]  max-md:max-h-auto w-full"
 							/>
-							<button className="bg-purple hover:bg-darkPurple text-white text-lg h-[40px] px-2.5 duration-150 rounded-sm max-md:text-sm max-md:h-[35px] absolute bottom-4 left-4 z-10 max-md:block hidden ">
+							{/* <button className="bg-purple hover:bg-darkPurple text-white text-lg h-[40px] px-2.5 duration-150 rounded-sm max-md:text-sm max-md:h-[35px] absolute bottom-4 left-4 z-10 max-md:block hidden ">
 								{article_data?.topic.title}
-							</button>
+							</button> */}
 						</div>
 						<div className="flex items-start flex-col justify-between p-20 w-1/2 max-2xl:p-5 max-md:w-full    max-md:bg-white max-md:p-0 max-md:py-2 ">
 							<button className="bg-purple hover:bg-darkPurple text-white text-lg h-[40px] px-2.5 duration-150 rounded-sm max-md:text-sm max-md:h-[35px] max-md:hidden">

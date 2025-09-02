@@ -103,7 +103,11 @@ const CommentsSection = () => {
 								/>
 							))
 						) : (
-							<EmptyState icon={FaCommentSlash} message="No comments yet" />
+							<EmptyState
+								icon={FaCommentSlash}
+								message="No comments yet"
+								container_override="!min-h-auto"
+							/>
 						)}
 					</div>
 				</Loader>
