@@ -229,6 +229,7 @@ const NewArticle = () => {
 								value={desc}
 								setValue={setDesc}
 								textarea
+								label="Description"
 								error={error}
 								classname_override="!bg-lightGrey !text-black !rounded-sm "
 								setError={setError}

@@ -78,12 +78,10 @@ const Member = ({ member }: memberProps) => {
 					{formatDate(member?.createdAt as string)}
 				</div>
 				<div className="w-[10%] h-[40px] flex items-center  px-3 text-sm text-end justify-end relative">
-					{member?.role !== 'super_admin' && (
-						<FaEllipsisH
-							className="text-gray-500 cursor-pointer "
-							onClick={togglePrompt}
-						/>
-					)}
+					<FaEllipsisH
+						className="text-gray-500 cursor-pointer "
+						onClick={togglePrompt}
+					/>
 
 					{prompt && (
 						<div
@@ -92,19 +90,22 @@ const Member = ({ member }: memberProps) => {
 							}`}
 							ref={promptRef}
 						>
-							<button
-								className="py-2 w-full text-[13px]   flex items-center gap-2  px-3 hover:bg-lightGrey duration-150"
-								onClick={(e) => {
-									e.preventDefault();
-									e.stopPropagation();
-									toggleSetRolePrompt();
-								}}
-							>
-								{member?.role === 'member' ? <FaUserAlt /> : <GrUserAdmin />}
-								<span>
-									{member?.role !== 'member' ? 'Set as user' : 'Set as admin'}
-								</span>
-							</button>
+							{member?.role !== 'super_admin' && (
+								<button
+									className="py-2 w-full text-[13px]   flex items-center gap-2  px-3 hover:bg-lightGrey duration-150"
+									onClick={(e) => {
+										e.preventDefault();
+										e.stopPropagation();
+										toggleSetRolePrompt();
+									}}
+								>
+									{member?.role === 'member' ? <FaUserAlt /> : <GrUserAdmin />}
+									<span>
+										{member?.role !== 'member' ? 'Set as user' : 'Set as admin'}
+									</span>
+								</button>
+							)}
+
 							<button
 								className="py-2 w-full text-[13px]   flex items-center gap-2  px-3 hover:bg-lightGrey duration-150"
 								onClick={(e) => {
@@ -116,17 +117,19 @@ const Member = ({ member }: memberProps) => {
 								<FaRegMessage />
 								<span>Message</span>
 							</button>
-							<button
-								className="py-2 w-full text-[13px]  text-red flex items-center gap-2  px-3 hover:bg-lightGrey duration-150"
-								onClick={(e) => {
-									e.preventDefault();
-									e.stopPropagation();
-									toggleDeletePrompt();
-								}}
-							>
-								<IoTrashBinOutline />
-								<span>Delete account</span>
-							</button>
+							{member.role !== 'super_admin' && (
+								<button
+									className="py-2 w-full text-[13px]  text-red flex items-center gap-2  px-3 hover:bg-lightGrey duration-150"
+									onClick={(e) => {
+										e.preventDefault();
+										e.stopPropagation();
+										toggleDeletePrompt();
+									}}
+								>
+									<IoTrashBinOutline />
+									<span>Delete account</span>
+								</button>
+							)}
 						</div>
 					)}
 				</div>
