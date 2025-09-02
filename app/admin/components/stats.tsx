@@ -32,7 +32,6 @@ const Stats = () => {
 				onSuccess: (res) => {
 					setTodayVisitors(res.today);
 					setLastMonthVisitors(res.lastMonth);
-					console.log('response', res);
 				},
 				onError: (error) => {
 					toast.error(error);

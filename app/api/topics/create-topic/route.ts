@@ -22,7 +22,6 @@ export async function POST(req: NextRequest) {
 		const title = formData.get('title') as string;
 		const description = formData.get('description') as string;
 		const uploaded_image = formData.get('uploaded_image');
-		console.log(title, 'titttle');
 		// Validate IDs and required fields
 		if (!isValidObjectId(adminId)) {
 			return NextResponse.json(

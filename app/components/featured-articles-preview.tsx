@@ -60,7 +60,6 @@ const FeaturedArticlesPreview = () => {
 	}, [articles, currentIndex, isHovered]);
 
 	const article = articles?.[currentIndex] ?? null;
-	console.log('rendered', articles);
 	return (
 		<section
 			className={`flex min-h-[700px] max-h-[700px] w-full overflow-hidden relative items-end rounded-lg max-2xl:min-h-[500px]  max-2xl:max-h-[500px] max-md:min-h-[300px] max-md:max-h-[300px] duration-500`}

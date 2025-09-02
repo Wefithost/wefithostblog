@@ -84,7 +84,6 @@ const EditArticleContentPrompt = ({
 					toggleEditArticleContentPrompt();
 
 					setSuccessful(false);
-					console.log(response.article_content);
 				}, 1000);
 			},
 			onError: (error) => {

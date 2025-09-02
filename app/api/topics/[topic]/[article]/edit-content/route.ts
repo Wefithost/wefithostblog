@@ -48,7 +48,6 @@ export async function POST(
 		await connectMongo();
 
 		const { topic, article } = await params;
-		console.log('article', article);
 		const { content, adminId } = await req.json();
 
 		// Validate IDs
