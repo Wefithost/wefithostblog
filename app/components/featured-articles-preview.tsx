@@ -60,7 +60,7 @@ const FeaturedArticlesPreview = () => {
 	}, [articles, currentIndex, isHovered]);
 
 	const article = articles?.[currentIndex] ?? null;
-
+	console.log('rendered', articles);
 	return (
 		<section
 			className={`flex min-h-[700px] max-h-[700px] w-full overflow-hidden relative items-end rounded-lg max-2xl:min-h-[500px]  max-2xl:max-h-[500px] max-md:min-h-[300px] max-md:max-h-[300px] duration-500`}
@@ -161,7 +161,7 @@ const backup_data = [
 		description:
 			'Boost your hosting business with proven marketing strategies to attract new clients, increase visibility, and maximize growth.',
 		image:
-			'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756296174/wefithost_articles/rliotsrbkdlnlwttdgum.jpg',
+			'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756710521/wefithost_articles/qeam6adgcqyn7ozdj8ml.png',
 		slug: 'hosting-business-marketing-strategies',
 		featured: true,
 		published: true,
@@ -188,7 +188,7 @@ const backup_data = [
 		description:
 			'Choosing between shared hosting and VPS often comes down to performance and budget — but security should be a top priority too. In this article, we’ll compare both hosting types to help you understand which is more secure for your website and why.',
 		image:
-			'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756297361/wefithost_articles/wln8neduoiogio3zlxwe.jpg',
+			'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756679908/wefithost_articles/hxjernbnx6e6toupufmr.png',
 		slug: 'shared-hosting-vs-vps-which-is-more-secure',
 		featured: true,
 		published: true,
@@ -215,7 +215,7 @@ const backup_data = [
 		description:
 			'Boost your website’s visibility with proven SEO tips that enhance ranking, increase traffic, and build a strong online presence.',
 		image:
-			'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756299939/wefithost_articles/s0bvngdbk0lc3wyw466a.png',
+			'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756679270/wefithost_articles/gqdk4kigdlyqrxk4c3fe.png',
 		slug: 'tips-for-building-rich-seo-a-complete-guide-to-ranking-higher',
 		featured: true,
 		published: true,
@@ -242,7 +242,7 @@ const backup_data = [
 		description:
 			'Learn what dedicated hosting is, its benefits, drawbacks, and whether it’s worth the high cost. Perfect guide for businesses choosing the right hosting solution.',
 		image:
-			'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756301403/wefithost_articles/wtk4aecukpc8vtfvfprg.jpg',
+			'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756679001/wefithost_articles/q0bpniyi6fnystzjvgvn.png',
 		slug: 'dedicated-hosting-explained-is-it-worth-the-cost',
 		featured: true,
 		published: true,
