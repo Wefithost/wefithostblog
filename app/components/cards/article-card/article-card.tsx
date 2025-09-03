@@ -123,7 +123,7 @@ const ArticleCard = ({ article, admin = false }: articleProps) => {
 									)}
 								</div>
 							)}
-							<div className="min-h-[300px] max-h-[300px] w-full overflow-hidden rounded-xl blog-img relative   max-2xs:max-h-auto max-2xs:min-h-[200px] ">
+							<div className="min-h-[300px] max-h-[300px] w-full overflow-hidden rounded-xl blog-img relative   max-2xs:max-h-auto max-2xs:min-h-[200px] bg-[#1f134690]">
 								{/* eslint-disable-next-line */}
 								<img
 									src={article?.image}
