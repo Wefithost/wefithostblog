@@ -42,9 +42,9 @@ const ArticleCard = ({ article, admin = false }: articleProps) => {
 	const { user } = useAuthContext();
 	return (
 		<>
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
+			<motion.article
+				initial={{ opacity: 0, y: 10 }}
+				animate={{ opacity: 1, y: 0 }}
 				transition={{
 					scale: { type: 'spring', visualDuration: 0.2, bounce: 0.2 },
 				}}
@@ -59,7 +59,7 @@ const ArticleCard = ({ article, admin = false }: articleProps) => {
 									slugify(article?.title) || ''
 							  }`
 					}
-					className="flex flex-col gap-4 h-[550px] items-start overflow-hidden  rounded-xl p-3 hover:shadow-md duration-150 bg-gray-50 max-xs:gap-2 max-xs:h-[490px] max-2xs:h-auto relative justify-between"
+					className="flex flex-col  items-start overflow-hidden  rounded-xl p-3 hover:shadow-md duration-150 bg-gray-50 max-xs:gap-2  max-2xs:h-auto relative justify-between gap-4"
 				>
 					{article?.title && (
 						<>
@@ -128,12 +128,12 @@ const ArticleCard = ({ article, admin = false }: articleProps) => {
 									)}
 								</div>
 							)}
-							<div className="min-h-[300px] max-h-[300px] w-full overflow-hidden rounded-xl blog-img relative   max-2xs:max-h-auto max-2xs:min-h-[200px] bg-[#1f134690]">
+							<div className="aspect-[465/301] w-full overflow-hidden rounded-xl blog-img relative   max-2xs:max-h-auto  bg-[#1f134690]">
 								{/* eslint-disable-next-line */}
 								<img
 									src={article?.image}
-									alt=""
-									className="w-full h-full object-cover max-2xs:min-h-[200px]"
+									alt={article?.image || 'Article Image'}
+									className="w-full h-full object-cover "
 								/>
 								{admin && (
 									<div className="absolute top-0 left-0 h-full w-full bg-[#15133d7a]"></div>
@@ -147,14 +147,14 @@ const ArticleCard = ({ article, admin = false }: articleProps) => {
 
 									<span>{article?.duration || '2'} mins read</span>
 								</div>
-								<button className="bg-purple h-[30px] hover:bg-darkPurple duration-150 px-3 text-white text-sm rounded-sm font-semibold max-2xs:h-[30px] max-2xs:px-2  max-2xs:text-xs max-2xs:top-3 max-2xs:left-3 ">
+								<button className="bg-purple h-[30px] cursor-none duration-150 px-3 text-white text-sm rounded-sm font-semibold max-2xs:h-[30px] max-2xs:px-2  max-2xs:text-xs max-2xs:top-3 max-2xs:left-3 ">
 									{article?.topic.title}
 								</button>
 							</div>
-							<h1 className="text-lg poppins-bold line-clamp-2 max-2xs:text-base">
+							<h3 className="text-lg poppins-bold line-clamp-2 max-2xs:text-base article-header">
 								{article?.title}
-							</h1>
-							<p className="text-lg line-clamp-2 article-desc max-md:text-base max-xs:text-sm">
+							</h3>
+							<p className="text-lg line-clamp-2 article-desc max-md:text-base max-xs:text-sm article-header">
 								{article.description}
 							</p>
 							<div className="flex items-center justify-between w-full">
@@ -169,14 +169,14 @@ const ArticleCard = ({ article, admin = false }: articleProps) => {
 										{article?.author?.first_name} {article?.author?.last_name}
 									</span>
 								</div>
-								<span className="text-base text-purple hover:text-darkPurple max-sm:text-sm">
+								<button className="text-base text-purple hover:text-darkPurple max-sm:text-sm ">
 									Read more
-								</span>
+								</button>
 							</div>
 						</>
 					)}
 				</Link>
-			</motion.div>
+			</motion.article>
 			<EditArticlePrompt
 				isVisible={editArticlePromptVisible}
 				ref={editArticlePromptRef}

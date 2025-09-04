@@ -20,8 +20,12 @@ button {
     font-family: var(--font-quicksand);
 }
 
+.article-header {
+    min-height: 2lh;
+}
+
 * {
-    font-family: var(--font-quicksand)
+    font-family: var(--font-quicksand);
 }
 
 .poppins-bold {
@@ -46,7 +50,7 @@ button {
     /* 1023px */
     --breakpoint-dmd: 56.25rem;
     /* 900px */
-    --breakpoint-md: 47.9375rem;
+    --breakpoint-md: 48.9375rem;
     /* 767px */
     --breakpoint-sm: 39.9375rem;
     /* 639px */

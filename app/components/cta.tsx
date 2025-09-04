@@ -4,12 +4,6 @@ import ClassicInput from './inputs/classic-input';
 import { apiRequest } from '~/utils/api-request';
 import { toast } from 'react-toastify';
 import AsyncButton from './buttons/async-button';
-// import Image from 'next/image';
-// import newsletter from '~/public/images/Data-Centers-in-Space.jpg';
-// import smoke from '~/public/images/smoke.jpg';
-// import websiteonline from '~/public/images/phone-hold.jpg';
-// import space from '~/public/images/Data-Centers-in-Space.jpg';
-// import { useFetch } from '~/utils/fetch-page-data';
 
 const CtaSection = () => {
 	const [email, setEmail] = useState('');
@@ -55,18 +49,12 @@ const CtaSection = () => {
 
 	return (
 		<section className="relative h-[400px] p-10 overflow-hidden max-2xs:p-5  bg-[#14122C]">
-			{/* <Image
-				src={newsletter}
-				alt="newsletter"
-				className="w-full h-full absolute z-10 object-cover top-0 left-0"
-			/> */}
-			{/* <div className="w-full h-full absolute z-[20] object-cover top-0 left-0 bg-[#0000005e]"></div> */}
 			<div className="flex gap-10 w-full max-md:flex-col relative items-center justify-center max-w-[1400px] h-full mx-auto z-[30]">
 				<div className=" flex items-center w-full">
 					<div className="flex flex-col gap-3 relative z-30 self-end w-full">
-						<h1 className="text-[32px] max-lg:text-xl text-white poppins-bold">
+						<h2 className="text-[32px] max-lg:text-xl text-white poppins-bold">
 							Subscribe to our newsletter
-						</h1>
+						</h2>
 						<p className="max-w-[600px] text-white text-base font-semibold max-lg:text-sm max-sm:font-normal">
 							Get the latest tips, updates, and insights on web hosting, website
 							management, and digital tools — helping you build faster, smarter,
@@ -83,6 +71,7 @@ const CtaSection = () => {
 						classname_override="!bg-white !text-black  !self-start max-xs:!w-full "
 						errorContent={'Please enter a valid email address'}
 						placeholder="Your email"
+						aria-label="Email address for newsletter subscription"
 					/>
 					<AsyncButton
 						action="Subscribe"
@@ -98,78 +87,4 @@ const CtaSection = () => {
 };
 
 export default CtaSection;
-// past CTA section
-{
-	/* <section className="flex gap-4 w-full max-md:flex-col">
-	<div className="flex flex-col gap-4 w-1/2 max-md:w-full">
-		<div className="min-h-[300px] relative overflow-hidden py-8 px-4  rounded-[10px] flex items-center max-xs:min-h-[200px]">
-			<div className="w-full h-full absolute z-[20] object-cover top-0 left-0 bg-[#0000005e]"></div>
-			<div className="flex flex-col gap-3 relative z-30 self-end w-full">
-				<h1 className="text-[32px] max-lg:text-xl text-white font-semibold">
-					Subscribe to our newsletter
-				</h1>
-				<div className="flex gap-2 flex-col w-full items-start justify-start">
-					<ClassicInput
-						value={email}
-						setValue={setEmail}
-						error={error}
-						setError={setError}
-						classname_override="!bg-white !text-black !w-[80%] !self-start max-xs:!w-full "
-						errorContent={'Please enter a valid email address'}
-						placeholder="Your email"
-					/>
-					<AsyncButton
-						action="Subscribe"
-						classname_override="!w-[200px]"
-						loading={subscribing}
-						success={subscribeSuccess}
-						disabled={!email}
-						onClick={subscribe}
-					/>
-				</div>
-			</div>
-			<Image
-				src={newsletter}
-				alt="newsletter"
-				className="w-full h-full absolute z-10 object-cover top-0 left-0"
-			/>
-		</div>
-		<div className="min-h-[300px] relative overflow-hidden py-8 px-4  rounded-[10px] flex items-center max-md:hidden">
-			// {/* <div className="w-full h-full absolute z-[20] object-cover top-0 left-0 bg-[#0000005e]"></div> */
-}
-// 		<div className="flex flex-col gap-3 relative z-30 self-end w-full">
-// 			<h1 className="text-[32px] max-lg:text-xl text-white font-semibold">
-// 				{articlesLength ?? '50+'} articles available
-// 			</h1>
-// 		</div>
-// 		<Image
-// 			src={smoke}
-// 			alt="newsletter"
-// 			className="w-full h-full absolute z-10 object-cover top-0 left-0"
-// 		/>
-// 	</div>
-// </div>
-// 	<div className="flex flex-col w-1/2 relative overflow-hidden py-8 px-4  rounded-[10px] items-start justify-end  max-md:w-full min-h-[300px] max-md:justify-center max-md:px-10 max-2xs:px-3 max-2xs:min-h-[250px]">
-// 		<div className="w-full h-full absolute z-[20] object-cover top-0 left-0 bg-[#0000005e]"></div>
-// 		<div className="flex flex-col gap-3 relative z-30 self-end w-full items-start max-md:items-center max-2xs:items-start">
-// 			<h1 className="text-[32px] max-lg:text-xl text-white font-semibold max-md:text-center max-md:poppins-bold change-font  max-2xs:text-start max-2xs:text-lg">
-// 				Get your website online in minutes with our premium hosting solutions.
-// 			</h1>
-// 			<button className="bg-purple hover:bg-darkPurple text-white text-lg h-[45px] px-5 duration-150 rounded-sm max-2xs:h-[40px]  max-2xs:text-sm max-2xs:font-semibold ">
-// 				Get Started
-// 			</button>
-// 		</div>
-// 		<Image
-// 			src={websiteonline}
-// 			alt="newsletter"
-// 			className="w-full h-full absolute z-10 object-cover top-0 left-0 max-md:hidden"
-// 		/>
-
-// 		<Image
-// 			src={space}
-// 			alt="newsletter"
-// 			className="w-full h-full absolute z-10 object-cover top-0 left-0 max-md:block hidden"
-// 		/>
-// 	</div>
-// </section> */}
 

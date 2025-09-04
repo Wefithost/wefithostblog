@@ -34,7 +34,7 @@ export const ArticleGrid = ({
 		setTimeout(() => onPageChange(to), 1000);
 	};
 	return (
-		<div className="w-full flex-col items-center gap-8 duration-300">
+		<div className="w-full gap-8 duration-300">
 			<div className="grid grid-cols-3 max-2xs:flex max-2xs:flex-col max-xl:grid-cols-2 max-md:grid-cols-1 gap-x-5 gap-y-8 max-xs:gap-2  w-full">
 				{articles &&
 					articles.map((article) => (
@@ -44,16 +44,16 @@ export const ArticleGrid = ({
 
 			{/* pagination should be here */}
 			{totalArticles > pageSize && (
-				<div className="flex gap-2 justify-center mt-10">
+				<div className="flex gap-2 justify-center mt-10 flex-wrap">
 					<button
-						onClick={() => {
-							navigate(currentPage - 1);
-						}}
+						onClick={() => currentPage > 1 && navigate(currentPage - 1)}
+						disabled={currentPage === 1}
 						className={`px-2 py-2 rounded-md  ${
 							currentPage === 1
 								? ' text-gray-500'
 								: 'bg-white text-black hover:bg-gray-200'
 						}`}
+						aria-label="Previous page"
 					>
 						<MdKeyboardArrowLeft />
 					</button>
@@ -91,9 +91,9 @@ export const ArticleGrid = ({
 							);
 						})}
 					<button
-						onClick={() => {
-							navigate(currentPage + 1);
-						}}
+						onClick={() => navigate(currentPage + 1)}
+						disabled={currentPage === totalPages}
+						aria-label="Next page"
 						className={`px-2 py-2 rounded-md  ${
 							currentPage === totalPages
 								? ' text-gray-500 cursor-not-allowed'

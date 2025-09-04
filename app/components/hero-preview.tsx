@@ -135,7 +135,7 @@ const backup_data = [
 		title: 'Hosting Business Marketing Strategies',
 		topic: {
 			_id: '68aee5412d1722a1a2f99b01',
-			title: 'marketing',
+			title: 'business',
 		},
 		duration: 3,
 		author: {
@@ -239,3 +239,4 @@ const backup_data = [
 		__v: 0,
 	},
 ];
+

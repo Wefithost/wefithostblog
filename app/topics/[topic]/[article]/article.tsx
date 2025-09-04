@@ -182,7 +182,13 @@ const Article = () => {
 									</div>
 								</div>
 								{article_data?.author?.bio && (
-									<p className="max-md:text-sm">{article_data?.author?.bio}</p>
+									<div className="flex flex-col gap-2">
+										{article_data?.author?.bio.split('\n\n').map((para, i) => (
+											<p key={i} className="max-md:text-sm">
+												{para}
+											</p>
+										))}
+									</div>
 								)}
 							</div>
 							<CommentsSection />

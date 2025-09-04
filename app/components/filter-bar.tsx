@@ -31,7 +31,8 @@ const FilterBar = ({
 
 	const sorts = ['newest', 'oldest'];
 	return (
-		<div
+		<section
+			aria-labelledby="filters-controls"
 			className={`flex items-center  gap-2 flex-wrap  max-lg:flex-col-reverse max-lg:gap-3 ${
 				showFilters ? ' justify-between' : ' justify-end'
 			}`}
@@ -59,6 +60,8 @@ const FilterBar = ({
 											? 'bg-purple text-white '
 											: 'hover:bg-lightGrey'
 									}`}
+									role="group"
+									aria-label="Filter articles by topic"
 								>
 									{data?.title}
 								</button>
@@ -72,6 +75,7 @@ const FilterBar = ({
 pr-8
             `}
 					placeholder="Search for an article"
+					aria-label="Search articles"
 					value={searchTerm}
 					name="search"
 					onChange={(e) => {
@@ -88,6 +92,8 @@ pr-8
 									? 'bg-white text-black shadow-sm '
 									: 'hover:text-black text-[#464646]'
 							}`}
+							role="group"
+							aria-label="Sort articles"
 							onClick={() => setSelectedSort?.(sort)}
 						>
 							{sort}
@@ -95,7 +101,7 @@ pr-8
 					))}
 				</div>
 			</div>
-		</div>
+		</section>
 	);
 };
 

@@ -76,11 +76,11 @@ const ArticlesContainer = ({
 				{hasSearch ? (
 					hasArticles ? (
 						<div className="flex w-full items-center flex-col gap-4">
-							<h1 className="text-lg font-semibold spaced self-start">
+							<span className="text-lg font-semibold spaced self-start">
 								Found {totalArticles}{' '}
 								{totalArticles === 1 ? 'article' : 'articles'} for “{searchTerm}
 								”
-							</h1>
+							</span>
 							<ArticleGrid
 								articles={pagedArticles}
 								totalArticles={totalArticles}

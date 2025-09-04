@@ -76,7 +76,7 @@ const FeaturedArticlesPreview = () => {
 			{/*eslint-disable-next-line */}
 			<img
 				src={article?.image}
-				alt=""
+				alt="article image"
 				className={`absolute top-0 left-0 w-full h-full object-cover z-2 duration-150 ${
 					fadeOut ? 'opacity-0' : 'opacity-100'
 				}`}
@@ -146,7 +146,7 @@ const backup_data = [
 		title: 'Hosting Business Marketing Strategies',
 		topic: {
 			_id: '68aee5412d1722a1a2f99b01',
-			title: 'marketing',
+			title: 'business',
 		},
 		duration: 3,
 		author: {

@@ -22,7 +22,7 @@ const Loader: React.FC<LoaderProps> = ({
 	const renderErrorState = () => (
 		<div className=" min-h-[50vh] w-full flex items-center justify-center  flex-col">
 			<div className="flex  flex-col gap-3 bg-purple-50    rounded-2xl  w-[400px] py-2 max-xs:w-full max-xs:px-4">
-				<div className="flex gap-4 items-start    p-4  w-full">
+				<div className="flex gap-4 items-start    p-4  w-full" role="alert">
 					<Image src={errorIcon} className="w-8 max-sm:w-6" alt="Error icon" />
 					<div className="flex flex-col gap-1">
 						<p className=" text-xl text-black      spaced leading-none max-sm:text-base">
@@ -48,6 +48,8 @@ const Loader: React.FC<LoaderProps> = ({
 	const renderLoadingState = () => (
 		<div
 			className={`${classname_override}   h-[50vh] w-full flex items-center justify-center  `}
+			role="status"
+			aria-live="polite"
 		>
 			<div className=" flex items-center justify-center  w-20  h-20   relative  ">
 				<div className="bg-purple-50 p-5 absolute  animate-ping w-full h-full   "></div>
@@ -62,7 +64,7 @@ const Loader: React.FC<LoaderProps> = ({
 	);
 	let content;
 
-	if (error?.trim() !== '') {
+	if (error) {
 		content = renderErrorState();
 	} else if (fetching) {
 		content = renderLoadingState();
