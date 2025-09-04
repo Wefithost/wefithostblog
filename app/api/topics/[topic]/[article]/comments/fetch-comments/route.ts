@@ -40,21 +40,34 @@ export async function GET(
 			article_id: chosenArticle._id,
 			parent_id: null,
 		})
+			.sort({ createdAt: -1 })
 			.populate({
 				path: 'comment_by',
 				select: 'first_name last_name profile',
-			})
-			.sort({ createdAt: -1 });
+				options: { strictPopulate: false }, // avoid errors when empty
+			});
 
-		async function fetchNestedReplies(
-			commentId: Types.ObjectId,
-		): Promise<Types.ObjectId[]> {
+		// normalize comment_by so it's consistent
+		//eslint-disable-next-line
+		const normalizeUser = (comment: any) => {
+			if (!comment.comment_by || comment.comment_by === '') {
+				comment.comment_by = {
+					first_name: '',
+					last_name: '',
+					profile: null,
+					guest: true,
+				};
+			}
+			return comment;
+		};
+
+		async function fetchNestedReplies(commentId: Types.ObjectId) {
 			const childReplies = await CommentModel.find({ parent_id: commentId })
 				.sort({ createdAt: -1 })
-
 				.populate({
 					path: 'comment_by',
 					select: 'first_name last_name profile',
+					options: { strictPopulate: false },
 				});
 			//eslint-disable-next-line
 			const nestedReplies: any = await Promise.all(
@@ -67,7 +80,7 @@ export async function GET(
 					});
 
 					return {
-						...reply.toObject(),
+						...normalizeUser(reply.toObject()),
 						replies: subReplies,
 						replyCount,
 					};
@@ -83,7 +96,7 @@ export async function GET(
 					comment._id as Types.ObjectId,
 				);
 				return {
-					...comment.toObject(),
+					...normalizeUser(comment.toObject()),
 					replies: nestedReplies,
 					replyCount: await CommentModel.countDocuments({
 						parent_id: comment._id,
@@ -91,7 +104,6 @@ export async function GET(
 				};
 			}),
 		);
-
 		return NextResponse.json({ result: commentsWithReplies }, { status: 200 });
 	} catch (error) {
 		console.error('Fetch comments error:', error);

@@ -8,6 +8,7 @@ export interface comment_type {
 		first_name: string;
 		last_name: string;
 		profile: string;
+		guest?: boolean;
 	};
 	likes: string[];
 	dislikes: string[];

@@ -8,6 +8,7 @@ import { usePopup } from '~/utils/toggle-popups';
 import EditTopicPrompt from './edit-topic-prompt';
 import { useState } from 'react';
 import DeleteTopicPrompt from './delete-topic-prompt';
+import { useAuthContext } from '~/app/context/auth-context';
 interface TopicProps {
 	topic: ITopic;
 	admin?: boolean;
@@ -40,7 +41,7 @@ const TopicCard = ({
 		togglePopup: toggleDeleteTopicPrompt,
 	} = usePopup();
 	const [topicToEdit, setTopicToEdit] = useState<ITopic | null>(null);
-
+	const { user } = useAuthContext();
 	return (
 		<>
 			<Link
@@ -52,16 +53,18 @@ const TopicCard = ({
 			>
 				{admin && (
 					<div className="absolute top-3 right-3 z-20">
-						<button
-							className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-[#ffffff43]  "
-							onClick={(e) => {
-								e.preventDefault();
-								e.stopPropagation();
-								toggleAdminPrompt();
-							}}
-						>
-							<FaEllipsisVertical className="text-xl text-white" />
-						</button>
+						{user?.role === 'super_admin' && (
+							<button
+								className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-[#ffffff43]  "
+								onClick={(e) => {
+									e.preventDefault();
+									e.stopPropagation();
+									toggleAdminPrompt();
+								}}
+							>
+								<FaEllipsisVertical className="text-xl text-white" />
+							</button>
+						)}
 						{adminPrompt && (
 							<div
 								className={`flex  flex-col bg-white shadow-lg  w-[130px] rounded-md   duration-150 absolute top-0 right-[100%] divide-y divide-lightGrey overflow-hidden border border-lightGrey z-20   ${

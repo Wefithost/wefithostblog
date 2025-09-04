@@ -45,7 +45,7 @@ export async function DELETE(req: NextRequest) {
 		await Article.deleteMany({ topic: topicId });
 		await Alert.create({
 			type: 'topic_deleted',
-			message: `delete a topic: '${existingTopic?.title}'`,
+			message: `deleted a topic: '${existingTopic?.title}'`,
 			triggered_by: admin._id,
 
 			status: 'delete',

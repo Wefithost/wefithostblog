@@ -71,7 +71,17 @@ export async function PATCH(req: NextRequest) {
 		if (!existingTopic) {
 			return NextResponse.json({ error: 'Topic not found' }, { status: 404 });
 		}
-
+		const MAX_SIZE = 3 * 1024 * 1024;
+		if (uploaded_image instanceof File && uploaded_image.size > MAX_SIZE) {
+			return NextResponse.json(
+				{
+					error: `Image too large. Please upload an image smaller than ${
+						MAX_SIZE / (1024 * 1024)
+					}MB`,
+				},
+				{ status: 400 },
+			);
+		}
 		// Handle image upload (if provided)
 		let imageUrl = existingTopic.image;
 		if (uploaded_image instanceof File && uploaded_image.size > 0) {

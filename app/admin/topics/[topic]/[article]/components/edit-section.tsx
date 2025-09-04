@@ -113,7 +113,13 @@ const EditSection = ({
 			</div>
 
 			<div className="flex flex-col justify-between max-xl:flex-row  gap-5 max-md:flex-col">
-				<div className="w-[450px] bg-white border-purple rounded-2xl  shrink-0 flex flex-col gap-4 items-center sticky top-10 shadow-lg p-4 max-xl:w-1/2 max-xl:static max-md:w-full max-xl:shadow-sm">
+				<div
+					className={`w-[450px] bg-white border-purple rounded-2xl  shrink-0 flex flex-col gap-4 items-center sticky top-10 shadow-lg p-4 max-xl:w-1/2 max-xl:static max-md:w-full max-xl:shadow-sm ${
+						user?.role === 'super_admin' || article?.author?._id === user?._id
+							? ''
+							: 'invisible'
+					}`}
+				>
 					<div className="flex flex-col gap-3 ">
 						<h1 className="text-2xl poppins-bold flex gap-1">
 							<FaPen /> Edit Article
@@ -148,24 +154,26 @@ const EditSection = ({
 							<h1>Edit article preview</h1>
 							<FaAngleRight />
 						</button>
-						<div className="flex items-center w-full  gap-2">
-							<AsyncButton
-								action={article?.published ? 'Unpublish' : 'Publish'}
-								loading={updating}
-								success={updated}
-								disabled={updating}
-								onClick={updatePublishedState}
-							/>
+						{user?.role === 'super_admin' && (
+							<div className="flex items-center w-full  gap-2">
+								<AsyncButton
+									action={article?.published ? 'Unpublish' : 'Publish'}
+									loading={updating}
+									success={updated}
+									disabled={updating}
+									onClick={updatePublishedState}
+								/>
 
-							<AsyncButton
-								action={article?.featured ? 'Unfeature' : 'Feature'}
-								loading={featuring}
-								success={featured}
-								classname_override=" !bg-gray-700 hover:!bg-gray-800"
-								disabled={featuring}
-								onClick={updateFeaturedState}
-							/>
-						</div>
+								<AsyncButton
+									action={article?.featured ? 'Unfeature' : 'Feature'}
+									loading={featuring}
+									success={featured}
+									classname_override=" !bg-gray-700 hover:!bg-gray-800"
+									disabled={featuring}
+									onClick={updateFeaturedState}
+								/>
+							</div>
+						)}
 						{errorUpdating && (
 							<p className="text-xs text-red">{errorUpdating}</p>
 						)}

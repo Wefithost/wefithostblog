@@ -8,6 +8,7 @@ import DeletePrompt from './delete-account';
 import MessagePrompt from './message';
 import { IoTrashBinOutline } from 'react-icons/io5';
 import { FaRegMessage } from 'react-icons/fa6';
+import { useAuthContext } from '~/app/context/auth-context';
 interface memberProps {
 	member: user_type;
 }
@@ -18,7 +19,7 @@ const Member = ({ member }: memberProps) => {
 		togglePopup: togglePrompt,
 		ref: promptRef,
 	} = usePopup();
-
+	const { user } = useAuthContext();
 	const {
 		isVisible: rolePromptVisible,
 		isActive: rolePrompt,
@@ -78,10 +79,12 @@ const Member = ({ member }: memberProps) => {
 					{formatDate(member?.createdAt as string)}
 				</div>
 				<div className="w-[10%] h-[40px] flex items-center  px-3 text-sm text-end justify-end relative">
-					<FaEllipsisH
-						className="text-gray-500 cursor-pointer "
-						onClick={togglePrompt}
-					/>
+					{user?.role === 'super_admin' && (
+						<FaEllipsisH
+							className="text-gray-500 cursor-pointer "
+							onClick={togglePrompt}
+						/>
+					)}
 
 					{prompt && (
 						<div

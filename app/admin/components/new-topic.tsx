@@ -112,15 +112,17 @@ const NewTopic = () => {
 	};
 	return (
 		<>
-			<button
-				className="h-[40px] rounded-md px-4 bg-purple hover:bg-darkPurple duration-150 flex items-center justify-center text-white gap-2 text-center "
-				onClick={toggleNewTopicPrompt}
-			>
-				<span>
-					<FaPlus />
-				</span>
-				<span>New topic</span>
-			</button>
+			{user?.role === 'super_admin' && (
+				<button
+					className="h-[40px] rounded-md px-4 bg-purple hover:bg-darkPurple duration-150 flex items-center justify-center text-white gap-2 text-center "
+					onClick={toggleNewTopicPrompt}
+				>
+					<span>
+						<FaPlus />
+					</span>
+					<span>New topic</span>
+				</button>
+			)}
 			{newTopicPrompt && (
 				<div className="fixed top-[0px]  h-full w-full  z-50 left-0 flex  justify-center  items-center        backdrop-brightness-50  px-8     xs:px-0">
 					{selecting ? (

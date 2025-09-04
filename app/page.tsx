@@ -59,7 +59,7 @@ export default function Home() {
 					<h1 className="text-4xl poppins-bold max-2xl:text-3xl max-xs:text-2xl ">
 						WeFitHost Blog
 					</h1>
-					<p className="text-lg max-2xl:text-base">
+					<p className="text-lg max-2xl:text-base max-w-[800px] max-2xs:text-sm">
 						WeFitHost Blog brings you the latest tips, updates, and insights on
 						web hosting, website management, and digital tools — helping
 						individuals and businesses build faster, smarter, and more secure

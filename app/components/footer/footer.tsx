@@ -16,7 +16,7 @@ const Footer = () => {
 		},
 		{
 			icon: <FaInstagram />,
-			href: 'https://www.instagram.com/wefithost_ofiicial/',
+			href: 'https://www.instagram.com/wefithost_official/',
 			id: 2,
 		},
 		{
@@ -163,18 +163,27 @@ const Footer = () => {
 			<div className="flex   w-full py-10  px-20 items-center justify-between text-[10px]  text-dimGrey  capitalize max-sm:px-5 flex-wrap max-w-[1500px] mx-auto gap-5 ">
 				<div className="flex gap-3 items-center  text-white">
 					<span className=" text-sm font-light">
-						© 2025 Wefithost. All rights reserved
+						© {new Date().getFullYear()} Wefithost. All rights reserved
 					</span>
 				</div>
 				<div className="flex gap-4 items-center  text-white">
-					<Link href={'/'} className=" text-sm font-light link-style">
-						Privacy
+					<Link
+						href={'https://wefithost.com/privacy-policy'}
+						className=" text-sm font-light link-style"
+					>
+						Privacy policy
 					</Link>
-					<Link href={'/'} className=" text-sm font-light link-style">
+					<Link
+						href={'https://wefithost.com/terms'}
+						className=" text-sm font-light link-style"
+					>
 						Terms of service
 					</Link>
-					<Link href={'/'} className=" text-sm font-light link-style">
-						Cookie policy
+					<Link
+						href={'https://wefithost.com/acceptable-policy'}
+						className=" text-sm font-light link-style"
+					>
+						Acceptable Use
 					</Link>
 				</div>
 			</div>

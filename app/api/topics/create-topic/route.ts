@@ -47,7 +47,17 @@ export async function POST(req: NextRequest) {
 				{ status: 400 },
 			);
 		}
-
+		const MAX_SIZE = 3 * 1024 * 1024;
+		if (uploaded_image instanceof File && uploaded_image.size > MAX_SIZE) {
+			return NextResponse.json(
+				{
+					error: `Image too large. Please upload an image smaller than ${
+						MAX_SIZE / (1024 * 1024)
+					}MB`,
+				},
+				{ status: 400 },
+			);
+		}
 		// Check admin account
 		const admin = await User.findById(adminId);
 		if (!admin) {

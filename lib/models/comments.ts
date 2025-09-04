@@ -12,7 +12,11 @@ const CommentSchema: Schema<IComment> = new Schema(
 	{
 		article_id: { type: Schema.Types.ObjectId, ref: 'Article', required: true },
 		parent_id: { type: Schema.Types.ObjectId, ref: 'Comment', default: null },
-		comment: { type: Schema.Types.Mixed, required: true },
+		comment: {
+			type: Schema.Types.Mixed,
+			required: false,
+			default: null,
+		},
 		comment_by: { type: Schema.Types.ObjectId, ref: 'User', required: false },
 	},
 	{ timestamps: true },

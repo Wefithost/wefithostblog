@@ -198,8 +198,8 @@ const Article = () => {
 						/>
 						<h1 className="text-lg poppins text-center">About our blog</h1>
 						<p className="text-center text-base text-gray-500">
-							Welcome to WeFitHost Insights where we share expert knowledge to
-							help you succeed in the hosting world.
+							Welcome to WeFitHost Insights, where we share expert knowledge and
+							strategies to help you succeed in the hosting world.
 						</p>
 						<Link
 							href="/"
@@ -257,8 +257,8 @@ const Article = () => {
 					<Image src={logo} alt="wefithost logo" className="w-28 max-xs:w-18" />
 					<h1 className="text-lg poppins text-center">About our blog</h1>
 					<p className="text-center text-base text-gray-500">
-						Welcome to WeFitHost Insights where we share expert knowledge to
-						help you succeed in the hosting world.
+						Welcome to WeFitHost Insights, where we share expert knowledge and
+						strategies to help you succeed in the hosting world.
 					</p>
 					<Link
 						href="/"

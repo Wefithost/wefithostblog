@@ -20,6 +20,7 @@ const Alert = ({ alert }: alertTypes) => {
 		togglePopup: toggleDetailsPrompt,
 		ref: detailsPromptRef,
 	} = usePopup();
+	console.log('alert', alert);
 	return (
 		<>
 			<div
@@ -28,18 +29,26 @@ const Alert = ({ alert }: alertTypes) => {
 				}  border-t  border-t-lightGrey `}
 			>
 				<div className="w-[20%] py-2 px-3 text-sm">
-					{alert?.triggered_by?.first_name} {alert?.triggered_by?.last_name}
+					{alert?.triggered_by === null
+						? 'A reader'
+						: `${alert?.triggered_by?.first_name} ${
+								alert?.triggered_by?.last_name || ''
+						  }`}
 				</div>
 				<div
 					className={`w-[15%] py-2 px-3 text-sm ${
 						alert.triggered_by?.role === 'super_admin'
-							? ' text-[#783A71]' // Red
+							? ' text-[#783A71]'
 							: alert.triggered_by?.role === 'admin'
-							? ' text-[#a37a00]' // Yellow
-							: ' text-[#2563EB]' // Blue (alert.triggered_by)
+							? ' text-[#a37a00]'
+							: alert.triggered_by?.role === 'member'
+							? ' text-[#2563EB]'
+							: 'text-black'
 					}`}
 				>
-					{alert?.triggered_by?.role}
+					{alert?.triggered_by === null
+						? 'reader'
+						: `${alert?.triggered_by?.role}`}
 				</div>
 				<div className="w-[30%] py-2 px-3 text-sm">{alert?.message}</div>
 				<div className="w-[25%] py-2 px-3 text-sm">
@@ -73,7 +82,14 @@ const Alert = ({ alert }: alertTypes) => {
 								header="User"
 								content={`${alert?.triggered_by?.first_name} ${alert?.triggered_by?.last_name}`}
 							/>
-							<Row header="Role" content={`${alert?.triggered_by?.role}`} />
+							<Row
+								header="Role"
+								content={`${
+									alert?.triggered_by === null
+										? 'reader'
+										: alert?.triggered_by?.role
+								}`}
+							/>
 							<Row header="Action" content={`${alert?.message}`} />
 							<Row
 								header="Date"

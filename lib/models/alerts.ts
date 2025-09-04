@@ -39,7 +39,12 @@ const AlertSchema = new Schema<IAlert>(
 		},
 
 		// Who triggered the action
-		triggered_by: { type: Schema.Types.ObjectId, ref: 'User', required: false },
+		triggered_by: {
+			type: Schema.Types.ObjectId,
+			ref: 'User',
+			required: false,
+			default: null,
+		},
 
 		// Optional link to related resource
 		link: {

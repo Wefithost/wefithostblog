@@ -8,7 +8,6 @@ import Loader from '../loader';
 import EmptyState from '../empty-state';
 import { FaCommentSlash } from 'react-icons/fa';
 import AsyncButton from '../buttons/async-button';
-import { useUtilsContext } from '~/app/context/utils-context';
 import { useAuthContext } from '~/app/context/auth-context';
 import { apiRequest } from '~/utils/api-request';
 import { toast } from 'react-toastify';
@@ -19,7 +18,7 @@ const CommentsSection = () => {
 	const [commentError, setCommentError] = useState('');
 	const [commenting, setCommenting] = useState(false);
 	const [commentSuccessful, setCommentSuccessful] = useState(false);
-	const { toggleAuthPopup } = useUtilsContext();
+
 	const { user } = useAuthContext();
 	const addComment = async () => {
 		if (comment.trim() === '') {
@@ -29,10 +28,7 @@ const CommentsSection = () => {
 		if (commenting) {
 			return;
 		}
-		if (!user) {
-			toggleAuthPopup();
-			return;
-		}
+
 		setCommentError('');
 		setCommenting(true);
 		await apiRequest({

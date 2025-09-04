@@ -31,7 +31,11 @@ export const CommentCard = ({ comment }: CardProps) => {
 			<div className=" flex flex-col gap-1 w-full">
 				<div className="flex  items-center  gap-1  ">
 					<h4 className="text-base   font-semibold  max-md:text-sm ">
-						{comment.comment_by.first_name} {comment.comment_by.last_name}
+						{comment?.comment_by?.guest
+							? 'Reader'
+							: `${comment.comment_by.first_name} ${
+									comment.comment_by.last_name ?? ''
+							  }`}
 					</h4>
 
 					<FaCircle className="text-gray-600   " size={4} />

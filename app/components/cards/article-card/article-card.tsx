@@ -11,6 +11,7 @@ import DeleteArticlePrompt from './delete-article-prompt';
 import * as motion from 'motion/react-client';
 
 import EditArticlePrompt from './edit-article-prompt';
+import { useAuthContext } from '~/app/context/auth-context';
 
 interface articleProps {
 	article: IArticle;
@@ -38,7 +39,7 @@ const ArticleCard = ({ article, admin = false }: articleProps) => {
 		togglePopup: toggleDeleteArticlePrompt,
 	} = usePopup();
 	const [articleToEdit, setArticleToEdit] = useState<IArticle | null>(null);
-
+	const { user } = useAuthContext();
 	return (
 		<>
 			<motion.div
@@ -64,16 +65,20 @@ const ArticleCard = ({ article, admin = false }: articleProps) => {
 						<>
 							{admin && (
 								<div className="absolute top-5 right-5 z-20">
-									<button
-										className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-[#ffffff43]  "
-										onClick={(e) => {
-											e.preventDefault();
-											e.stopPropagation();
-											toggleAdminPrompt();
-										}}
-									>
-										<FaEllipsisVertical className="text-xl text-white" />
-									</button>
+									{user?.role === 'super_admin' ||
+										(article?.author?._id === user?._id && (
+											<button
+												className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-[#ffffff43]  "
+												onClick={(e) => {
+													e.preventDefault();
+													e.stopPropagation();
+													toggleAdminPrompt();
+												}}
+											>
+												<FaEllipsisVertical className="text-xl text-white" />
+											</button>
+										))}
+
 									{adminPrompt && (
 										<div
 											className={`flex  flex-col bg-white shadow-lg  w-[130px] rounded-md   duration-150 absolute top-0 right-[100%] divide-y divide-lightGrey overflow-hidden border border-lightGrey z-20   ${

@@ -58,10 +58,7 @@ const ReplyComment = ({ comment }: replyProps) => {
 			setReplyError('Comment is required');
 			return;
 		}
-		if (!user) {
-			toggleAuthPopup();
-			return;
-		}
+
 		if (!commentId) {
 			setReplyError('Comment Id required');
 		}
@@ -98,67 +95,71 @@ const ReplyComment = ({ comment }: replyProps) => {
 			},
 		});
 	};
+	console.log('comment', comment);
 	return (
 		<>
 			<div className="py-2 flex items-center gap-2">
 				<button
 					className={`px-2   flex  items-center  h-[25px]   gap-1 text-gray-600 hover:text-purple duration-150  rounded-full  `}
 					onClick={() => {
-						if (user) {
-							setIsOpen(!isOpen);
-						} else {
-							toggleAuthPopup();
-						}
+						setIsOpen(!isOpen);
 					}}
 				>
 					<BiSolidCommentDetail size={15} />
 					<span className=" text-sm max-md:text-xs">Reply</span>
 				</button>
-				{(comment?.comment_by._id === user?._id ||
-					user?.role === 'admin' ||
-					user?.role === 'super_admin') && (
-					<div className="relative">
-						<button
-							className="px-2 flex items-center h-[25px] gap-1 text-gray-600 hover:text-purple duration-150 rounded-full"
-							onClick={() => {
-								if (user) {
-									toggleCommentPrompt();
-								} else {
-									toggleAuthPopup();
-								}
-							}}
-						>
-							<FaEllipsisH size={15} />
-						</button>
-
-						{commentPrompt && (
-							<div
-								className={`flex flex-col bg-white shadow-lg w-[150px] rounded-md duration-150 absolute top-0 right-[100%] divide-y divide-lightGrey overflow-hidden border border-lightGrey z-20 ${
-									commentPromptVisible ? 'opacity-100' : 'opacity-0'
-								}`}
-								ref={commentPromptRef}
+				{
+					// Case 1: Comment by a real user (non-anonymous)
+					((!comment?.comment_by?.guest &&
+						(comment?.comment_by?._id === user?._id ||
+							user?.role === 'admin' ||
+							user?.role === 'super_admin')) ||
+						// Case 2: Comment by Anonymous → only admins/super_admins
+						(comment?.comment_by?.guest &&
+							(user?.role === 'admin' || user?.role === 'super_admin'))) && (
+						<div className="relative">
+							<button
+								className="px-2 flex items-center h-[25px] gap-1 text-gray-600 hover:text-purple duration-150 rounded-full"
+								onClick={() => {
+									if (user) {
+										toggleCommentPrompt();
+									} else {
+										toggleAuthPopup();
+									}
+								}}
 							>
-								{comment?.comment_by._id === user?._id && (
+								<FaEllipsisH size={15} />
+							</button>
+
+							{commentPrompt && (
+								<div
+									className={`flex flex-col bg-white shadow-lg w-[150px] rounded-md duration-150 absolute top-0 right-[100%] divide-y divide-lightGrey overflow-hidden border border-lightGrey z-20 ${
+										commentPromptVisible ? 'opacity-100' : 'opacity-0'
+									}`}
+									ref={commentPromptRef}
+								>
+									{comment?.comment_by?._id === user?._id && (
+										<button
+											className="py-2 w-full text-[13px] text-grey flex items-center gap-2 px-3 hover:bg-lightGrey duration-150"
+											onClick={toggleEditCommentPrompt}
+										>
+											<FaPen className="text-sm" />
+											<span>Edit comment</span>
+										</button>
+									)}
+
 									<button
 										className="py-2 w-full text-[13px] text-grey flex items-center gap-2 px-3 hover:bg-lightGrey duration-150"
-										onClick={toggleEditCommentPrompt}
+										onClick={toggleDeleteCommentPrompt}
 									>
-										<FaPen className="text-sm" />
-										<span>Edit comment</span>
+										<RiDeleteBinLine className="text-sm text-red" />
+										<span>Delete comment</span>
 									</button>
-								)}
-
-								<button
-									className="py-2 w-full text-[13px] text-grey flex items-center gap-2 px-3 hover:bg-lightGrey duration-150"
-									onClick={toggleDeleteCommentPrompt}
-								>
-									<RiDeleteBinLine className="text-sm text-red" />
-									<span>Delete comment</span>
-								</button>
-							</div>
-						)}
-					</div>
-				)}
+								</div>
+							)}
+						</div>
+					)
+				}
 			</div>
 
 			<div

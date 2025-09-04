@@ -1,4 +1,3 @@
-import { isValidObjectId } from 'mongoose';
 import { NextRequest, NextResponse } from 'next/server';
 import connectMongo from '~/lib/connect-mongo';
 import Alert from '~/lib/models/alerts';
@@ -17,13 +16,6 @@ export async function POST(
 		if (comment.trim() === '') {
 			return NextResponse.json(
 				{ error: 'Comment not provided' },
-				{ status: 400 },
-			);
-		}
-
-		if (!isValidObjectId(userId)) {
-			return NextResponse.json(
-				{ error: 'User Id not provided or invalid' },
 				{ status: 400 },
 			);
 		}
@@ -53,7 +45,7 @@ export async function POST(
 
 		await CommentModel.create({
 			comment: comment,
-			comment_by: userId,
+			comment_by: userId ? userId : null,
 			parent_id: comment_parent_id || null,
 			article_id: existingArticle._id,
 		});
@@ -61,7 +53,7 @@ export async function POST(
 		await Alert.create({
 			type: 'comment_created',
 			message: `made a comment: ${comment}`,
-			triggered_by: userId,
+			triggered_by: userId ? userId : null,
 			link: {
 				url: `/topics/${selectedTopic.slug}/${existingArticle.slug}`,
 				label: 'View article',
