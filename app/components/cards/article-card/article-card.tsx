@@ -65,19 +65,19 @@ const ArticleCard = ({ article, admin = false }: articleProps) => {
 						<>
 							{admin && (
 								<div className="absolute top-5 right-5 z-20">
-									{user?.role === 'super_admin' ||
-										(article?.author?._id === user?._id && (
-											<button
-												className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-[#ffffff43]  "
-												onClick={(e) => {
-													e.preventDefault();
-													e.stopPropagation();
-													toggleAdminPrompt();
-												}}
-											>
-												<FaEllipsisVertical className="text-xl text-white" />
-											</button>
-										))}
+									{(user?.role === 'super_admin' ||
+										article?.author?._id === user?._id) && (
+										<button
+											className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-[#ffffff43]"
+											onClick={(e) => {
+												e.preventDefault();
+												e.stopPropagation();
+												toggleAdminPrompt();
+											}}
+										>
+											<FaEllipsisVertical className="text-xl text-white" />
+										</button>
+									)}
 
 									{adminPrompt && (
 										<div
