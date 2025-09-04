@@ -138,16 +138,18 @@ const ArticleCard = ({ article, admin = false }: articleProps) => {
 								{admin && (
 									<div className="absolute top-0 left-0 h-full w-full bg-[#15133d7a]"></div>
 								)}
-								<button className="bg-purple h-[40px] hover:bg-darkPurple duration-150 px-3 text-white text-sm rounded-sm absolute  top-5 left-5 font-semibold max-2xs:h-[30px] max-2xs:px-2  max-2xs:text-xs max-2xs:top-3 max-2xs:left-3 ">
+							</div>
+							<div className="flex items-center justify-between w-full">
+								<div className="flex gap-4 items-center text-lg  max-md:text-base ">
+									<span>{formatDate(article?.createdAt)}</span>
+
+									<FaCircle className="text-[10px] " />
+
+									<span>{article?.duration || '2'} mins read</span>
+								</div>
+								<button className="bg-purple h-[30px] hover:bg-darkPurple duration-150 px-3 text-white text-sm rounded-sm font-semibold max-2xs:h-[30px] max-2xs:px-2  max-2xs:text-xs max-2xs:top-3 max-2xs:left-3 ">
 									{article?.topic.title}
 								</button>
-							</div>
-							<div className="flex gap-4 items-center text-lg  max-md:text-base">
-								<span>{formatDate(article?.createdAt)}</span>
-
-								<FaCircle className="text-[10px] " />
-
-								<span>{article?.duration || '2'} mins read</span>
 							</div>
 							<h1 className="text-lg poppins-bold line-clamp-2 max-2xs:text-base">
 								{article?.title}
