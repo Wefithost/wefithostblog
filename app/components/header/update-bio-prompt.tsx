@@ -76,9 +76,9 @@ const UpdateBioPrompt = ({
 					ref={ref}
 				>
 					<div className="flex items-center flex-col gap-0 w-full leading-none">
-						<h1 className="text-2xl sf-bold text-center text-black">
+						<h3 className="text-2xl sf-bold text-center text-black">
 							Update Bio
-						</h1>
+						</h3>
 						<p className="text-gray-700 text-center text-xs ">
 							A bio tells the reader more about you and allows them to see
 							things from your perspective or point of view.

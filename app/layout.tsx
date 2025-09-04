@@ -28,7 +28,7 @@ const PoppinsBold = localFont({
 export const metadata: Metadata = {
 	title: 'WefitHost Blog',
 	description:
-		'WeFitHost Blog brings you the latest tips, updates, and insights on web hosting, website management, and digital tools — helping individuals and businesses build faster, smarter, and more secure online experiences',
+		'WeFitHost Blog shares tips, updates, and insights on hosting, site management, and digital tools to help you build smarter, faster, and safer online.',
 };
 
 export default function RootLayout({

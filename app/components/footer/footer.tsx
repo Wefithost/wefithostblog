@@ -141,9 +141,9 @@ const Footer = () => {
 				<div className=" grid grid-cols-3   w-[800px]   py-12 max-lg:hidden">
 					{footerLink.map((data) => (
 						<div className="flex   gap-4  flex-col " key={data.header}>
-							<h1 className=" text-[18px] font-semibold text-white">
+							<h4 className=" text-[18px] font-semibold text-white">
 								{data.header}
-							</h1>
+							</h4>
 							<div className="flex gap-2 flex-col text-[20px] font-semibold items-start">
 								{data.link.map((li) => (
 									<Link

@@ -71,9 +71,9 @@ const LogoutPrompt = ({
 					<div className="flex flex-col  items-center">
 						<Image src={waving} className="w-20" alt="" />
 						<div className="flex flex-col gap-2">
-							<h1 className="text-[27px] text-center text-black font-semibold">
+							<h3 className="text-[27px] text-center text-black font-semibold">
 								See you soon
-							</h1>
+							</h3>
 							<p className="text-sm sf-light  text-center text-light-blue">
 								You are about to logout.
 								<br />
@@ -81,7 +81,7 @@ const LogoutPrompt = ({
 							</p>
 						</div>
 					</div>
-					{error && <h1 className="text-sm text-red  text-center">{error}</h1>}
+					{error && <h3 className="text-sm text-red  text-center">{error}</h3>}
 					<div
 						className="flex items-center gap-2  w-full"
 						onClick={() => setResetPassword(false)}

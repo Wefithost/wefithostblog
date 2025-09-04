@@ -61,9 +61,9 @@ const ProfileDropdown = () => {
 						className="w-6 h-6 object-cover rounded-full "
 						alt=""
 					/>
-					<h1 className="text-black  max-2xl:text-base  max-xs:text-sm text-base leading-0 max-sm:hidden flex ">
+					<h3 className="text-black  max-2xl:text-base  max-xs:text-sm text-base leading-0 max-sm:hidden flex ">
 						{user?.first_name ?? user?.email}
-					</h1>
+					</h3>
 					<FaAngleDown
 						className={`duration-150 text-black text-base font-light max-sm:hidden ${
 							profileDropdownVisible ? 'rotate-180' : ''
@@ -77,7 +77,7 @@ const ProfileDropdown = () => {
 						}`}
 						ref={profileDropdownRef}
 					>
-						<h1 className="text-xl  text-black ">Your account</h1>
+						<h3 className="text-xl  text-black ">Your account</h3>
 						<div className="flex flex-col w-full gap-1">
 							<div className="flex  items-center gap-3 py-2 px-3   bg-white rounded-lg  border-gray-400 ">
 								{/* eslint-disable-next-line */}
@@ -88,23 +88,23 @@ const ProfileDropdown = () => {
 									alt=""
 								/>
 								<div className="flex flex-col items-start line-clamp-1 ">
-									<h1 className="text-[16px] leading-[24px] line-clamp-1 text-black">
+									<h3 className="text-[16px] leading-[24px] line-clamp-1 text-black">
 										{user?.first_name} {user?.last_name}
-									</h1>
+									</h3>
 									{user?.first_name && (
-										<h1 className="text-sm leading-[20px]text-black">
+										<h3 className="text-sm leading-[20px]text-black">
 											{user?.email}
-										</h1>
+										</h3>
 									)}
 								</div>
 							</div>
 							<div className="flex items-center justify-between">
-								<h1 className="text-sm text-[#8D8896] py-1 px-3 ">
+								<h3 className="text-sm text-[#8D8896] py-1 px-3 ">
 									joined{' '}
 									<span className=" text-black">
 										{formatDate(user?.createdAt as string)}
 									</span>
-								</h1>
+								</h3>
 
 								{user?.role !== 'member' && (
 									<Link
@@ -125,16 +125,16 @@ const ProfileDropdown = () => {
 									className="flex items-center bg-white justify-between p-3 rounded-lg outline-none duration-150  hover:bg-purple-50"
 									onClick={toggleChangeNamePrompt}
 								>
-									<h1 className="text-sm">
+									<h3 className="text-sm">
 										{user?.first_name ? 'Change name' : 'Enter your name'}
-									</h1>
+									</h3>
 									<MdOutlineKeyboardArrowRight className="text-sm " />
 								</button>
 								<button
 									className="flex items-center bg-white justify-between p-3 rounded-lg outline-none  hover:bg-purple-50  duration-150    "
 									onClick={toggleChangeProfilePrompt}
 								>
-									<h1 className="text-sm">Change profile</h1>
+									<h3 className="text-sm">Change profile</h3>
 									<MdOutlineKeyboardArrowRight className="text-sm " />
 								</button>
 								{user?.role !== 'member' && (
@@ -144,10 +144,10 @@ const ProfileDropdown = () => {
 											toggleChangeBioPrompt();
 										}}
 									>
-										<h1 className="text-sm">
+										<h3 className="text-sm">
 											{' '}
 											{user?.bio ? 'Edit bio' : 'Add a bio'}
-										</h1>
+										</h3>
 										<MdOutlineKeyboardArrowRight className="text-sm " />
 									</button>
 								)}
@@ -160,10 +160,10 @@ const ProfileDropdown = () => {
 										setCurrentAction('forgot-password');
 									}}
 								>
-									<h1 className="text-sm">
+									<h3 className="text-sm">
 										{' '}
 										{user?.password ? 'Change password' : 'Set a password'}
-									</h1>
+									</h3>
 									<MdOutlineKeyboardArrowRight className="text-sm " />
 								</button>
 							</div>

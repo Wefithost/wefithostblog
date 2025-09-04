@@ -77,9 +77,9 @@ const EditName = ({
 					ref={ref}
 				>
 					<div className="flex items-center flex-col gap-0 w-full leading-none">
-						<h1 className="text-2xl sf-bold text-center text-black">
+						<h3 className="text-2xl sf-bold text-center text-black">
 							Edit Name
-						</h1>
+						</h3>
 						<p className="text-grey-blue text-center text-sm ">
 							Enter new name below
 						</p>

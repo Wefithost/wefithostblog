@@ -110,7 +110,7 @@ const EditProfile = ({
 						ref={ref}
 					>
 						<div className="flex items-center flex-col gap-0 w-full leading-none">
-							<h1 className="text-2xl text-center text-black">Upload Image</h1>
+							<h3 className="text-2xl text-center text-black">Upload Image</h3>
 						</div>
 
 						<div className="flex flex-col gap-0 items-center justify-center">
@@ -132,7 +132,7 @@ const EditProfile = ({
 							</button>
 						</div>
 
-						{error && <h1 className="text-xs text-center text-red">{error}</h1>}
+						{error && <h3 className="text-xs text-center text-red">{error}</h3>}
 
 						<div className="gap-2 flex w-full">
 							<AsyncButton
