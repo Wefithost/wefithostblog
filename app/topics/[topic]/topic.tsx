@@ -71,7 +71,7 @@ export default function Topic() {
 					<>
 						<section className="flex flex-col gap-4 max-w-[900px] max-xs:gap-2">
 							<h1 className="text-4xl poppins-bold max-2xl:text-3xl max-xs:text-2xl capitalize">
-								Articles on {pagedArticles?.title}
+								All Articles on {pagedArticles?.title}
 							</h1>
 							<p className="text-lg max-2xl:text-base max-xs:text-[15px]">
 								{pagedArticles?.desc}

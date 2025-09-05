@@ -53,7 +53,7 @@ const Overlay = () => {
 				)}
 
 				<Link
-					href="/contact"
+					href="https://wefithost.com/contact-us"
 					className="text-base uppercase py-4 px-6 border-b border-lightGrey"
 				>
 					Contact us

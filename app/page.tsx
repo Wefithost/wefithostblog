@@ -57,7 +57,7 @@ export default function Home() {
 				<FeaturedArticlesPreview />
 				<section className="flex flex-col gap-4 max-w-[1500px]  w-full">
 					<h1 className="text-4xl poppins-bold max-2xl:text-3xl max-xs:text-2xl ">
-						WeFitHost Blog
+						Welcome to WeFitHost Blog
 					</h1>
 					<h2 className="text-lg max-2xl:text-base max-w-[800px] max-2xs:text-sm">
 						WeFitHost Blog brings you the latest tips, updates, and insights on
