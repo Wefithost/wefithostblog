@@ -139,8 +139,8 @@ const ArticleCard = ({ article, admin = false }: articleProps) => {
 									<div className="absolute top-0 left-0 h-full w-full bg-[#15133d7a]"></div>
 								)}
 							</div>
-							<div className="flex items-center justify-between w-full">
-								<div className="flex gap-4 items-center text-lg  max-md:text-base ">
+							<div className="flex items-center justify-between w-full gap-2">
+								<div className="flex gap-4 items-center text-lg  max-dmd:text-base max-md:text-sm ">
 									<span>{formatDate(article?.createdAt)}</span>
 
 									<FaCircle className="text-[10px] " />

@@ -115,7 +115,7 @@ const Footer = () => {
 				linkname.startsWith('/admin') && 'hidden'
 			}`}
 		>
-			<div className="flex item   max-2xl:px-10 max-xs:px-5 max-lg:flex-col max-sm:px-5 justify-between max-w-[1500px] mx-auto w-full">
+			<div className="flex item   max-3xl:px-10 max-xs:px-5 max-lg:flex-col max-sm:px-5 justify-between max-w-[1500px] mx-auto w-full">
 				<div className=" py-12   text-white shrink-0 flex flex-col max-xl:px-3 max-lg:border-none   max-sm:px-0">
 					<div className=" flex flex-col gap-6 max-w-[500px]">
 						<div className="flex  flex-col gap-3">
