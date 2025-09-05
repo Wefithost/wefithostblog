@@ -23,7 +23,7 @@ export const CommentCard = ({ comment }: CardProps) => {
 				<img
 					src={comment?.comment_by.profile ?? '/icons/default-user.svg'}
 					className="w-9 h-9 object-cover rounded-full max-sm:w-6 max-sm:h-6 relative z-10 overflow-hidden shrink-0"
-					alt=""
+					alt="profile"
 				/>
 				<div className="absolute w-[1px] bg-gray-300  top-0 h-full"></div>
 			</div>

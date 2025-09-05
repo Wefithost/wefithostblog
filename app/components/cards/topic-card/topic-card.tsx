@@ -104,13 +104,13 @@ const TopicCard = ({
 					{/* eslint-disable-next-line */}
 					<img
 						src={topic?.image}
-						alt=""
+						alt={topic?.image || 'topic image'}
 						className="w-full h-full object-cover min-h-[200px]"
 					/>
 					<div className="absolute top-0 left-0 h-full w-full bg-[#15133d7a] min-h-[200px]"></div>
-					<h1 className="  text-white text-2xl rounded-sm absolute  bottom-2 left-5 font-semibold  max-2xs:px-2 max-2xs:text-2xl poppins-bold capitalize">
+					<h3 className="  text-white text-2xl rounded-sm absolute  bottom-2 left-5 font-semibold  max-2xs:px-2 max-2xs:text-2xl poppins-bold capitalize">
 						{topic?.title}
-					</h1>
+					</h3>
 				</div>
 				<div className="p-6 max-md:p-3">
 					<p className="text-base line-clamp-3 article-desc max-md:text-sm max-2xs:text-sm  ">

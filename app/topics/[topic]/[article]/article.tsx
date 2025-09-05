@@ -102,11 +102,9 @@ const Article = () => {
 							{/* eslint-disable-next-line */}
 							<img
 								src={article_data?.image}
+								alt={article_data?.title || 'article image'}
 								className="min-h-[500px] max-h-[500px] max-lg:min-h-[400px]  max-lg:max-h-[400px] bg-[#ffffff] object-cover  max-md:min-h-[200px]  max-md:max-h-auto w-full"
 							/>
-							{/* <button className="bg-purple hover:bg-darkPurple text-white text-lg h-[40px] px-2.5 duration-150 rounded-sm max-md:text-sm max-md:h-[35px] absolute bottom-4 left-4 z-10 max-md:block hidden ">
-								{article_data?.topic.title}
-							</button> */}
 						</div>
 						<div className="flex items-start flex-col justify-between p-20 w-1/2 max-2xl:p-5 max-md:w-full    max-md:bg-white max-md:p-0 max-md:py-2 ">
 							<button className="bg-purple hover:bg-darkPurple text-white text-lg h-[40px] px-2.5 duration-150 rounded-sm max-md:text-sm max-md:h-[35px] max-md:hidden">
@@ -125,7 +123,7 @@ const Article = () => {
 										article_data?.author?.profile ?? '/icons/default-user.svg'
 									}
 									className="w-9 h-9 object-cover rounded-full border border-gray-700"
-									alt=""
+									alt={article_data?.author?.first_name || 'author'}
 								/>
 								<div className="flex items-start gap-0  flex-col">
 									<span className="text-base font-semibold text-white">
@@ -159,7 +157,7 @@ const Article = () => {
 					{!isFetching && !error && article_data?.author && (
 						<>
 							<div className=" border-t-1 border-gray-400 w-full  flex flex-col gap-2 py-4">
-								<h1 className=" text-base">About the author</h1>
+								<h4 className=" text-base">About the author</h4>
 								<div className=" items-center gap-2 flex">
 									{/* eslint-disable-next-line */}
 									<img
@@ -167,7 +165,7 @@ const Article = () => {
 											article_data?.author?.profile ?? '/icons/default-user.svg'
 										}
 										className="w-9 h-9 object-cover rounded-full border border-gray-400"
-										alt=""
+										alt={article_data?.author?.first_name ?? 'author'}
 									/>
 									<div className="flex items-start gap-0  flex-col">
 										<span className="text-base font-semibold text-black max-md:text-sm">
@@ -195,14 +193,14 @@ const Article = () => {
 						</>
 					)}
 				</div>
-				<div className="flex flex-col justify-between max-xl:flex-row  gap-5 max-md:flex-col max-xl:hidden">
+				<aside className="flex flex-col justify-between max-xl:flex-row  gap-5 max-md:flex-col max-xl:hidden">
 					<div className="w-[450px] bg-white border-purple rounded-2xl  shrink-0 flex flex-col gap-4 items-center justify-between sticky top-20 shadow-sm p-4 max-xl:w-1/2 max-xl:static max-md:w-full max-xs:gap-2">
 						<Image
 							src={logo}
 							alt="wefithost logo"
 							className="w-28 max-xs:w-18"
 						/>
-						<h1 className="text-lg poppins text-center">About our blog</h1>
+						<h3 className="text-lg poppins text-center">About our blog</h3>
 						<p className="text-center text-base text-gray-500">
 							Welcome to WeFitHost Insights, where we share expert knowledge and
 							strategies to help you succeed in the hosting world.
@@ -217,9 +215,9 @@ const Article = () => {
 
 					<div className="w-[450px] bg-white border-purple rounded-2xl  shrink-0 flex flex-col gap-4 items-center justify-between sticky top-10 shadow-lg p-4 max-xl:w-1/2 max-xl:static max-md:w-full max-xl:shadow-sm max-xs:gap-2">
 						<FaEnvelope className="text-4xl text-purple " />
-						<h1 className="text-lg poppins text-center">
+						<h3 className="text-lg poppins text-center">
 							Subscribe to our newsletter
-						</h1>
+						</h3>
 						<p className="text-center">
 							Get the latest hosting tips and business insights
 						</p>
@@ -246,7 +244,7 @@ const Article = () => {
 							We&apos;ll never share your email. Unsubscribe anytime.
 						</span>
 					</div>
-				</div>
+				</aside>
 			</section>
 			<Loader fetching={fetchingArticles} error={errorFetchingArticles}>
 				{related_articles && related_articles?.length > 0 && (
@@ -258,10 +256,10 @@ const Article = () => {
 					</>
 				)}
 			</Loader>
-			<div className=" flex-col justify-between max-xl:flex-row  gap-5 max-md:flex-col max-xl:flex hidden">
+			<aside className=" flex-col justify-between max-xl:flex-row  gap-5 max-md:flex-col max-xl:flex hidden">
 				<div className="w-[450px] bg-white border-purple rounded-2xl  shrink-0 flex flex-col gap-4 items-center justify-between sticky top-20 shadow-sm p-4 max-xl:w-1/2 max-xl:static max-md:w-full max-xs:gap-2">
 					<Image src={logo} alt="wefithost logo" className="w-28 max-xs:w-18" />
-					<h1 className="text-lg poppins text-center">About our blog</h1>
+					<h3 className="text-lg poppins text-center">About our blog</h3>
 					<p className="text-center text-base text-gray-500">
 						Welcome to WeFitHost Insights, where we share expert knowledge and
 						strategies to help you succeed in the hosting world.
@@ -276,9 +274,9 @@ const Article = () => {
 
 				<div className="w-[450px] bg-white border-purple rounded-2xl  shrink-0 flex flex-col gap-4 items-center justify-between sticky top-10 shadow-lg p-4 max-xl:w-1/2 max-xl:static max-md:w-full max-xl:shadow-sm max-xs:gap-2">
 					<FaEnvelope className="text-4xl text-purple " />
-					<h1 className="text-lg poppins text-center">
+					<h3 className="text-lg poppins text-center">
 						Subscribe to our newsletter
-					</h1>
+					</h3>
 					<p className="text-center">
 						Get the latest hosting tips and business insights
 					</p>
@@ -305,7 +303,7 @@ const Article = () => {
 						We&apos;ll never share your email. Unsubscribe anytime.
 					</span>
 				</div>
-			</div>
+			</aside>
 		</motion.main>
 	);
 };

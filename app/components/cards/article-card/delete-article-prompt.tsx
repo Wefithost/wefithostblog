@@ -78,15 +78,17 @@ const DeleteArticlePrompt = ({
 				>
 					<IoTrashBinOutline className="text-4xl  text-red-400 object-cover" />
 					<div className="flex items-center flex-col gap-1 w-full leading-none">
-						<h1 className="text-2xl sf-bold text-center text-black">
+						<h3 className="text-2xl sf-bold text-center text-black">
 							Delete Article
-						</h1>
+						</h3>
 						<p className="text-sm text-center ">
 							Your&apos;re about to delete this article. Is that what you want?
 						</p>
 					</div>
 
-					{error && <h1 className="text-xs text-center text-red">{error}</h1>}
+					{error && (
+						<span className="text-xs text-center text-red">{error}</span>
+					)}
 					<div className="gap-2 flex w-full">
 						<AsyncButton
 							classname_override="!h-[40px] !rounded-md"

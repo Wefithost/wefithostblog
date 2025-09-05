@@ -6,7 +6,7 @@ import {
 	Bold,
 	Code,
 	CodeSquare,
-	Heading1,
+	// Heading1,
 	Heading2,
 	Heading3,
 	Highlighter,
@@ -71,12 +71,12 @@ export const MenuBar = ({ editor }: editorProps) => {
 			pressed: editor.isActive('code'),
 			icon: <Code size={15} />,
 		},
-		{
-			onClick: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
-			disabled: undefined,
-			pressed: editor.isActive('heading', { level: 1 }),
-			icon: <Heading1 size={15} />,
-		},
+		// {
+		// 	onClick: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
+		// 	disabled: undefined,
+		// 	pressed: editor.isActive('heading', { level: 1 }),
+		// 	icon: <Heading1 size={15} />,
+		// },
 		{
 			onClick: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
 			disabled: undefined,

@@ -69,7 +69,7 @@ const LogoutPrompt = ({
 					ref={logoutPromptRef}
 				>
 					<div className="flex flex-col  items-center">
-						<Image src={waving} className="w-20" alt="" />
+						<Image src={waving} className="w-20" alt="waving" />
 						<div className="flex flex-col gap-2">
 							<h3 className="text-[27px] text-center text-black font-semibold">
 								See you soon

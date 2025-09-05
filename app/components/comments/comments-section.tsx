@@ -64,8 +64,8 @@ const CommentsSection = () => {
 		//  deps:[loading,user]
 	});
 	return (
-		<div className="flex flex-col gap-3 w-full ">
-			<h1 className="text-2xl poppins-bold max-md:text-xl">Comments</h1>
+		<aside className="flex flex-col gap-3 w-full ">
+			<h3 className="text-2xl poppins-bold max-md:text-xl">Comments</h3>
 			<div className="flex flex-col gap-1">
 				<div className="flex items-center gap-2">
 					<ClassicInput
@@ -108,7 +108,7 @@ const CommentsSection = () => {
 					</div>
 				</Loader>
 			</div>
-		</div>
+		</aside>
 	);
 };
 

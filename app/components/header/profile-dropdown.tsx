@@ -59,7 +59,7 @@ const ProfileDropdown = () => {
 					<img
 						src={user?.profile ? user.profile : '/icons/default-user.svg'}
 						className="w-6 h-6 object-cover rounded-full "
-						alt=""
+						alt="profile"
 					/>
 					<h3 className="text-black  max-2xl:text-base  max-xs:text-sm text-base leading-0 max-sm:hidden flex ">
 						{user?.first_name ?? user?.email}
@@ -85,7 +85,7 @@ const ProfileDropdown = () => {
 									src={user?.profile ? user.profile : '/icons/default-user.svg'}
 									className="w-10  h-10 object-cover rounded-full cursor-pointer "
 									onClick={toggleChangeProfilePrompt}
-									alt=""
+									alt="profile"
 								/>
 								<div className="flex flex-col items-start line-clamp-1 ">
 									<h3 className="text-[16px] leading-[24px] line-clamp-1 text-black">

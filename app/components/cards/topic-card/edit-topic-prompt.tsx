@@ -145,9 +145,9 @@ const EditTopicPrompt = ({
 						ref={ref}
 					>
 						<div className="flex items-center flex-col gap-0 w-full leading-none">
-							<h1 className="text-2xl sf-bold text-center text-black">
+							<h3 className="text-2xl sf-bold text-center text-black">
 								Edit topic
-							</h1>
+							</h3>
 						</div>
 						<div className="flex flex-col gap-0 items-center justify-center w-full">
 							{imagePreview ? (
@@ -186,7 +186,9 @@ const EditTopicPrompt = ({
 							errorContent="Description is required"
 							name="desc"
 						/>
-						{error && <h1 className="text-xs text-center text-red">{error}</h1>}
+						{error && (
+							<span className="text-xs text-center text-red">{error}</span>
+						)}
 						<div className="gap-2 flex w-full">
 							<AsyncButton
 								classname_override="!h-[40px] !rounded-md "

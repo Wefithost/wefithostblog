@@ -119,7 +119,7 @@ const Footer = () => {
 				<div className=" py-12   text-white shrink-0 flex flex-col max-xl:px-3 max-lg:border-none   max-sm:px-0">
 					<div className=" flex flex-col gap-6 max-w-[500px]">
 						<div className="flex  flex-col gap-3">
-							<Image src={logo} className="invert" alt="" />
+							<Image src={logo} className="invert" alt="wefithost logo" />
 							<p className="text-lg ">
 								Reliable web hosting, domains, cloud solutions, and professional
 								email services for businesses of all sizes.

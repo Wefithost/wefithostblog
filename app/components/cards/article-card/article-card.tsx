@@ -163,7 +163,7 @@ const ArticleCard = ({ article, admin = false }: articleProps) => {
 									<img
 										src={article?.author?.profile ?? '/icons/default-user.svg'}
 										className="w-7 h-7 object-cover rounded-full max-sm:w-6 max-sm:h-6"
-										alt=""
+										alt={article?.author?.first_name ?? 'author'}
 									/>
 									<span className="text-base font-semibold text-gray-700 max-sm:text-xs ">
 										{article?.author?.first_name} {article?.author?.last_name}
