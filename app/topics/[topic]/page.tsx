@@ -18,13 +18,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		};
 	}
 
-	const url = `https://blog.wefithost.com/${topicParam?.topic}`;
+	const url = `https://blog.wefithost.com/topics/${topicParam?.topic}`;
 
 	return {
 		title: `Articles on ${topic.title}`,
 		description: topic.description,
 		alternates: {
-			canonical: 'https://blog.wefithost.com/',
+			canonical: `https://blog.wefithost.com/topics/${topicParam?.topic}`,
 		},
 		openGraph: {
 			title: `Articles on ${topic.title}`,

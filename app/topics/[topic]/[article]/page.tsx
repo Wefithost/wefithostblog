@@ -20,12 +20,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		};
 	}
 
-	const url = `https://blog.wefithost.com/${articleParam?.topic}/${articleParam?.article}`;
+	const url = `https://blog.wefithost.com/topics/${articleParam?.topic}/${articleParam?.article}`;
 
 	return {
 		title: article.title,
 		alternates: {
-			canonical: 'https://blog.wefithost.com/',
+			canonical: `https://blog.wefithost.com/topics/${articleParam?.topic}/${articleParam?.article}`,
 		},
 		description: article.description,
 		openGraph: {
