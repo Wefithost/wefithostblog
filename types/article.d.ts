@@ -9,6 +9,7 @@ export interface IArticle {
 	duration?: number;
 	description: string;
 	createdAt: string;
+	updatedAt: string;
 	article: JSONContent;
 	author: {
 		_id: string;

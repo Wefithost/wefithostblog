@@ -26,9 +26,38 @@ const PoppinsBold = localFont({
 	variable: '--font-poppinsextra',
 });
 export const metadata: Metadata = {
-	title: 'WefitHost Blog',
+	title: 'WefitHost Blog – Smarter, Faster, and Safer Hosting Guides',
+	alternates: {
+		canonical: 'https://blog.wefithost.com/',
+	},
 	description:
 		'WeFitHost Blog shares tips, updates, and insights on hosting, site management, and digital tools to help you build smarter, faster, and safer online.',
+	openGraph: {
+		title: 'WefitHost Blog',
+		description:
+			'WeFitHost Blog shares tips, updates, and insights on hosting, site management, and digital tools to help you build smarter, faster, and safer online.',
+		url: 'https://res.cloudinary.com/dl6pa30kz/image/upload/v1757335730/weFitHost-blog_vqp2he.png',
+		siteName: 'WefitHost Blog',
+		images: [
+			{
+				url: 'https://res.cloudinary.com/dl6pa30kz/image/upload/v1757335730/weFitHost-blog_vqp2he.png', // your OG image
+				width: 1200,
+				height: 630,
+				alt: 'WefitHost Blog Cover',
+			},
+		],
+		locale: 'en_US',
+		type: 'website',
+	},
+	twitter: {
+		card: 'summary_large_image',
+		title: 'WefitHost Blog',
+		description:
+			'Tips, updates, and insights on hosting, site management, and digital tools.',
+		images: [
+			'https://res.cloudinary.com/dl6pa30kz/image/upload/v1757335730/weFitHost-blog_vqp2he.png',
+		], // can reuse OG image
+	},
 };
 
 export default function RootLayout({

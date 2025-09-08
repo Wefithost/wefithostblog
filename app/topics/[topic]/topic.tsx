@@ -1,5 +1,6 @@
 'use client';
 import { useParams } from 'next/navigation';
+import Script from 'next/script';
 import { useEffect, useState } from 'react';
 import ArticlesContainer from '~/app/components/articles-container/articles-container';
 import HeroPreview from '~/app/components/hero-preview';
@@ -63,50 +64,84 @@ export default function Topic() {
 	const other_topics = topics?.filter((type) => slugify(type?.title) !== topic);
 
 	return (
-		<main className="mx-auto w-full">
-			<div className="min-h-screen w-full py-8 gap-16 flex flex-col  max-w-[1500px] max-2xl:py-6 max-2xl:gap-10   max-2xl:px-10 max-xs:px-5 mx-auto ">
-				<HeroPreview articles={pagedArticles?.articles as IArticle[]} />
+		<>
+			<Script
+				id="structured-data-topic"
+				type="application/ld+json"
+				strategy="afterInteractive"
+				dangerouslySetInnerHTML={{
+					__html: JSON.stringify({
+						'@context': 'https://schema.org',
+						'@type': 'CollectionPage',
+						name: `${pagedArticles?.title} Articles`,
+						description: `Read articles and tips on ${pagedArticles?.title} from WeFitHost Blog.`,
+						url: `https://blog.wefithost.com/topics/${slugify(
+							pagedArticles?.title,
+						)}`,
+						isPartOf: {
+							'@type': 'Blog',
+							name: 'WeFitHost Blog',
+							url: 'https://blog.wefithost.com',
+						},
+						mainEntity: pagedArticles?.articles?.map((post) => ({
+							'@type': 'BlogPosting',
+							headline: post.title,
+							url: `https://yourwebsite.com/blog/${post.slug}`,
+							datePublished: post.createdAt,
+							dateModified: post.updatedAt,
+							author: {
+								'@type': 'Person',
+								name: post.author?.first_name,
+							},
+						})),
+					}),
+				}}
+			/>
+			<main className="mx-auto w-full">
+				<div className="min-h-screen w-full py-8 gap-16 flex flex-col  max-w-[1500px] max-2xl:py-6 max-2xl:gap-10   max-2xl:px-10 max-xs:px-5 mx-auto ">
+					<HeroPreview articles={pagedArticles?.articles as IArticle[]} />
 
-				{pagedArticles && pagedArticles?.title && (
-					<>
-						<section className="flex flex-col gap-4 max-w-[900px] max-xs:gap-2">
-							<h1 className="text-4xl poppins-bold max-2xl:text-3xl max-xs:text-2xl capitalize">
-								All Articles on {pagedArticles?.title}
-							</h1>
-							<p className="text-lg max-2xl:text-base max-xs:text-[15px]">
-								{pagedArticles?.desc}
-							</p>
-						</section>
-					</>
-				)}
-				<ArticlesContainer
-					pagedArticles={pagedArticles?.articles as IArticle[]}
-					totalArticles={totalArticles}
-					currentPage={currentPage}
-					setCurrentPage={setCurrentPage}
-					pageSize={pageSize}
-					showFilters={false}
-					selectedSort={selectedSort}
-					setSelectedSort={setSelectedSort}
-					searchTerm={searchTerm}
-					setSearchTerm={setSearchTerm}
-					activeFilter={activeFilter}
-					setActiveFilter={setActiveFilter}
-					fetching={fetching}
-					error={error}
-				/>
-				{other_topics && other_topics?.length > 0 && (
-					<>
-						<RelatedTopicsSection
-							header="Check out our other topics"
-							related_topics={other_topics}
-						/>
-					</>
-				)}
-				{/* CTA Section */}
-				{/* <CtaSection /> */}
-			</div>
-		</main>
+					{pagedArticles && pagedArticles?.title && (
+						<>
+							<section className="flex flex-col gap-4 max-w-[900px] max-xs:gap-2">
+								<h1 className="text-4xl poppins-bold max-2xl:text-3xl max-xs:text-2xl capitalize">
+									All Articles on {pagedArticles?.title}
+								</h1>
+								<p className="text-lg max-2xl:text-base max-xs:text-[15px]">
+									{pagedArticles?.desc}
+								</p>
+							</section>
+						</>
+					)}
+					<ArticlesContainer
+						pagedArticles={pagedArticles?.articles as IArticle[]}
+						totalArticles={totalArticles}
+						currentPage={currentPage}
+						setCurrentPage={setCurrentPage}
+						pageSize={pageSize}
+						showFilters={false}
+						selectedSort={selectedSort}
+						setSelectedSort={setSelectedSort}
+						searchTerm={searchTerm}
+						setSearchTerm={setSearchTerm}
+						activeFilter={activeFilter}
+						setActiveFilter={setActiveFilter}
+						fetching={fetching}
+						error={error}
+					/>
+					{other_topics && other_topics?.length > 0 && (
+						<>
+							<RelatedTopicsSection
+								header="Check out our other topics"
+								related_topics={other_topics}
+							/>
+						</>
+					)}
+					{/* CTA Section */}
+					{/* <CtaSection /> */}
+				</div>
+			</main>
+		</>
 	);
 }
 
