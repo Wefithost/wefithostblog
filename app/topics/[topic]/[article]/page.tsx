@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			url,
 			images: [
 				{
-					url: article.image,
+					url: `${article.image.replace('/upload/', '/upload/f_jpg/')}`,
 					width: 1200,
 					height: 630,
 					alt: article.title,

@@ -107,9 +107,9 @@ export default function Topic() {
 								<h1 className="text-4xl poppins-bold max-2xl:text-3xl max-xs:text-2xl capitalize">
 									All Articles on {pagedArticles?.title}
 								</h1>
-								<p className="text-lg max-2xl:text-base max-xs:text-[15px]">
+								<h2 className="text-lg max-2xl:text-base max-xs:text-[15px]">
 									{pagedArticles?.desc}
-								</p>
+								</h2>
 							</section>
 						</>
 					)}

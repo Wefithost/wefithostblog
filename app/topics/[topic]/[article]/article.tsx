@@ -148,9 +148,9 @@ const Article = () => {
 								<h1 className="text-[32px] poppins-bold  text-white max-dmd:text-xl max-md:text-black max-md:text-lg ">
 									{article_data?.title}
 								</h1>
-								<p className="text-lg  text-white  max-md:text-black max-dmd:text-sm">
+								<h2 className="text-lg  text-white  max-md:text-black max-dmd:text-sm">
 									{article_data?.description}
-								</p>
+								</h2>
 								<div className=" items-center gap-2 hidden md:flex">
 									{/* eslint-disable-next-line */}
 									<img
