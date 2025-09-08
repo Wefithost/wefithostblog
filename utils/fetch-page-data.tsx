@@ -23,7 +23,7 @@ export function useFetch<T = unknown>({
 	const [isFetching, setIsFetching] = useState(true);
 	const [hasError, setHasError] = useState(false);
 	const [error, setError] = useState('');
-
+	const [retryCount, setRetryCount] = useState(0);
 	// Prevent "new array every render" issue
 	// eslint-disable-next-line
 	const stableIds = useMemo(() => ids, [JSON.stringify(ids)]);
@@ -44,6 +44,13 @@ export function useFetch<T = unknown>({
 				const data = await res.json();
 
 				if (!res.ok) {
+					// First failure → retry once
+					if (retryCount < 1) {
+						setRetryCount((prev) => prev + 1);
+						return fetchData(silent);
+					}
+
+					// Second failure → show error
 					if (!silent) {
 						setHasError(true);
 						setError(data.error || 'An error occurred');
@@ -51,13 +58,22 @@ export function useFetch<T = unknown>({
 					return;
 				}
 
+				// ✅ success: reset retryCount
 				setFetchedData(data[dataKey] ?? data.response);
+				setRetryCount(0);
+
 				if (!silent) {
 					setHasError(false);
 					setError('');
 				}
 			} catch (err) {
 				console.error(err);
+
+				if (retryCount < 1) {
+					setRetryCount((prev) => prev + 1);
+					return fetchData(silent); // retry
+				}
+
 				if (!silent) {
 					setHasError(true);
 					setError('Network error');
@@ -66,7 +82,7 @@ export function useFetch<T = unknown>({
 				if (!silent) setIsFetching(false);
 			}
 		},
-		[basePath, stableIds, enabled, dataKey],
+		[basePath, stableIds, enabled, dataKey, retryCount],
 	);
 
 	useEffect(() => {

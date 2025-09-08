@@ -100,9 +100,10 @@ export async function POST(
 				const uploadStream = cloudinary.v2.uploader.upload_stream(
 					{
 						folder: 'wefithost_articles',
-						transformation: [
-							{ quality: 'auto', fetch_format: 'auto' }, // auto compress + best format
-						],
+						transformation: [{ quality: 'auto', fetch_format: 'auto' }],
+						public_id: slugify(title),
+						overwrite: true,
+						invalidate: true,
 					},
 					(error, result) => {
 						if (error) {

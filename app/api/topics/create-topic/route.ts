@@ -93,6 +93,9 @@ export async function POST(req: NextRequest) {
 						transformation: [
 							{ quality: 'auto', fetch_format: 'auto' }, // auto compress + best format
 						],
+						public_id: slugify(title),
+						overwrite: true,
+						invalidate: true,
 					},
 					(error, result) => {
 						if (error) {

@@ -97,23 +97,23 @@ const Article = () => {
 		>
 			<Loader fetching={isFetching} error={errorFetching}>
 				<section className="flex w-full flex-col gap-3 items-start">
-					<div className="flex w-full  bg-[#14132b] rounded-2xl overflow-hidden max-md:flex-col  max-md:rounded-sm max-md:bg-transparent">
+					<div className="flex w-full  bg-[#14132b] rounded-2xl overflow-hidden max-md:flex-col  max-md:rounded-sm max-md:bg-transparent items-center">
 						<div className="relative w-1/2 max-md:w-full">
 							{/* eslint-disable-next-line */}
 							<img
 								src={article_data?.image}
 								alt={article_data?.title || 'article image'}
-								className="min-h-[500px] max-h-[500px] max-lg:min-h-[400px]  max-lg:max-h-[400px] bg-[#ffffff] object-cover  max-md:min-h-[200px]  max-md:max-h-auto w-full"
+								className="w-full  bg-[#ffffff] object-cover    max-md:max-h-auto max-md:rounded-sm"
 							/>
 						</div>
-						<div className="flex items-start flex-col justify-between p-20 w-1/2 max-2xl:p-5 max-md:w-full    max-md:bg-white max-md:p-0 max-md:py-2 ">
-							<button className="bg-purple hover:bg-darkPurple text-white text-lg h-[40px] px-2.5 duration-150 rounded-sm max-md:text-sm max-md:h-[35px] max-md:hidden">
+						<div className="flex items-start flex-col justify-between p-20 w-1/2 max-2xl:p-5 max-md:w-full    max-md:bg-white max-md:p-0 max-md:py-2 gap-1">
+							<button className="bg-purple hover:bg-darkPurple text-white text-lg max-dmd:text-sm h-[40px] px-2.5 duration-150 rounded-sm max-md:text-sm max-dmd:h-[30px] max-md:hidden">
 								{article_data?.topic.title}
 							</button>
-							<h1 className="text-[32px] poppins-bold  text-white max-lg:text-2xl max-md:text-black max-md:text-lg">
+							<h1 className="text-[32px] poppins-bold  text-white max-dmd:text-xl max-md:text-black max-md:text-lg ">
 								{article_data?.title}
 							</h1>
-							<p className="text-lg  text-white  max-md:text-black max-md:text-sm">
+							<p className="text-lg  text-white  max-md:text-black max-dmd:text-sm">
 								{article_data?.description}
 							</p>
 							<div className=" items-center gap-2 hidden md:flex">
@@ -126,11 +126,11 @@ const Article = () => {
 									alt={article_data?.author?.first_name || 'author'}
 								/>
 								<div className="flex items-start gap-0  flex-col">
-									<span className="text-base font-semibold text-white">
+									<span className="text-base font-semibold text-white max-dmd:text-sm">
 										{article_data?.author?.first_name}{' '}
 										{article_data?.author?.last_name}
 									</span>
-									<div className="flex gap-4 items-center text-sm  text-white max-md:text-black max-md:text-sm">
+									<div className="flex gap-4 items-center text-sm  text-white max-md:text-black max-dmd:text-xs">
 										<span>{formatDate(article_data?.createdAt as string)}</span>
 
 										{article_data && (
