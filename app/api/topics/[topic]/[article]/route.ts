@@ -27,7 +27,7 @@ export async function GET(
 			);
 		}
 
-		const selectedArticle = await Article.findOne({ slug: article })
+		const selectedArticle = await Article.findOne({ slug: article +'j' })
 			.populate({
 				path: 'topic',
 				select: 'title',
