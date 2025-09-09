@@ -10,7 +10,7 @@ export async function GET(
 	try {
 		await connectMongo();
 		const { topic, article } = await params;
-		if (topic.trim() === '') {
+		if (!topic || topic.trim() === '') {
 			return NextResponse.json(
 				{
 					error: 'Topic not provided or invalid',
