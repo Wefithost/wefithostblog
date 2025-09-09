@@ -1,16 +1,9 @@
 'use client';
-import Image from 'next/image';
 import { useParams } from 'next/navigation';
-import { FaCircle, FaEnvelope } from 'react-icons/fa';
+import { FaCircle } from 'react-icons/fa';
 import { formatDate } from '~/utils/format-date';
 import { slugify } from '~/utils/slugify';
-import logo from '~/public/icons/logo-icon.png';
-import ClassicInput from '../../../components/inputs/classic-input';
-import { apiRequest } from '~/utils/api-request';
-import { toast } from 'react-toastify';
-import { useState } from 'react';
-import AsyncButton from '../../../components/buttons/async-button';
-import Link from 'next/link';
+
 import ArticleViewer from '../../../components/rich-text-editor/viewer';
 import RelatedArticlesSection from '../../../components/related-articles';
 import { useFetch } from '~/utils/fetch-page-data';
@@ -20,6 +13,7 @@ import { getReadingTime } from '~/utils/get-reading-time';
 import CommentsSection from '~/app/components/comments/comments-section';
 import * as motion from 'motion/react-client';
 import Script from 'next/script';
+import AboutBlog from '~/app/components/about-blog';
 const Article = () => {
 	const params = useParams();
 
@@ -34,48 +28,6 @@ const Article = () => {
 		dataKey: 'selectedArticle',
 	});
 
-	const [email, setEmail] = useState('');
-
-	const [subscribing, setSubscribing] = useState(false);
-	const [error, setError] = useState('');
-	const [subscribeSuccess, setSubscribeSuccess] = useState(false);
-	const isValidEmail = (email: string): boolean => {
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		return emailRegex.test(email);
-	};
-
-	const subscribe = async () => {
-		if (subscribing) {
-			return;
-		}
-		if (email.trim() === '') {
-			setError('Email required');
-			return;
-		}
-		if (!isValidEmail(email.trim().toLowerCase())) {
-			setError('Please enter a valid email address');
-			return;
-		}
-		setSubscribing(true);
-		setError('');
-
-		await apiRequest({
-			url: '/api/subscribe',
-			method: 'POST',
-			body: { email },
-			onSuccess: (res) => {
-				toast.success(res.message);
-				setSubscribeSuccess(true);
-				setTimeout(() => setSubscribeSuccess(true), 3000);
-			},
-			onError: (error) => {
-				setError(error);
-			},
-			onFinally: () => {
-				setSubscribing(false);
-			},
-		});
-	};
 	const {
 		fetchedData: articles,
 		isFetching: fetchingArticles,
@@ -191,7 +143,7 @@ const Article = () => {
 				<section className="w-full gap-24 flex justify-end max-2xl:gap-12 max-xl:flex-col  max-xl:items-center">
 					<div className="flex flex-col gap-10 max-w-[750px] w-full">
 						<ArticleViewer content={article_data?.article} />
-						{!isFetching && !error && article_data?.author && (
+						{!isFetching && !errorFetching && article_data?.author && (
 							<>
 								<div className=" border-t-1 border-gray-400 w-full  flex flex-col gap-2 py-4">
 									<h4 className=" text-base">About the author</h4>
@@ -233,58 +185,8 @@ const Article = () => {
 							</>
 						)}
 					</div>
-					<aside className="flex flex-col justify-between max-xl:flex-row  gap-5 max-md:flex-col max-xl:hidden">
-						<div className="w-[450px] bg-white border-purple rounded-2xl  shrink-0 flex flex-col gap-4 items-center justify-between sticky top-20 shadow-sm p-4 max-xl:w-1/2 max-xl:static max-md:w-full max-xs:gap-2">
-							<Image
-								src={logo}
-								alt="wefithost logo"
-								className="w-28 max-xs:w-18"
-							/>
-							<h3 className="text-lg poppins text-center">About our blog</h3>
-							<p className="text-center text-base text-gray-500">
-								Welcome to WeFitHost Insights, where we share expert knowledge
-								and strategies to help you succeed in the hosting world.
-							</p>
-							<Link
-								href="/"
-								className="bg-purple hover:bg-darkPurple text-white  h-[40px] px-2.5 duration-150 rounded-sm w-full text-center flex items-center justify-center text-sm font-semibold"
-							>
-								Learn about us
-							</Link>
-						</div>
 
-						<div className="w-[450px] bg-white border-purple rounded-2xl  shrink-0 flex flex-col gap-4 items-center justify-between sticky top-10 shadow-lg p-4 max-xl:w-1/2 max-xl:static max-md:w-full max-xl:shadow-sm max-xs:gap-2">
-							<FaEnvelope className="text-4xl text-purple " />
-							<h3 className="text-lg poppins text-center">
-								Subscribe to our newsletter
-							</h3>
-							<p className="text-center">
-								Get the latest hosting tips and business insights
-							</p>
-							<div className="flex gap-2 flex-col w-full items-start justify-start">
-								<ClassicInput
-									value={email}
-									setValue={setEmail}
-									error={error}
-									setError={setError}
-									classname_override="!bg-lightGrey !text-black !w-full !self-start"
-									errorContent={'Please enter a valid email address'}
-									placeholder="Your email"
-								/>
-								<AsyncButton
-									action="Subscribe"
-									classname_override="!w-full"
-									loading={subscribing}
-									success={subscribeSuccess}
-									disabled={!email}
-									onClick={subscribe}
-								/>
-							</div>
-							<span className="text-xs ">
-								We&apos;ll never share your email. Unsubscribe anytime.
-							</span>
-						</div>
-					</aside>
+					<AboutBlog className_override="flex max-xl:hidden" />
 				</section>
 				<Loader fetching={fetchingArticles} error={errorFetchingArticles}>
 					{related_articles && related_articles?.length > 0 && (
@@ -296,58 +198,7 @@ const Article = () => {
 						</>
 					)}
 				</Loader>
-				<aside className=" flex-col justify-between max-xl:flex-row  gap-5 max-md:flex-col max-xl:flex hidden">
-					<div className="w-[450px] bg-white border-purple rounded-2xl  shrink-0 flex flex-col gap-4 items-center justify-between sticky top-20 shadow-sm p-4 max-xl:w-1/2 max-xl:static max-md:w-full max-xs:gap-2">
-						<Image
-							src={logo}
-							alt="wefithost logo"
-							className="w-28 max-xs:w-18"
-						/>
-						<h3 className="text-lg poppins text-center">About our blog</h3>
-						<p className="text-center text-base text-gray-500">
-							Welcome to WeFitHost Insights, where we share expert knowledge and
-							strategies to help you succeed in the hosting world.
-						</p>
-						<Link
-							href="/"
-							className="bg-purple hover:bg-darkPurple text-white  h-[40px] px-2.5 duration-150 rounded-sm w-full text-center flex items-center justify-center text-sm font-semibold"
-						>
-							Learn about us
-						</Link>
-					</div>
-
-					<div className="w-[450px] bg-white border-purple rounded-2xl  shrink-0 flex flex-col gap-4 items-center justify-between sticky top-10 shadow-lg p-4 max-xl:w-1/2 max-xl:static max-md:w-full max-xl:shadow-sm max-xs:gap-2">
-						<FaEnvelope className="text-4xl text-purple " />
-						<h3 className="text-lg poppins text-center">
-							Subscribe to our newsletter
-						</h3>
-						<p className="text-center">
-							Get the latest hosting tips and business insights
-						</p>
-						<div className="flex gap-2 flex-col w-full items-start justify-start">
-							<ClassicInput
-								value={email}
-								setValue={setEmail}
-								error={error}
-								setError={setError}
-								classname_override="!bg-lightGrey !text-black !w-full !self-start"
-								errorContent={'Please enter a valid email address'}
-								placeholder="Your email"
-							/>
-							<AsyncButton
-								action="Subscribe"
-								classname_override="!w-full"
-								loading={subscribing}
-								success={subscribeSuccess}
-								disabled={!email}
-								onClick={subscribe}
-							/>
-						</div>
-						<span className="text-xs ">
-							We&apos;ll never share your email. Unsubscribe anytime.
-						</span>
-					</div>
-				</aside>
+				<AboutBlog className_override="hidden max-xl:flex" />
 			</motion.main>
 		</>
 	);
