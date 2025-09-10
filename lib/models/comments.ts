@@ -6,6 +6,7 @@ export interface IComment extends Document {
 	parent_id: Types.ObjectId;
 	comment: JSONContent;
 	comment_by: Types.ObjectId;
+	ip_address?: string;
 }
 
 const CommentSchema: Schema<IComment> = new Schema(
@@ -18,6 +19,7 @@ const CommentSchema: Schema<IComment> = new Schema(
 			default: null,
 		},
 		comment_by: { type: Schema.Types.ObjectId, ref: 'User', required: false },
+		ip_address: { type: String, required: false, default: null },
 	},
 	{ timestamps: true },
 );

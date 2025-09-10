@@ -19,7 +19,6 @@ export async function POST(
 				{ status: 400 },
 			);
 		}
-
 		if (topic.trim() === '') {
 			return NextResponse.json(
 				{ error: 'Topic not provided' },
@@ -32,6 +31,14 @@ export async function POST(
 				{ status: 400 },
 			);
 		}
+
+		// 🔑 Get the user's IP address
+		const forwardedFor = req.headers.get('x-forwarded-for');
+		const ip =
+			forwardedFor?.split(',')[0]?.trim() || // first forwarded IP if multiple
+			//@ts-expect-error: ip not available by default
+			req.ip || // fallback
+			'unknown';
 
 		const selectedTopic = await Topic.findOne({ slug: topic });
 		if (!selectedTopic) {
@@ -48,6 +55,7 @@ export async function POST(
 			comment_by: userId ? userId : null,
 			parent_id: comment_parent_id || null,
 			article_id: existingArticle._id,
+			ip_address: ip, // ✅ save IP address
 		});
 
 		await Alert.create({
