@@ -33,9 +33,6 @@ const EditComment = ({
 	const [loading, setLoading] = useState(false);
 	const [successful, setSuccessful] = useState(false);
 	const editComment = async () => {
-		if (!user) {
-			return;
-		}
 		if (loading) {
 			return;
 		}
@@ -49,7 +46,7 @@ const EditComment = ({
 		await apiRequest({
 			url: `/api/topics/${topic}/${article}/comments/edit-comment`,
 			method: 'PATCH',
-			body: { userId: user._id, commentEdit, commentId: comment?._id },
+			body: { userId: user?._id, commentEdit, commentId: comment?._id },
 			onSuccess: (response) => {
 				setSuccessful(true);
 				setCommentEdit('');

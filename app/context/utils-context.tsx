@@ -1,5 +1,12 @@
 'use client';
-import React, { createContext, useContext, useMemo, useState } from 'react';
+import React, {
+	createContext,
+	useContext,
+	useEffect,
+	useMemo,
+	useState,
+} from 'react';
+import { apiRequest } from '~/utils/api-request';
 import { usePopup } from '~/utils/toggle-popups';
 
 interface UtilsContextType {
@@ -23,6 +30,8 @@ interface UtilsContextType {
 	setCurrentAction: React.Dispatch<React.SetStateAction<string>>;
 	resetPassword: boolean;
 	setResetPassword: React.Dispatch<React.SetStateAction<boolean>>;
+	ip: string;
+	setIp: React.Dispatch<React.SetStateAction<string>>;
 }
 export const UtilsContext = createContext<UtilsContextType | null>(null);
 
@@ -48,6 +57,24 @@ export const UtilsProvider: React.FC<{ children: React.ReactNode }> = ({
 		togglePopup: toggleCreateArticlePopup,
 		setDisableToggle: setDisableArticlePopup,
 	} = usePopup();
+	const [ip, setIp] = useState('');
+
+	useEffect(() => {
+		const fetchIp = async () => {
+			await apiRequest({
+				url: '/api/get-ip',
+				method: 'GET',
+				onSuccess: (data) => {
+					setIp(data.ip);
+				},
+				onError: () => {
+					console.log('Ip address not fetched');
+				},
+			});
+		};
+
+		fetchIp();
+	}, []);
 
 	const providerValue = useMemo(
 		() => ({
@@ -71,6 +98,8 @@ export const UtilsProvider: React.FC<{ children: React.ReactNode }> = ({
 			setResetPassword,
 			adminOverlayOpen,
 			setAdminOverlayOpen,
+			ip,
+			setIp,
 		}),
 		[
 			authPopup,
@@ -93,6 +122,8 @@ export const UtilsProvider: React.FC<{ children: React.ReactNode }> = ({
 			setResetPassword,
 			adminOverlayOpen,
 			setAdminOverlayOpen,
+			ip,
+			setIp,
 		],
 	);
 

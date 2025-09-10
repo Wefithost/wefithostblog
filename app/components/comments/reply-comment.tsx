@@ -20,7 +20,7 @@ interface replyProps {
 }
 const ReplyComment = ({ comment }: replyProps) => {
 	const { user } = useAuthContext();
-	const { toggleAuthPopup } = useUtilsContext();
+	const { ip } = useUtilsContext();
 	const [replying, setReplying] = useState(false);
 	const [replied, setReplied] = useState(false);
 	const [replyError, setReplyError] = useState('');
@@ -115,17 +115,14 @@ const ReplyComment = ({ comment }: replyProps) => {
 							user?.role === 'admin' ||
 							user?.role === 'super_admin')) ||
 						// Case 2: Comment by Anonymous → only admins/super_admins
-						(comment?.comment_by?.guest &&
-							(user?.role === 'admin' || user?.role === 'super_admin'))) && (
+						comment?.ip_address === ip ||
+						user?.role === 'admin' ||
+						user?.role === 'super_admin') && (
 						<div className="relative">
 							<button
 								className="px-2 flex items-center h-[25px] gap-1 text-gray-600 hover:text-purple duration-150 rounded-full"
 								onClick={() => {
-									if (user) {
-										toggleCommentPrompt();
-									} else {
-										toggleAuthPopup();
-									}
+									toggleCommentPrompt();
 								}}
 							>
 								<FaEllipsisH size={15} />

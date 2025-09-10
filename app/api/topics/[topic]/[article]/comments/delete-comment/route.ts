@@ -21,10 +21,6 @@ export async function DELETE(
 			);
 		}
 
-		if (!isValidObjectId(userId)) {
-			return NextResponse.json({ error: 'Invalid User Id' }, { status: 400 });
-		}
-
 		if (!topic.trim()) {
 			return NextResponse.json(
 				{ error: 'Topic not provided' },
@@ -55,7 +51,7 @@ export async function DELETE(
 		await Alert.create({
 			type: 'comment_deleted',
 			message: `deleted a comment: ${existingComment?.comment}`,
-			triggered_by: userId,
+			triggered_by: userId ? userId : null,
 			status: 'delete',
 		});
 		if (!existingComment) {

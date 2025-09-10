@@ -10,9 +10,7 @@ export interface comment_type {
 		profile: string;
 		guest?: boolean;
 	};
-	likes: string[];
-	dislikes: string[];
-
+	ip_address?: string;
 	replies: comment_type[];
 	createdAt: string;
 	updatedAt: string;

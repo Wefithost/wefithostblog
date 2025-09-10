@@ -31,9 +31,6 @@ const DeleteComment = ({
 	const [loading, setLoading] = useState(false);
 	const [successful, setSuccessful] = useState(false);
 	const deleteComment = async () => {
-		if (!user) {
-			return;
-		}
 		if (loading) {
 			return;
 		}
@@ -44,7 +41,7 @@ const DeleteComment = ({
 		await apiRequest({
 			url: `/api/topics/${topic}/${article}/comments/delete-comment`,
 			method: 'DELETE',
-			body: { userId: user._id, commentId: comment?._id },
+			body: { userId: user?._id, commentId: comment?._id },
 			onSuccess: (response) => {
 				setSuccessful(true);
 

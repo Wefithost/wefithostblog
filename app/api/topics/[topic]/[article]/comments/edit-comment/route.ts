@@ -26,12 +26,6 @@ export async function PATCH(
 				{ status: 400 },
 			);
 		}
-		if (!isValidObjectId(userId)) {
-			return NextResponse.json(
-				{ error: 'User Id not provided or invalid' },
-				{ status: 400 },
-			);
-		}
 
 		if (topic.trim() === '') {
 			return NextResponse.json(
@@ -63,7 +57,7 @@ export async function PATCH(
 		await Alert.create({
 			type: 'comment_edited',
 			message: `edited a comment to: ${commentEdit}`,
-			triggered_by: userId,
+			triggered_by: userId ? userId : null,
 			link: {
 				url: `/topics/${selectedTopic.slug}/${existingArticle.slug}`,
 				label: 'View article',
