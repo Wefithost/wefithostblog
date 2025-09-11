@@ -14,6 +14,8 @@ import { RiDeleteBinLine } from 'react-icons/ri';
 import EditComment from './edit-comment';
 import { comment_type } from '~/types/comments';
 import DeleteComment from './delete-comment';
+import { MdBlock } from 'react-icons/md';
+import BlockPrompt from './block';
 
 interface replyProps {
 	comment: comment_type;
@@ -48,6 +50,13 @@ const ReplyComment = ({ comment }: replyProps) => {
 		ref: deleteCommentPromptRef,
 		setDisableToggle: disableDeleteCommentToggle,
 		togglePopup: toggleDeleteCommentPrompt,
+	} = usePopup();
+	const {
+		isActive: blockCommenterPrompt,
+		isVisible: blockCommenterPromptVisible,
+		ref: blockCommenterPromptRef,
+		setDisableToggle: disableBlockCommenterToggle,
+		togglePopup: toggleBlockCommenterPrompt,
 	} = usePopup();
 	const replyComment = async (commentId: string) => {
 		if (replying) {
@@ -152,6 +161,16 @@ const ReplyComment = ({ comment }: replyProps) => {
 										<RiDeleteBinLine className="text-sm text-red" />
 										<span>Delete comment</span>
 									</button>
+									{user?.role === 'super_admin' &&
+										comment?.comment_by?.guest && (
+											<button
+												className="py-2 w-full text-[13px] text-grey flex items-center gap-2 px-3 hover:bg-lightGrey duration-150"
+												onClick={toggleBlockCommenterPrompt}
+											>
+												<MdBlock className="text-sm" />
+												<span>Block I.P</span>
+											</button>
+										)}
 								</div>
 							)}
 						</div>
@@ -211,6 +230,14 @@ const ReplyComment = ({ comment }: replyProps) => {
 					ref={deleteCommentPromptRef}
 					setDisable={disableDeleteCommentToggle}
 					togglePopup={toggleDeleteCommentPrompt}
+					comment={comment}
+				/>
+				<BlockPrompt
+				blockPrompt={blockCommenterPrompt}
+					blockPromptVisible={blockCommenterPromptVisible}
+					blockPromptRef={blockCommenterPromptRef}
+					setDisableToggle={disableBlockCommenterToggle}
+					toggleBlockPrompt={toggleBlockCommenterPrompt}
 					comment={comment}
 				/>
 			</div>

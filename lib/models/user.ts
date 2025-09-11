@@ -1,5 +1,5 @@
 // ~/lib/models/user.ts
-import mongoose, { Schema, model, Types, Document, Model } from 'mongoose';
+import mongoose, { Schema, model, Document, Model } from 'mongoose';
 
 interface IUser extends Document {
 	email: string;
@@ -9,10 +9,7 @@ interface IUser extends Document {
 	profile?: string;
 	verification_hash?: string;
 	oauth_provider?: string;
-	recent_articles: Types.ObjectId[];
 	role: string;
-	job_name?: string;
-	notifications: Types.ObjectId[];
 	bio?: string;
 }
 
@@ -23,8 +20,6 @@ const userSchema = new Schema<IUser>(
 		last_name: { type: String, required: false },
 		profile: { type: String, required: false },
 		bio: { type: String, required: false },
-		recent_articles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }],
-
 		role: {
 			type: String,
 			required: false,
@@ -34,9 +29,6 @@ const userSchema = new Schema<IUser>(
 		password: { type: String },
 		verification_hash: { type: String },
 		oauth_provider: { type: String },
-		notifications: [
-			{ type: mongoose.Schema.Types.ObjectId, ref: 'Notification' },
-		],
 	},
 	{ timestamps: true },
 );

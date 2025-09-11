@@ -9,6 +9,8 @@ import MessagePrompt from './message';
 import { IoTrashBinOutline } from 'react-icons/io5';
 import { FaRegMessage } from 'react-icons/fa6';
 import { useAuthContext } from '~/app/context/auth-context';
+import { MdBlock } from 'react-icons/md';
+import BlockPrompt from './block';
 interface memberProps {
 	member: user_type;
 }
@@ -40,6 +42,13 @@ const Member = ({ member }: memberProps) => {
 		togglePopup: toggleMessagePrompt,
 		ref: messagePromptRef,
 		setDisableToggle: disableMessagePrompt,
+	} = usePopup();
+	const {
+		isVisible: blockPromptVisible,
+		isActive: blockPrompt,
+		togglePopup: toggleBlockPrompt,
+		ref: blockPromptRef,
+		setDisableToggle: disableBlockPrompt,
 	} = usePopup();
 	return (
 		<>
@@ -133,6 +142,19 @@ const Member = ({ member }: memberProps) => {
 									<span>Delete account</span>
 								</button>
 							)}
+							{member.role !== 'super_admin' && member.role !== 'admin' && (
+								<button
+									className="py-2 w-full text-[13px]  text-red flex items-center gap-2  px-3 hover:bg-lightGrey duration-150"
+									onClick={(e) => {
+										e.preventDefault();
+										e.stopPropagation();
+										toggleBlockPrompt();
+									}}
+								>
+									<MdBlock />
+									<span>Block</span>
+								</button>
+							)}
 						</div>
 					)}
 				</div>
@@ -160,6 +182,14 @@ const Member = ({ member }: memberProps) => {
 				messagePromptRef={messagePromptRef}
 				member={member}
 				setDisableToggle={disableMessagePrompt}
+			/>
+			<BlockPrompt
+				blockPromptVisible={blockPromptVisible}
+				blockPrompt={blockPrompt}
+				toggleBlockPrompt={toggleBlockPrompt}
+				blockPromptRef={blockPromptRef}
+				member={member}
+				setDisableToggle={disableBlockPrompt}
 			/>
 		</>
 	);

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectMongo from '~/lib/connect-mongo';
 import Alert from '~/lib/models/alerts';
 import Article from '~/lib/models/article';
+import Blocked from '~/lib/models/blocked';
 import CommentModel from '~/lib/models/comments';
 import Topic from '~/lib/models/topic';
 export async function POST(
@@ -40,6 +41,17 @@ export async function POST(
 			req.ip || // fallback
 			'unknown';
 
+		const isIpBlocked = await Blocked.findOne({ ip_address: ip });
+
+		if (!userId && isIpBlocked) {
+			return NextResponse.json(
+				{
+					error: `You have been blocked from commenting due to ${isIpBlocked?.reason}`,
+				},
+				{ status: 403 }, // Forbidden
+			);
+		}
+
 		const selectedTopic = await Topic.findOne({ slug: topic });
 		if (!selectedTopic) {
 			return NextResponse.json({ error: 'Topic not found' }, { status: 404 });
@@ -55,7 +67,7 @@ export async function POST(
 			comment_by: userId ? userId : null,
 			parent_id: comment_parent_id || null,
 			article_id: existingArticle._id,
-			ip_address: ip, // ✅ save IP address
+			ip_address: userId ? null : ip,
 		});
 
 		await Alert.create({
