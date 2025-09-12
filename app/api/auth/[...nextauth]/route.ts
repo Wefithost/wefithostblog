@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import authOptions from '~/lib/configs/auth/authOptions';
-
+//eslint-disable-next-line
 const handler = (req: any, res: any) => {
 	// ✅ extract IP from headers or socket
 	const ip =
@@ -10,6 +10,7 @@ const handler = (req: any, res: any) => {
 		null;
 
 	// attach IP to request so callbacks can access it
+	//eslint-disable-next-line
 	(req as any).ip = ip;
 
 	return NextAuth(req, res, authOptions);
