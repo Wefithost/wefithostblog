@@ -1,6 +1,7 @@
 import { getArticle } from '~/utils/getArticle';
 import Article from './article';
 import { Metadata } from 'next';
+import Script from 'next/script';
 
 type Props = {
 	params: Promise<{
@@ -8,7 +9,8 @@ type Props = {
 		article: string;
 	}>;
 };
-// Generate metadata dynamically for SEO + sharing
+
+// ✅ Generate metadata dynamically for SEO + sharing
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const articleParam = await params;
 	const article = await getArticle(articleParam?.article);
@@ -25,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	return {
 		title: article.title,
 		alternates: {
-			canonical: `https://blog.wefithost.com/topics/${articleParam?.topic}/${articleParam?.article}`,
+			canonical: url,
 		},
 		description: article.description,
 		openGraph: {
@@ -49,9 +51,53 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		},
 	};
 }
-const ArticlePage = () => {
-	return <Article />;
-};
 
-export default ArticlePage;
+export default async function ArticlePage({ params }: Props) {
+	const articleParam = await params;
+	const article = await getArticle(articleParam?.article);
+
+	if (!article) return <Article />;
+
+	const url = `https://blog.wefithost.com/topics/${articleParam?.topic}/${articleParam?.article}`;
+
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'BlogPosting',
+		mainEntityOfPage: {
+			'@type': 'WebPage',
+			'@id': url,
+		},
+		headline: article.title,
+		description: article.description,
+		image: article.image,
+		author: {
+			'@type': 'Person',
+			//@ts-expect-error: type string
+			name: `${article.author.first_name} ${article.author.last_name || ''}`,
+		},
+		publisher: {
+			'@type': 'Organization',
+			name: 'WefitHost Blog',
+			logo: {
+				'@type': 'ImageObject',
+				url: 'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756039608/logo_hdvqjb_1_1_u8ljxj.png',
+			},
+		},
+		//@ts-expect-error: type Date
+		datePublished: article.createdAt,
+		//@ts-expect-error: type Date
+		dateModified: article.updatedAt || article.createdAt,
+	};
+
+	return (
+		<>
+			<Article />
+			<Script
+				id="structured-data-article"
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+			/>
+		</>
+	);
+}
 

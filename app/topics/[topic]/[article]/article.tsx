@@ -12,7 +12,6 @@ import Loader from '~/app/components/loader';
 import { getReadingTime } from '~/utils/get-reading-time';
 import CommentsSection from '~/app/components/comments/comments-section';
 import * as motion from 'motion/react-client';
-import Script from 'next/script';
 import AboutBlog from '~/app/components/about-blog';
 const Article = () => {
 	const params = useParams();
@@ -42,38 +41,6 @@ const Article = () => {
 
 	return (
 		<>
-			<Script
-				id="structured-data-article"
-				type="application/ld+json"
-				strategy="afterInteractive"
-				dangerouslySetInnerHTML={{
-					__html: JSON.stringify({
-						'@context': 'https://schema.org',
-						'@type': 'BlogPosting',
-						mainEntityOfPage: {
-							'@type': 'WebPage',
-							'@id': `https://blog.wefithost.com/${article_data?.slug}`,
-						},
-						headline: article_data?.title,
-						description: article_data?.description,
-						image: article_data?.image,
-						author: {
-							'@type': 'Person',
-							name: `${article_data?.author.first_name} ${article_data?.author.last_name}`,
-						},
-						publisher: {
-							'@type': 'Organization',
-							name: 'WefitHost',
-							logo: {
-								'@type': 'ImageObject',
-								url: 'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756039608/logo_hdvqjb_1_1_u8ljxj.png',
-							},
-						},
-						datePublished: article_data?.createdAt,
-						dateModified: article_data?.updatedAt || article_data?.createdAt,
-					}),
-				}}
-			/>
 			<motion.main
 				className=" flex flex-col mx-auto max-w-[1500px] min-h-screen w-full gap-10 py-12 px-8 max-md:py-6 max-md:gap-5 max-xs:px-5"
 				initial={{ opacity: 0 }}

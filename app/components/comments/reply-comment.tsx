@@ -104,7 +104,6 @@ const ReplyComment = ({ comment }: replyProps) => {
 			},
 		});
 	};
-	console.log('comment', comment);
 	return (
 		<>
 			<div className="py-2 flex items-center gap-2">
