@@ -12,6 +12,7 @@ interface IUser extends Document {
 	role: string;
 	bio?: string;
 	ip_address?: string;
+	country?: string;
 }
 
 const userSchema = new Schema<IUser>(
@@ -27,6 +28,7 @@ const userSchema = new Schema<IUser>(
 			enum: ['admin', 'member', 'super_admin'],
 			default: 'member',
 		},
+		country: { type: String, required: false, default: null },
 		password: { type: String },
 		verification_hash: { type: String },
 		oauth_provider: { type: String },
