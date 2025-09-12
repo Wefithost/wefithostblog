@@ -139,7 +139,7 @@ const ReplyComment = ({ comment }: replyProps) => {
 
 							{commentPrompt && (
 								<div
-									className={`flex flex-col bg-white shadow-lg w-[150px] rounded-md duration-150 absolute top-0 right-[100%] divide-y divide-lightGrey overflow-hidden border border-lightGrey z-20 ${
+									className={`flex flex-col bg-white shadow-lg w-[150px] rounded-md duration-150 absolute top-0 left-[100%] divide-y divide-lightGrey overflow-hidden border border-lightGrey z-20 ${
 										commentPromptVisible ? 'opacity-100' : 'opacity-0'
 									}`}
 									ref={commentPromptRef}
@@ -233,7 +233,7 @@ const ReplyComment = ({ comment }: replyProps) => {
 					comment={comment}
 				/>
 				<BlockPrompt
-				blockPrompt={blockCommenterPrompt}
+					blockPrompt={blockCommenterPrompt}
 					blockPromptVisible={blockCommenterPromptVisible}
 					blockPromptRef={blockCommenterPromptRef}
 					setDisableToggle={disableBlockCommenterToggle}

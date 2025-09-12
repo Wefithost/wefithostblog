@@ -3,6 +3,7 @@ import { FaCheck } from 'react-icons/fa';
 import { MdBlock } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import AsyncButton from '~/app/components/buttons/async-button';
+import ClassicInput from '~/app/components/inputs/classic-input';
 import { useAuthContext } from '~/app/context/auth-context';
 import { user_type } from '~/types/user';
 import { apiRequest } from '~/utils/api-request';
@@ -23,42 +24,44 @@ const BlockPrompt = ({
 	setDisableToggle,
 }: blockPromptProps) => {
 	const [error, setError] = useState('');
-	const [submitting, setSubmitting] = useState(false);
+	const [blocking, setBlocking] = useState(false);
 	const [successful, setSuccessful] = useState(false);
+	const [reason, setReason] = useState('');
 	const { user } = useAuthContext();
-	const handleBlockPrompt = async () => {
-		if (submitting) return;
+
+	const handleBlock = async () => {
+		if (blocking) return;
+		if (!user) {
+			setError('User not authenticated');
+		}
+		
 
 		if (!member?._id) {
-			setError('Missing required fields');
+			setError('Member Id not provided');
 			return;
 		}
 
-		setSubmitting(true);
+		setBlocking(true);
 		setDisableToggle(true);
 
 		await apiRequest({
-			url: '/api/members/block-account',
+			url: '/api/block/block-by-id',
 			method: 'POST',
 			body: {
 				memberId: member?._id,
+				reason,
 				adminId: user?._id,
 			},
 			onSuccess: () => {
-				window.dispatchEvent(new CustomEvent('refetchMembers'));
+				window.dispatchEvent(new CustomEvent('refetchBlocked'));
 				setSuccessful(true);
 				setTimeout(() => {
 					toggleBlockPrompt();
 				}, 500);
 
-				toast.success(
-					`${member?.first_name} ${
-						member?.last_name || ''
-					} account Blocked successfully`,
-					{
-						icon: <FaCheck color="white" />,
-					},
-				);
+				toast.success(`Member Blocked successfully`, {
+					icon: <FaCheck color="white" />,
+				});
 			},
 
 			onError: (error) => {
@@ -66,7 +69,7 @@ const BlockPrompt = ({
 			},
 			onFinally: () => {
 				setSuccessful(false);
-				setSubmitting(false);
+				setBlocking(false);
 				setDisableToggle(false);
 			},
 		});
@@ -88,12 +91,27 @@ const BlockPrompt = ({
 							<p className="text-sm  text-center">
 								You’re about to block
 								<span className="neue-bold">
-									{` ${member?.first_name} ${member?.last_name || ''} `}{' '}
+									{` ${member?.first_name} ${member?.last_name || ''} `}
 								</span>
 								. Are you sure you want to?
 							</p>
 						</div>
 					</div>
+
+					<ClassicInput
+						value={reason}
+						setValue={setReason}
+						error={error}
+						setError={setError}
+						label="Reason for blocking"
+						textarea
+						maxlength={160}
+						placeholder="reason"
+						classname_override="!bg-lightGrey"
+						autofocus={true}
+						name="reason"
+						errorContent="A reason is required"
+					/>
 					{error && (
 						<h1 className="text-[11px] text-red text-center">{error}</h1>
 					)}
@@ -101,10 +119,10 @@ const BlockPrompt = ({
 						<AsyncButton
 							action="Block"
 							classname_override="!h-[40px] text-xs"
-							loading={submitting}
+							loading={blocking}
 							success={successful}
-							disabled={submitting}
-							onClick={handleBlockPrompt}
+							disabled={blocking}
+							onClick={handleBlock}
 						/>
 
 						<button

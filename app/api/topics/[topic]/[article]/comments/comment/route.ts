@@ -42,14 +42,30 @@ export async function POST(
 			'unknown';
 
 		const isIpBlocked = await Blocked.findOne({ ip_address: ip });
-
-		if (!userId && isIpBlocked) {
+		if (isIpBlocked) {
 			return NextResponse.json(
 				{
-					error: `You have been blocked from commenting due to ${isIpBlocked?.reason}`,
+					error: isIpBlocked?.reason
+						? `You have been blocked from commenting due to '${isIpBlocked?.reason}'`
+						: 'You have been blocked from commenting',
 				},
-				{ status: 403 }, // Forbidden
+				{ status: 403 },
 			);
+		}
+
+		// 🔒 Check if blocked by userId
+		if (userId) {
+			const isIdBlocked = await Blocked.findOne({ blocked: userId });
+			if (isIdBlocked) {
+				return NextResponse.json(
+					{
+						error: isIdBlocked?.reason
+							? `You have been blocked from commenting due to '${isIdBlocked?.reason}'`
+							: 'You have been blocked from commenting',
+					},
+					{ status: 403 },
+				);
+			}
 		}
 
 		const selectedTopic = await Topic.findOne({ slug: topic });

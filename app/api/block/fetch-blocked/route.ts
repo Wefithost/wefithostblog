@@ -61,8 +61,22 @@ export async function GET(req: NextRequest) {
 				},
 			},
 			{
+				$lookup: {
+					from: 'users', // collection name of your users
+					localField: 'blocked', // field in Blocked
+					foreignField: '_id', // field in User
+					as: 'blocked_user',
+				},
+			},
+			{
 				$unwind: {
 					path: '$blocked_by_user',
+					preserveNullAndEmptyArrays: true, // keeps records even if blocked_by is null
+				},
+			},
+			{
+				$unwind: {
+					path: '$blocked_user',
 					preserveNullAndEmptyArrays: true, // keeps records even if blocked_by is null
 				},
 			},
@@ -74,6 +88,9 @@ export async function GET(req: NextRequest) {
 					blocked_by: {
 						first_name: '$blocked_by_user.first_name',
 						last_name: '$blocked_by_user.last_name',
+					},
+					blocked: {
+						email: '$blocked_user.email',
 					},
 				},
 			},

@@ -18,6 +18,7 @@ const BlockedRow = ({ blocked }: blockedProps) => {
 		ref: unblockPromptRef,
 		setDisableToggle: disableUnBlockPrompt,
 	} = usePopup();
+	console.log('blocked', blocked);
 	return (
 		<>
 			<div
@@ -36,7 +37,7 @@ const BlockedRow = ({ blocked }: blockedProps) => {
 					<h1 className={`text-xs  rounded-sm`}>{blocked?.reason}</h1>
 				</div>
 				<div className="w-[15%] h-[40px] flex items-center  px-3 text-sm">
-					{formatDate(blocked?.createdAt as string)}
+					{formatDate(blocked?.createdAt as string, true)}
 				</div>
 				<div className="w-[10%] h-[40px] flex items-center  px-3 text-sm text-end justify-end relative">
 					{user?.role === 'super_admin' && (

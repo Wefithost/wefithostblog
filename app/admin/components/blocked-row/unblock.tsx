@@ -38,14 +38,14 @@ const UnblockPrompt = ({
 		setDisableToggle(true);
 
 		await apiRequest({
-			url: '/api/blockeds/unblock-account',
-			method: 'POST',
+			url: '/api/block/unblock',
+			method: 'DELETE',
 			body: {
 				blockedId: blocked?._id,
 				adminId: user?._id,
 			},
 			onSuccess: () => {
-				window.dispatchEvent(new CustomEvent('refetchblockeds'));
+				window.dispatchEvent(new CustomEvent('refetchBlocked'));
 				setSuccessful(true);
 				setTimeout(() => {
 					toggleUnblockPrompt();
@@ -53,8 +53,8 @@ const UnblockPrompt = ({
 
 				toast.success(
 					`${
-						blocked?.blocked.first_name || blocked.ip_address
-					}  account unblocked successfully`,
+						blocked?.blocked?.email ?? blocked.ip_address
+					}  unblocked successfully`,
 					{
 						icon: <FaCheck color="white" />,
 					},
@@ -71,6 +71,8 @@ const UnblockPrompt = ({
 			},
 		});
 	};
+
+	console.log('unblock', blocked);
 	return (
 		unblockPrompt && (
 			<div className="fixed bottom-[0px]  h-full w-full  z-50 left-0 flex  justify-center  items-center        backdrop-brightness-50  px-8     xs:px-0">
@@ -84,15 +86,18 @@ const UnblockPrompt = ({
 						<CgUnblock className="text-2xl" />
 
 						<div className="flex flex-col gap-2 ">
-							<h1 className="text-2xl text-center">unblock Account</h1>
+							<h1 className="text-2xl text-center">
+								Unblock{' '}
+								{blocked?.blocked && blocked?.blocked?.email
+									? `Account`
+									: `IP address`}
+							</h1>
 							<p className="text-sm  text-center">
-								You’re about to unblock
-								<span className="neue-bold">
-									{` ${blocked?.blocked.first_name || blocked?.ip_address} ${
-										blocked?.blocked.last_name || ''
-									} `}{' '}
-								</span>
-								. Are you sure you want to?
+								You’re about to unblock{' '}
+								{blocked?.blocked && blocked?.blocked.email
+									? `${blocked.blocked.email} account`
+									: `${blocked?.ip_address} IP address`}
+								<span className="neue-bold"></span>. Are you sure you want to?
 							</p>
 						</div>
 					</div>
@@ -101,7 +106,7 @@ const UnblockPrompt = ({
 					)}
 					<div className="flex gap-4 w-full">
 						<AsyncButton
-							action="unblock"
+							action="Unblock"
 							classname_override="!h-[40px] text-xs"
 							loading={submitting}
 							success={successful}

@@ -5,35 +5,27 @@ import Alert from '~/lib/models/alerts';
 import Blocked from '~/lib/models/blocked';
 import User from '~/lib/models/user';
 
-export async function POST(req: NextRequest) {
+export async function DELETE(req: NextRequest) {
 	try {
 		await connectMongo();
-		const { ip, userId, reason } = await req.json();
+		const { blockedId, adminId } = await req.json();
 
-		if (!ip || ip.trim() === '') {
+		if (!isValidObjectId(adminId)) {
 			return NextResponse.json(
-				{ error: 'An Ip address for the comment was not provided' },
+				{ error: 'Admin Id not provided or invalid' },
 				{ status: 403 },
 			);
 		}
 
-		if (!isValidObjectId(userId)) {
+		if (!isValidObjectId(blockedId)) {
 			return NextResponse.json(
-				{
-					error: 'User Id not provided',
-				},
+				{ error: 'Blocked Id not provided or invalid' },
 				{ status: 403 },
 			);
 		}
 
-		const user = await User.findById(userId);
-		const isBlocked = await Blocked.findOne({ ip_address: ip });
-		if (isBlocked) {
-			return NextResponse.json(
-				{ error: 'This IP address has already being blocked' },
-				{ status: 403 },
-			);
-		}
+		const user = await User.findById(adminId);
+
 		if (!user) {
 			return NextResponse.json(
 				{
@@ -54,20 +46,18 @@ export async function POST(req: NextRequest) {
 			);
 		}
 
-		await Blocked.create({
-			ip_address: ip,
-			reason: reason ? reason : 'not given',
-			blocked_by: userId,
-		});
+		const unblockedData = await Blocked.findByIdAndDelete(blockedId);
 		await Alert.create({
-			type: 'ip_blocked',
-			message: `blocked an ip: ${ip}`,
-			triggered_by: userId,
-			status: 'delete',
+			type: unblockedData?.ip_address ? 'ip_unblocked' : 'member_unblocked',
+			message: `unblocked a ${
+				unblockedData?.ip_address ? 'ip address' : 'member'
+			}`,
+			triggered_by: adminId,
+			status: 'create',
 		});
 		return NextResponse.json(
 			{
-				message: 'I.P Address blocked successfully',
+				message: 'Unblock done successfully',
 			},
 			{ status: 200 },
 		);

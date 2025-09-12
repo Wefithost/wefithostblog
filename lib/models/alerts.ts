@@ -35,6 +35,10 @@ const AlertSchema = new Schema<IAlert>(
 				'account_messaged',
 				'user_subscribed',
 				'role_changed',
+				'member_blocked',
+				'member_unblocked',
+				'ip_blocked',
+				'ip_unblocked',
 			],
 		},
 

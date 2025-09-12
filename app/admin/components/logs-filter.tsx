@@ -96,6 +96,10 @@ const actionOptions = [
 	{ key: 'account_messaged', label: 'Account messaged' },
 	{ key: 'user_subscribed', label: 'User subscribed' },
 	{ key: 'role_changed', label: 'Role changed' },
+	{ key: 'member_blocked', label: 'Member blocked' },
+	{ key: 'member_unblocked', label: 'Member unblocked' },
+	{ key: 'ip_unblocked', label: 'IP unblocked' },
+	{ key: 'ip_blocked', label: 'IP blocked' },
 ];
 
 const LogsFilter = ({

@@ -8,33 +8,35 @@ import User from '~/lib/models/user';
 export async function POST(req: NextRequest) {
 	try {
 		await connectMongo();
-		const { ip, userId, reason } = await req.json();
+		const { memberId, adminId, reason } = await req.json();
 
-		if (!ip || ip.trim() === '') {
-			return NextResponse.json(
-				{ error: 'An Ip address for the comment was not provided' },
-				{ status: 403 },
-			);
-		}
-
-		if (!isValidObjectId(userId)) {
+		if (!isValidObjectId(memberId)) {
 			return NextResponse.json(
 				{
-					error: 'User Id not provided',
+					error: 'Member Id not provided',
 				},
 				{ status: 403 },
 			);
 		}
 
-		const user = await User.findById(userId);
-		const isBlocked = await Blocked.findOne({ ip_address: ip });
-		if (isBlocked) {
+		if (!isValidObjectId(adminId)) {
 			return NextResponse.json(
-				{ error: 'This IP address has already being blocked' },
+				{
+					error: 'Member Id not provided',
+				},
 				{ status: 403 },
 			);
 		}
-		if (!user) {
+
+		const member = await User.findById(memberId);
+		const isBlocked = await Blocked.findOne({ blocked: memberId });
+		if (isBlocked) {
+			return NextResponse.json(
+				{ error: 'This member has already being blocked' },
+				{ status: 403 },
+			);
+		}
+		if (!member) {
 			return NextResponse.json(
 				{
 					error: 'No account was found with this Id',
@@ -42,8 +44,16 @@ export async function POST(req: NextRequest) {
 				{ status: 405 },
 			);
 		}
-
-		const isAdmin = user.role === 'super_admin';
+		const admin = await User.findById(adminId);
+		if (!admin) {
+			return NextResponse.json(
+				{
+					error: 'No admin was found with this Id',
+				},
+				{ status: 405 },
+			);
+		}
+		const isAdmin = admin.role === 'super_admin';
 
 		if (!isAdmin) {
 			return NextResponse.json(
@@ -55,19 +65,19 @@ export async function POST(req: NextRequest) {
 		}
 
 		await Blocked.create({
-			ip_address: ip,
+			blocked: memberId,
 			reason: reason ? reason : 'not given',
-			blocked_by: userId,
+			blocked_by: adminId,
 		});
 		await Alert.create({
-			type: 'ip_blocked',
-			message: `blocked an ip: ${ip}`,
-			triggered_by: userId,
+			type: 'member_blocked',
+			message: `blocked a member: ${member?.email}`,
+			triggered_by: adminId,
 			status: 'delete',
 		});
 		return NextResponse.json(
 			{
-				message: 'I.P Address blocked successfully',
+				message: 'Member blocked successfully',
 			},
 			{ status: 200 },
 		);

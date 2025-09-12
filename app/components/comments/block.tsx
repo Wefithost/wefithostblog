@@ -103,6 +103,7 @@ const BlockPrompt = ({
 						error={error}
 						setError={setError}
 						textarea
+						label="Reason for blocking"
 						maxlength={160}
 						placeholder="reason"
 						classname_override="!bg-lightGrey"
