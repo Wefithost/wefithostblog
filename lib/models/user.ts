@@ -11,6 +11,7 @@ interface IUser extends Document {
 	oauth_provider?: string;
 	role: string;
 	bio?: string;
+	ip_address?: string;
 }
 
 const userSchema = new Schema<IUser>(
@@ -29,6 +30,7 @@ const userSchema = new Schema<IUser>(
 		password: { type: String },
 		verification_hash: { type: String },
 		oauth_provider: { type: String },
+		ip_address: { type: String, required: false, default: null },
 	},
 	{ timestamps: true },
 );

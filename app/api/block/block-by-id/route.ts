@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
 
 		await Blocked.create({
 			blocked: memberId,
-			reason: reason ? reason : 'not given',
+			reason: reason ? reason : null,
 			blocked_by: adminId,
 		});
 		await Alert.create({

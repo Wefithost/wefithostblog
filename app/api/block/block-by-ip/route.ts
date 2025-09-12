@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
 
 		await Blocked.create({
 			ip_address: ip,
-			reason: reason ? reason : 'not given',
+			reason: reason ? reason : null,
 			blocked_by: userId,
 		});
 		await Alert.create({

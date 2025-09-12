@@ -17,6 +17,7 @@ const authOptions: NextAuthOptions = {
 		async jwt({ token, account, user }) {
 			if (account && user) {
 				await connectMongo();
+				const ip = user.ip || global.req?.ip || null;
 
 				let existingUser = await User.findOne({ email: user.email });
 				if (!existingUser) {
@@ -28,6 +29,7 @@ const authOptions: NextAuthOptions = {
 						role: 'member',
 						recent_articles: [],
 						notifications: [],
+						ip_address: ip,
 					});
 
 					await Alert.create({

@@ -32,7 +32,12 @@ export async function POST(req: NextRequest) {
 				{ status: 400 },
 			);
 		}
-
+		const forwardedFor = req.headers.get('x-forwarded-for');
+		const ip =
+			forwardedFor?.split(',')[0]?.trim() || // first forwarded IP if multiple
+			//@ts-expect-error: ip not available by default
+			req.ip || // fallback
+			'unknown';
 		const newUser = await User.create({
 			email,
 			password: verificationRecord.password,
@@ -40,6 +45,7 @@ export async function POST(req: NextRequest) {
 			last_name: verificationRecord.last_name,
 			oauth_provider: 'local',
 			verifiedAt: new Date(),
+			ip_address: ip,
 		});
 		await Alert.create({
 			type: 'user_subscribed',

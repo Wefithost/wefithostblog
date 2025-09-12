@@ -10,7 +10,7 @@ interface IBlocked extends Document {
 
 const blockedSchema = new Schema<IBlocked>(
 	{
-		reason: { type: String, required: false },
+		reason: { type: String, required: false, default: null },
 		ip_address: { type: String, required: false, default: null },
 		blocked_by: {
 			type: Schema.Types.ObjectId,

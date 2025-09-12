@@ -34,7 +34,9 @@ const BlockedRow = ({ blocked }: blockedProps) => {
 					{blocked?.blocked_by.first_name} {blocked?.blocked_by.last_name || ''}
 				</div>
 				<div className="w-[20%] h-[40px]  px-3 text-sm flex items-center">
-					<h1 className={`text-xs  rounded-sm`}>{blocked?.reason}</h1>
+					<h1 className={`text-xs  rounded-sm`}>
+						{blocked?.reason ?? 'not given'}
+					</h1>
 				</div>
 				<div className="w-[15%] h-[40px] flex items-center  px-3 text-sm">
 					{formatDate(blocked?.createdAt as string, true)}
