@@ -4,76 +4,82 @@ import { Metadata } from 'next';
 import Script from 'next/script';
 
 type Props = {
-	params: { topic: string; article: string };
+	params: Promise<{
+		topic: string;
+		article: string;
+	}>;
 };
 
+// ✅ Generate metadata dynamically for SEO + sharing
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-	const { topic, article } = params;
-	const articleDoc = await getArticle(article);
+	const articleParam = await params;
+	const article = await getArticle(articleParam?.article);
 
-	if (!articleDoc) {
+	if (!article) {
 		return {
 			title: 'Article not found',
 			description: 'This article does not exist.',
 		};
 	}
 
-	const url = `https://blog.wefithost.com/topics/${topic}/${article}`;
+	const url = `https://blog.wefithost.com/topics/${articleParam?.topic}/${articleParam?.article}`;
 
 	return {
-		title: articleDoc.title,
-		description: articleDoc.description,
+		title: article.title,
 		alternates: {
 			canonical: url,
 		},
+		description: article.description,
 		openGraph: {
-			title: articleDoc.title,
-			description: articleDoc.description,
+			title: article.title,
+			description: article.description,
 			url,
 			images: [
 				{
-					url: articleDoc.image
-						? articleDoc.image.replace('/upload/', '/upload/f_jpg/')
-						: 'https://blog.wefithost.com/default-image.jpg',
+					url: `${article.image.replace('/upload/', '/upload/f_jpg/')}`,
 					width: 1200,
 					height: 630,
-					alt: articleDoc.title,
+					alt: article.title,
 				},
 			],
 		},
 		twitter: {
 			card: 'summary_large_image',
-			title: articleDoc.title,
-			description: articleDoc.description,
-			images: [
-				articleDoc.image || 'https://blog.wefithost.com/default-image.jpg',
-			],
+			title: article.title,
+			description: article.description,
+			images: [article.image],
 		},
 	};
 }
 
 export default async function ArticlePage({ params }: Props) {
-	const { topic, article } = params;
-	const articleDoc = await getArticle(article);
+	const articleParam = await params;
+	const article = await getArticle(articleParam?.article);
 
-	if (!articleDoc) return <Article />;
+	if (!article) return <Article />;
 
-	const url = `https://blog.wefithost.com/topics/${topic}/${article}`;
+	const url = `https://blog.wefithost.com/topics/${articleParam?.topic}/${articleParam?.article}`;
 
 	const jsonLd = {
 		'@context': 'https://schema.org',
 		'@type': 'BlogPosting',
-		mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-		headline: articleDoc.title,
-		description: articleDoc.description,
-		image: articleDoc.image,
+		mainEntityOfPage: {
+			'@type': 'WebPage',
+			'@id': url,
+		},
+		headline: article?.title,
+		description: article?.description,
+		image: article?.image,
 		author: {
 			'@type': 'Person',
-			name: articleDoc.author
-				? //@ts-expect-error: type string
-				  `${articleDoc.author.first_name} ${articleDoc.author.last_name || ''}`
-				: 'Unknown',
+
+			name:
+				// @ts-expect-error: type string
+				`${article?.author?.first_name}` +
+				//  @ts-expect-error: type string
+				` ${article?.author?.last_name || ''}`,
 		},
+
 		publisher: {
 			'@type': 'Organization',
 			name: 'WefitHost Blog',
@@ -82,10 +88,10 @@ export default async function ArticlePage({ params }: Props) {
 				url: 'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756039608/logo_hdvqjb_1_1_u8ljxj.png',
 			},
 		},
-		//@ts-expect-error: type date
-		datePublished: articleDoc.createdAt,
-		//@ts-expect-error: type date
-		dateModified: articleDoc.updatedAt || articleDoc.createdAt,
+		//@ts-expect-error: type Date
+		datePublished: article.createdAt,
+		//@ts-expect-error: type Date
+		dateModified: article.updatedAt || article.createdAt,
 	};
 
 	return (

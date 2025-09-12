@@ -1,7 +1,7 @@
 import connectMongo from '~/lib/connect-mongo';
 import Article from '~/lib/models/article';
 import Topic from '~/lib/models/topic';
-
+import '~/lib/models/user';
 export async function getTopic(topic: string) {
 	await connectMongo();
 
