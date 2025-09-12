@@ -17,8 +17,8 @@ const authOptions: NextAuthOptions = {
 		async jwt({ token, account, user }) {
 			if (account && user) {
 				await connectMongo();
-				//@ts-expect-error: testing
-				const ip = user.ip || global.req?.ip || null;
+				//eslint-disable-next-line
+				const ip = (user as any).ip || (global as any).req?.ip || null;
 
 				let existingUser = await User.findOne({ email: user.email });
 				if (!existingUser) {
