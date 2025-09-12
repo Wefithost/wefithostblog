@@ -69,8 +69,6 @@ const FeaturedArticlesPreview = () => {
 				backgroundPosition: 'center',
 				backgroundColor: '#1f13467d',
 			}}
-			onMouseEnter={() => setIsHovered(true)}
-			onMouseLeave={() => setIsHovered(false)}
 		>
 			<div className="w-full h-full absolute z-[20] object-cover top-0 left-0 bg-[#00000077] "></div>
 			{/*eslint-disable-next-line */}
@@ -102,6 +100,8 @@ const FeaturedArticlesPreview = () => {
 					href={`/topics/${slugify(article?.topic?.title)}/${slugify(
 						article?.title as string,
 					)}`}
+					onMouseEnter={() => setIsHovered(true)}
+					onMouseLeave={() => setIsHovered(false)}
 					className="link-style  text-lg max-2xl:text-base max-xl:text-sm max-xs:text-xs"
 				>
 					Read more...
