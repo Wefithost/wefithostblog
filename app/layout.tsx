@@ -12,6 +12,7 @@ import { AuthProvider } from './context/auth-context';
 import { NextAuthProvider } from './next-auth-provider';
 import { TopicsProvider } from './context/topics-context';
 import Script from 'next/script';
+import UpdateIp from './components/update-ip';
 const PoppinsReg = localFont({
 	src: './fonts/Poppins-Regular.ttf',
 	variable: '--font-poppins',
@@ -89,10 +90,12 @@ export default function RootLayout({
 				id="body"
 			>
 				<NextAuthProvider>
+					
 					<ToastContainer position="bottom-right" closeButton={false} />
 					<UtilsProvider>
 						<TopicsProvider>
 							<AuthProvider>
+								<UpdateIp />
 								<Header />
 								<Overlay />
 								<AuthPrompt />
