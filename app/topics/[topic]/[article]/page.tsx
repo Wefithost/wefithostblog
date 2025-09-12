@@ -70,7 +70,8 @@ export default async function ArticlePage({ params }: Props) {
 		author: {
 			'@type': 'Person',
 			name: articleDoc.author
-				? `${articleDoc.author.first_name} ${articleDoc.author.last_name || ''}`
+				? //@ts-expect-error: type string
+				  `${articleDoc.author.first_name} ${articleDoc.author.last_name || ''}`
 				: 'Unknown',
 		},
 		publisher: {
@@ -81,7 +82,9 @@ export default async function ArticlePage({ params }: Props) {
 				url: 'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756039608/logo_hdvqjb_1_1_u8ljxj.png',
 			},
 		},
+		//@ts-expect-error: type date
 		datePublished: articleDoc.createdAt,
+		//@ts-expect-error: type date
 		dateModified: articleDoc.updatedAt || articleDoc.createdAt,
 	};
 
