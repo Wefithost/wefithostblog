@@ -4,76 +4,74 @@ import { Metadata } from 'next';
 import Script from 'next/script';
 
 type Props = {
-	params: Promise<{
-		topic: string;
-		article: string;
-	}>;
+	params: { topic: string; article: string };
 };
 
-// ✅ Generate metadata dynamically for SEO + sharing
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-	const articleParam = await params;
-	const article = await getArticle(articleParam?.article);
+	const { topic, article } = params;
+	const articleDoc = await getArticle(article);
 
-	if (!article) {
+	if (!articleDoc) {
 		return {
 			title: 'Article not found',
 			description: 'This article does not exist.',
 		};
 	}
 
-	const url = `https://blog.wefithost.com/topics/${articleParam?.topic}/${articleParam?.article}`;
+	const url = `https://blog.wefithost.com/topics/${topic}/${article}`;
 
 	return {
-		title: article.title,
+		title: articleDoc.title,
+		description: articleDoc.description,
 		alternates: {
 			canonical: url,
 		},
-		description: article.description,
 		openGraph: {
-			title: article.title,
-			description: article.description,
+			title: articleDoc.title,
+			description: articleDoc.description,
 			url,
 			images: [
 				{
-					url: `${article.image.replace('/upload/', '/upload/f_jpg/')}`,
+					url: articleDoc.image
+						? articleDoc.image.replace('/upload/', '/upload/f_jpg/')
+						: 'https://blog.wefithost.com/default-image.jpg',
 					width: 1200,
 					height: 630,
-					alt: article.title,
+					alt: articleDoc.title,
 				},
 			],
 		},
 		twitter: {
 			card: 'summary_large_image',
-			title: article.title,
-			description: article.description,
-			images: [article.image],
+			title: articleDoc.title,
+			description: articleDoc.description,
+			images: [
+				articleDoc.image || 'https://blog.wefithost.com/default-image.jpg',
+			],
 		},
 	};
 }
 
 export default async function ArticlePage({ params }: Props) {
-	const articleParam = await params;
-	const article = await getArticle(articleParam?.article);
+	const { topic, article } = params;
+	const articleDoc = await getArticle(article);
 
-	if (!article) return <Article />;
+	if (!articleDoc) return <Article />;
 
-	const url = `https://blog.wefithost.com/topics/${articleParam?.topic}/${articleParam?.article}`;
+	const url = `https://blog.wefithost.com/topics/${topic}/${article}`;
 
 	const jsonLd = {
 		'@context': 'https://schema.org',
 		'@type': 'BlogPosting',
-		mainEntityOfPage: {
-			'@type': 'WebPage',
-			'@id': url,
-		},
-		headline: article.title,
-		description: article.description,
-		image: article.image,
+		mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+		headline: articleDoc.title,
+		description: articleDoc.description,
+		image: articleDoc.image,
 		author: {
 			'@type': 'Person',
-			//@ts-expect-error: type string
-			name: `${article.author.first_name} ${article.author.last_name || ''}`,
+			name: articleDoc.author
+				? `${articleDoc.author.first_name} ${articleDoc.author.last_name || ''}`
+				: 'Unknown',
 		},
 		publisher: {
 			'@type': 'Organization',
@@ -83,10 +81,8 @@ export default async function ArticlePage({ params }: Props) {
 				url: 'https://res.cloudinary.com/dl6pa30kz/image/upload/v1756039608/logo_hdvqjb_1_1_u8ljxj.png',
 			},
 		},
-		//@ts-expect-error: type Date
-		datePublished: article.createdAt,
-		//@ts-expect-error: type Date
-		dateModified: article.updatedAt || article.createdAt,
+		datePublished: articleDoc.createdAt,
+		dateModified: articleDoc.updatedAt || articleDoc.createdAt,
 	};
 
 	return (

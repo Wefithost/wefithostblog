@@ -10,8 +10,8 @@ export async function getTopic(topic: string) {
 
 	const articles = await Article.find({ topic: selectedTopic._id })
 		.populate({ path: 'author', select: 'first_name last_name' })
-		.lean()
-		.limit(6);
+		.limit(6)
+		.lean();
 
 	return { ...selectedTopic, articles };
 }
