@@ -18,7 +18,6 @@ const BlockedRow = ({ blocked }: blockedProps) => {
 		ref: unblockPromptRef,
 		setDisableToggle: disableUnBlockPrompt,
 	} = usePopup();
-	console.log('blocked', blocked);
 	return (
 		<>
 			<div

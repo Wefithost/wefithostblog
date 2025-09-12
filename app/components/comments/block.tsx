@@ -34,10 +34,6 @@ const BlockPrompt = ({
 		if (!user) {
 			setError('User not authenticated');
 		}
-		if (!reason || reason.trim() === '') {
-			setError('A reason is required');
-			return;
-		}
 
 		if (!comment?.ip_address) {
 			setError('Comment does not contain an I.P address');

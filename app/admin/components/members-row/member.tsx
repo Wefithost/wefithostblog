@@ -11,6 +11,7 @@ import { FaRegMessage } from 'react-icons/fa6';
 import { useAuthContext } from '~/app/context/auth-context';
 import { MdBlock } from 'react-icons/md';
 import BlockPrompt from './block';
+import { getCountryNameFromCode } from '~/utils/get-county-from-code';
 interface memberProps {
 	member: user_type;
 }
@@ -56,7 +57,7 @@ const Member = ({ member }: memberProps) => {
 				className="w-full flex gap-1 bg-white border-t    border-t-lightGrey hover:bg-gray-50"
 				key={member._id}
 			>
-				<div className="w-[30%] h-[40px] flex items-center  px-3  gap-2">
+				<div className="w-[25%] h-[40px] flex items-center  px-3  gap-2">
 					{/* eslint-disable-next-line */}
 					<img
 						src={member?.profile ?? '/icons/default-user.svg'}
@@ -67,7 +68,7 @@ const Member = ({ member }: memberProps) => {
 						{member?.first_name} {member?.last_name}
 					</span>
 				</div>
-				<div className="w-[30%] h-[40px] flex items-center  px-3 text-sm">
+				<div className="w-[25%] h-[40px] flex items-center  px-3 text-sm">
 					{member?.email}
 				</div>
 				<div className="w-[15%] h-[40px]  px-3 text-sm flex items-center">
@@ -85,6 +86,9 @@ const Member = ({ member }: memberProps) => {
 					</h1>
 				</div>
 				<div className="w-[15%] h-[40px] flex items-center  px-3 text-sm">
+					{getCountryNameFromCode(member?.country as string) || 'Unknown'}
+				</div>
+				<div className="w-[10%] h-[40px] flex items-center  px-3 text-sm">
 					{formatDate(member?.createdAt as string)}
 				</div>
 				<div className="w-[10%] h-[40px] flex items-center  px-3 text-sm text-end justify-end relative">

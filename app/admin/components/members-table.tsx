@@ -42,10 +42,12 @@ pr-8
 			<section className="flex gap-3 flex-col w-full  overflow-auto justify-end">
 				<div className="flex flex-col   rounded-md  border   border-[#dfdde3] w-full min-w-[1000px]">
 					<div className="w-full flex gap-1 bg-[#EAEAEC]">
-						<div className="w-[30%] py-2 px-3 text-sm">Name</div>
-						<div className="w-[30%] py-2 px-3 text-sm">Email</div>
+						<div className="w-[25%] py-2 px-3 text-sm">Name</div>
+						<div className="w-[25%] py-2 px-3 text-sm">Email</div>
 						<div className="w-[15%] py-2 px-3 text-sm">Role</div>
-						<div className="w-[15%] py-2 px-3 text-sm">Joined</div>
+						<div className="w-[15%] py-2 px-3 text-sm">Country</div>
+						<div className="w-[10%] py-2 px-3 text-sm">Joined</div>
+						
 						<div className="w-[10%] py-2 px-3 text-sm"></div>
 					</div>
 					<Loader

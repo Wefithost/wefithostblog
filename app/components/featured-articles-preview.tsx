@@ -62,7 +62,7 @@ const FeaturedArticlesPreview = () => {
 	const article = articles?.[currentIndex] ?? null;
 	return (
 		<section
-			className={`flex min-h-[700px] max-h-[700px] w-full overflow-hidden relative items-end rounded-lg max-2xl:min-h-[500px]  max-2xl:max-h-[500px] max-md:min-h-[300px] max-md:max-h-[300px] duration-500`}
+			className={`flex  w-full aspect-[465/301] overflow-hidden relative items-end rounded-lg duration-500`}
 			style={{
 				backgroundImage: `url(${article?.image})`,
 				backgroundSize: 'cover',
@@ -88,7 +88,7 @@ const FeaturedArticlesPreview = () => {
 				<h2 className="text-[32px] poppins-bold max-2xl:text-2xl max-xl:text-xl max-xs:text-base  line-clamp-2">
 					{article?.title}
 				</h2>
-				<p className="text-lg max-2xl:text-base max-xl:text-sm  line-clamp-1">
+				<p className="text-lg max-2xl:text-base max-xl:text-sm  line-clamp-2 max-lg:line-clamp-1">
 					{article?.description}
 				</p>
 				<div className="flex gap-4 items-center text-lg max-2xl:text-base max-xl:text-sm max-2xs:hidden">

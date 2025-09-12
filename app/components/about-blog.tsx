@@ -64,9 +64,9 @@ const AboutBlog = ({ className_override }: aboutProps) => {
 	return (
 		<>
 			<aside
-				className={`flex-col justify-between max-xl:flex-row  gap-5 max-md:flex-col  ${className_override}`}
+				className={`flex-col max-xl:flex-row  items-start  gap-5 max-md:flex-col sticky top-20 ${className_override}`}
 			>
-				<div className="w-[450px] bg-white border-purple rounded-2xl  shrink-0 flex flex-col gap-4 items-center justify-between sticky top-20 shadow-sm p-4 max-xl:w-1/2 max-xl:static max-md:w-full max-xs:gap-2">
+				<div className="w-[450px] bg-white border-purple rounded-2xl  shrink-0 flex flex-col gap-4 items-center justify-between  shadow-sm p-4 max-xl:w-1/2 max-xl:static max-md:w-full max-xs:gap-2">
 					<Image src={logo} alt="wefithost logo" className="w-28 max-xs:w-18" />
 					<h3 className="text-lg poppins text-center">About our blog</h3>
 					<p className="text-center text-base text-gray-500">
@@ -81,7 +81,7 @@ const AboutBlog = ({ className_override }: aboutProps) => {
 					</button>
 				</div>
 
-				<div className="w-[450px] bg-white border-purple rounded-2xl  shrink-0 flex flex-col gap-4 items-center justify-between sticky top-10 shadow-lg p-4 max-xl:w-1/2 max-xl:static max-md:w-full max-xl:shadow-sm max-xs:gap-2">
+				<div className="w-[450px] bg-white border-purple rounded-2xl  shrink-0 flex flex-col gap-4 items-center justify-between  shadow-lg p-4 max-xl:w-1/2 max-xl:static max-md:w-full max-xl:shadow-sm max-xs:gap-2">
 					<FaEnvelope className="text-4xl text-purple " />
 
 					<h3 className="text-lg poppins text-center">
@@ -119,7 +119,7 @@ const AboutBlog = ({ className_override }: aboutProps) => {
 			{aboutPrompt && (
 				<div className="fixed bottom-[0px]  h-full w-full  z-50 left-0 flex  justify-center  items-center        backdrop-brightness-50  px-8     max-md:px-2">
 					<div
-						className={`w-[800px]     mid-popup   duration-300 ease-in-out flex flex-col py-6 px-2  gap-4   rounded-lg bg-purple-50  items-center   relative   ${
+						className={`w-[800px]     mid-popup   duration-300 ease-in-out flex flex-col py-6 px-2  gap-4   rounded-lg bg-white  items-center   relative   ${
 							aboutPromptVisible ? '' : 'mid-popup-hidden'
 						}  `}
 						ref={aboutPromptRef}
@@ -252,7 +252,7 @@ const AboutBlog = ({ className_override }: aboutProps) => {
 									</li>
 								</ul>
 							</div>
-							<div className="flex flex-col w-full bg-purple-100 p-4 rounded-xl">
+							<div className="flex flex-col w-full bg-purple-50 p-4 rounded-xl">
 								<h5 className="text-base max-2xs:text-[15px] ">
 									Thank you for visiting and being part of our journey. We’re
 									always excited to share more insights with you.
