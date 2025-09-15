@@ -13,6 +13,7 @@ import { NextAuthProvider } from './next-auth-provider';
 import { TopicsProvider } from './context/topics-context';
 import Script from 'next/script';
 import UpdateIp from './components/update-ip';
+import { Analytics } from '@vercel/analytics/next';
 const PoppinsReg = localFont({
 	src: './fonts/Poppins-Regular.ttf',
 	variable: '--font-poppins',
@@ -90,7 +91,6 @@ export default function RootLayout({
 				id="body"
 			>
 				<NextAuthProvider>
-					
 					<ToastContainer position="bottom-right" closeButton={false} />
 					<UtilsProvider>
 						<TopicsProvider>
@@ -100,6 +100,7 @@ export default function RootLayout({
 								<Overlay />
 								<AuthPrompt />
 								{children}
+								<Analytics />
 								<Footer />
 							</AuthProvider>
 						</TopicsProvider>
