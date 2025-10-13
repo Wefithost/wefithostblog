@@ -4,6 +4,7 @@ import ClassicInput from './inputs/classic-input';
 import { apiRequest } from '~/utils/api-request';
 import { toast } from 'react-toastify';
 import AsyncButton from './buttons/async-button';
+import { FaCheckCircle } from 'react-icons/fa';
 
 const CtaSection = () => {
 	const [email, setEmail] = useState('');
@@ -34,7 +35,9 @@ const CtaSection = () => {
 			method: 'POST',
 			body: { email },
 			onSuccess: (res) => {
-				toast.success(res.message);
+				toast.success(res.message, {
+					icon: <FaCheckCircle className="text-white text-2xl" />,
+				});
 				setSubscribeSuccess(true);
 				setTimeout(() => setSubscribeSuccess(true), 3000);
 			},
@@ -62,24 +65,28 @@ const CtaSection = () => {
 						</p>
 					</div>
 				</div>
-				<div className="flex gap-2  w-full items-end justify-start relative">
-					<ClassicInput
-						value={email}
-						setValue={setEmail}
-						error={error}
-						setError={setError}
-						classname_override="!bg-white !text-black  !self-start max-xs:!w-full "
-						errorContent={'Please enter a valid email address'}
-						placeholder="Your email"
-						aria-label="Email address for newsletter subscription"
-					/>
-					<AsyncButton
-						action="Subscribe"
-						classname_override="!w-[200px]"
-						loading={subscribing}
-						success={subscribeSuccess}
-						onClick={subscribe}
-					/>
+				<div className="flex gap-2  w-full flex-col">
+					<div className="flex gap-2  w-full items-end justify-start relative">
+						<ClassicInput
+							value={email}
+							setValue={setEmail}
+							error={error}
+							setError={setError}
+							classname_override="!bg-white !text-black  !self-start max-xs:!w-full "
+							errorContent={'Please enter a valid email address'}
+							placeholder="Your email"
+							aria-label="Email address for newsletter subscription"
+							name="email"
+						/>
+						<AsyncButton
+							action="Subscribe"
+							classname_override="!w-[200px]"
+							loading={subscribing}
+							success={subscribeSuccess}
+							onClick={subscribe}
+						/>
+					</div>
+					{error && <span className="text-sm text-red-300">{error}</span>}
 				</div>
 			</div>
 		</section>
