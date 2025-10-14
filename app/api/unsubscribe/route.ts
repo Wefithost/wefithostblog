@@ -5,7 +5,12 @@ import NewsletterSubscription from '~/lib/models/newsletter_subscriptions';
 export async function POST(req: Request) {
 	try {
 		await connectMongo();
-		const email = await req.json();
+		const emailObject = await req.json();
+
+		const email =
+			typeof emailObject.email === 'object'
+				? emailObject.email.email
+				: emailObject.email;
 
 		if (!email) {
 			return NextResponse.json(
@@ -13,6 +18,8 @@ export async function POST(req: Request) {
 				{ status: 400 },
 			);
 		}
+
+		console.log(email);
 
 		const subscriber = await NewsletterSubscription.findOne({ email });
 		if (!subscriber) {
@@ -24,7 +31,10 @@ export async function POST(req: Request) {
 
 		await NewsletterSubscription.deleteOne({ email });
 
-		return NextResponse.redirect('https://blog.wefithost.com/unsubscribed');
+		return NextResponse.json(
+			{ message: 'You have successfully been unsubscribed' },
+			{ status: 200 },
+		);
 	} catch (error) {
 		console.error(error);
 		return NextResponse.json(

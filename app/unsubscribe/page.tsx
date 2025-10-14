@@ -13,7 +13,8 @@ const Unsubscribed = () => {
 	const [successful, setSuccessful] = useState(false);
 
 	const searchParams = useSearchParams();
-	const email = searchParams.get('email') || '';
+	const encodedEmail = searchParams.get('email') || '';
+	const email = decodeURIComponent(encodedEmail);
 
 	const unsubscribe = async () => {
 		if (!email) {

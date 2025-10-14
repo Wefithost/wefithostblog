@@ -74,118 +74,100 @@ export async function PATCH(
 
 		if (existingArticle.published) {
 			const subscribers = await NewsletterSubscription.find({}, 'email');
-			const subscriberEmails = subscribers.map((sub) => sub.email);
 
-			if (subscriberEmails.length > 0) {
-				const articleUrl = `https://blog.wefithost.com/topics/${selectedTopic.slug}/${existingArticle.slug}`;
-				const htmlContent = `<table role="presentation" cellpadding="0" cellspacing="0" width="100%"
-    style="background-color: #FFFFFF; font-family: Arial, sans-serif; margin: 0; padding: 0;">
-    <tr>
-        <td align="center" style="padding: 40px 10px; ">
+			if (subscribers.length === 0) {
+				return NextResponse.json(
+					{ message: 'No subscribers to send notifications to.' },
+					{ status: 200 },
+				);
+			}
+
+			const articleUrl = `https://blog.wefithost.com/topics/${selectedTopic.slug}/${existingArticle.slug}`;
+
+			// Prepare all email sending promises
+			const emailPromises = subscribers.map((sub) => {
+				const unsubscribeUrl = `https://blog.wefithost.com/unsubscribe?email=${encodeURIComponent(
+					sub.email,
+				)}`;
+
+				const htmlContent = `
+      <table role="presentation" cellpadding="0" cellspacing="0" width="100%"
+        style="background-color: #FFFFFF; font-family: Arial, sans-serif; margin: 0; padding: 0;">
+        <tr>
+          <td align="center" style="padding: 40px 10px;">
             <table cellpadding="0" cellspacing="0" width="100%"
-                style="max-width: 500px; background: #FFFFFF; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid gainsboro">
-                <!-- Header / Logo -->
-                <tr>
-                    <td align="center" style="background-color: #f1f1f4; padding: 25px;">
-                        <img src="https://res.cloudinary.com/dl6pa30kz/image/upload/v1756039608/logo_hdvqjb_1_1_u8ljxj.png"
-                            alt="WeFitHost Logo" width="200" style="display: block;" />
-                    </td>
-                </tr>
-
-                <!-- Article Image -->
-                <tr>
-                    <td align="center" style="padding: 20px;">
-                        <img src="${
-													existingArticle?.image ||
-													'https://via.placeholder.com/500x300'
-												}" alt="${(
-					existingArticle?.title || 'WeFitHost Blog Article'
-				).replace(
-					/" /g,
-					'&quot;',
-				)}" width="500" style="max-width: 95%; height: auto;" />
-                    </td>
-                </tr>
-
-                <!-- Article Content -->
-                <tr>
-                    <td style="padding: 0 30px 30px;">
-                        <h2 style="font-size: 14px; color: #939393; margin-bottom: 10px;">
-                            A new article just dropped!
-                        </h2>
-                        <h3 style="font-size: 22px; color: rgb(0 0 0); margin-bottom: 10px;">
-                            ${
-															existingArticle?.title ||
-															'New Article on WeFitHost Blog'
-														}
-                        </h3>
-                        <p style="font-size: 14px; line-height: 22px; color: #000000; margin: 0 0 20px;">
-                            ${(
-															existingArticle?.description ||
-															'Discover new insights, stories, and updates from WeFitHost Blog.'
-														)
-															.replace(/\n/g, ' ')
-															.replace(/"/g, '&quot;')}
-                        </p>
-
-                        <div style=" margin-bottom: 20px;">
-                            <a href="${articleUrl}" target="_blank" rel="noopener noreferrer"
-                                style="background-color: #6B63FF; color: #ffffff; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: bold; letter-spacing: 0.5px; display: inline-block;">
-                                Read Full Article
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-
-                <!-- Footer -->
-                <tr>
-                    <td align="center" style="padding: 20px; background-color: #f1f1f4;">
-                        <p style="font-size: 12px; color: #000000; margin: 0;">
-                            You’re receiving this email because you subscribed to <strong>WeFitHost Blog</strong>.
-                        </p>
-                        <p style="font-size: 12px; color: #000000; margin: 5px 0 0;">
-                            © WeFitHost ${new Date().getFullYear()} | All Rights Reserved
-                        </p>
-                    </td>
-
-
-
-                </tr>
-                <tr>
-                    <td align="center" style="background-color: #f1f1f4; padding-bottom: 10px;">
-                        <p style="font-size: 12px; color: #999;">
-                            You’re receiving this because you subscribed to WeFitHost Blog updates.<br>
-                            <a href="https://blog.wefithost.com/unsubscribe?email={{userEmail}}"
-                                style="color: #d9534f; text-decoration: underline;">
-                                Unsubscribe
-                            </a>
-                        </p>
-                    </td>
-                </tr>
+              style="max-width: 500px; background: #FFFFFF; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid gainsboro">
+              <tr>
+                <td align="center" style="background-color: #f1f1f4; padding: 25px;">
+                  <img src="https://res.cloudinary.com/dl6pa30kz/image/upload/v1756039608/logo_hdvqjb_1_1_u8ljxj.png"
+                    alt="WeFitHost Logo" width="200" style="display: block;" />
+                </td>
+              </tr>
+              <tr>
+                <td align="left" style="padding-left: 30px;">
+                  <h2 style="font-size: 14px; color: #939393; margin-bottom: 0px;">
+                    A new article just dropped!
+                  </h2>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" style="padding: 20px;">
+                  <img src="${
+										existingArticle?.image ||
+										'https://via.placeholder.com/500x300'
+									}"
+                    alt="${existingArticle?.title || 'WeFitHost Blog Article'}"
+                    width="500" style="max-width: 95%; height: auto;" />
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 0 30px 30px;">
+                  <h3 style="font-size: 22px; color: rgb(0 0 0); margin-bottom: 10px;">
+                    ${existingArticle?.title}
+                  </h3>
+                  <p style="font-size: 14px; line-height: 22px; color: #000000; margin: 0 0 20px;">
+                    ${existingArticle?.description}
+                  </p>
+                  <div style="margin-bottom: 20px;">
+                    <a href="${articleUrl}" target="_blank" rel="noopener noreferrer"
+                      style="background-color: #6B63FF; color: #ffffff; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: bold; letter-spacing: 0.5px; display: inline-block;">
+                      Read Full Article
+                    </a>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" style="background-color: #f1f1f4; padding: 15px;">
+                  <p style="font-size: 12px; color: #000; margin: 0;">
+                    You're receiving this email because you subscribed to <strong>WeFitHost Blog</strong>.
+                  </p>
+                  <p style="font-size: 12px; color: #000; margin-top: 5px;">
+                    <a href="${unsubscribeUrl}" style="color: #d9534f; text-decoration: underline;">Unsubscribe</a>
+                  </p>
+                </td>
+              </tr>
             </table>
-        </td>
-    </tr>
-</table>
-`;
+          </td>
+        </tr>
+      </table>
+    `;
 
-				await transporter.sendMail({
+				// Return the email promise
+				return transporter.sendMail({
 					...mailOptions,
-
-					bcc: subscriberEmails,
+					to: sub.email,
 					from: process.env.EMAIL,
 					subject: 'A new article just dropped!',
 					html: htmlContent,
 				});
-			}
+			});
+
+			// Run all emails in parallel
+			await Promise.all(emailPromises);
 		}
 
-		return NextResponse.json(
-			{
-				message,
-			},
-
-			{ status: 200 },
-		);
+		// ✅ Always return a response no matter what
+		return NextResponse.json({ message }, { status: 200 });
 	} catch (error) {
 		console.error(error);
 		return NextResponse.json(
