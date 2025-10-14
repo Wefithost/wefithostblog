@@ -139,7 +139,7 @@ export async function PATCH(
               <tr>
                 <td align="center" style="background-color: #f1f1f4; padding: 15px;">
                   <p style="font-size: 12px; color: #000; margin: 0;">
-                    You're receiving this email because you subscribed to <strong>WeFitHost Blog</strong>.
+                    You're receiving this email because you subscribed to <strong>WeFitHost Blog </strong> Newsletter.
                   </p>
                   <p style="font-size: 12px; color: #000; margin-top: 5px;">
                     <a href="${unsubscribeUrl}" style="color: #d9534f; text-decoration: underline;">Unsubscribe</a>
