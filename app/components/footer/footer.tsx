@@ -101,10 +101,10 @@ const Footer = () => {
 					dir: 'Careers',
 					href: 'https://wefithost.com/careers',
 				},
-				// {
-				// 	dir: 'Affiliates',
-				// 	href: '/',
-				// },
+				{
+					dir: 'Affiliates',
+					href: 'https://wefithost.com/affiliate',
+				},
 			],
 		},
 	];
