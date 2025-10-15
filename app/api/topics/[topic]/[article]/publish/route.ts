@@ -103,13 +103,7 @@ export async function PATCH(
                     alt="WeFitHost Logo" width="200" style="display: block;" />
                 </td>
               </tr>
-              <tr>
-                <td align="left" style="padding-left: 30px;">
-                  <h2 style="font-size: 14px; color: #939393; margin-bottom: 0px;">
-                    A new article just dropped!
-                  </h2>
-                </td>
-              </tr>
+              
               <tr>
                 <td align="center" style="padding: 20px;">
                   <img src="${
@@ -157,7 +151,7 @@ export async function PATCH(
 					...mailOptions,
 					to: sub.email,
 					from: process.env.EMAIL,
-					subject: 'A new article just dropped!',
+					subject: existingArticle?.title || 'A new Article just dropped',
 					html: htmlContent,
 				});
 			});
