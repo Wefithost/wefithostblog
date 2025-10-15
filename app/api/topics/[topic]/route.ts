@@ -31,7 +31,7 @@ export async function GET(
 		const existingTopic = await Topic.findOne({ slug: topic });
 		if (!existingTopic) {
 			return NextResponse.json(
-				{ error: 'No topic was found with this slug' },
+				{ error: `No topic was found with the name: '${topic}'` },
 				{ status: 404 },
 			);
 		}
