@@ -118,7 +118,9 @@ strong {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 }
-
+hr{
+    border:1px solid #1c3a4d26 !important;
+}
 @media (max-width:1278px) {
     .tiptap h1 {
         font-size: 20px;
