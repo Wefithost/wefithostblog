@@ -2,12 +2,25 @@ import { getTopic } from '~/utils/getTopic';
 import { Metadata } from 'next';
 import Topic from './topic';
 import Script from 'next/script';
+import { ITopic } from '~/types/topic';
 
 type Props = {
 	params: Promise<{
 		topic: string;
 	}>;
 };
+
+export async function generateStaticParams() {
+	const baseUrl = process.env.SITE_URL || 'http://localhost:3000';
+
+	const data = await fetch(`${baseUrl}/api/topics`).then((res) => res.json());
+
+	const topics: ITopic[] = Array.isArray(data) ? data : data.topics || [];
+
+	return topics.map((topic) => ({
+		topic: topic.slug,
+	}));
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const topicParam = await params;

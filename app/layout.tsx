@@ -30,11 +30,9 @@ const PoppinsBold = localFont({
 });
 export const metadata: Metadata = {
 	title: 'WefitHost Blog – Smarter, Faster, and Safer Hosting Guides',
-	alternates: {
-		canonical: 'https://blog.wefithost.com/',
-	},
 	description:
 		'WeFitHost Blog shares tips, updates, and insights on hosting, site management, and digital tools to help you build smarter, faster, and safer online.',
+
 	openGraph: {
 		title: 'WefitHost Blog',
 		description:
@@ -60,6 +58,9 @@ export const metadata: Metadata = {
 		images: [
 			'https://res.cloudinary.com/dl6pa30kz/image/upload/v1757335730/weFitHost-blog_vqp2he.png',
 		], // can reuse OG image
+	},
+	alternates: {
+		canonical: 'https://blog.wefithost.com/',
 	},
 };
 
