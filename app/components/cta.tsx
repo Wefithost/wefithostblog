@@ -31,7 +31,7 @@ const CtaSection = () => {
 		setSubscribing(true);
 		setError('');
 		await apiRequest({
-			url: '/api/subscribe',
+			url: '/api/subscriptions/subscribe',
 			method: 'POST',
 			body: { email },
 			onSuccess: (res) => {

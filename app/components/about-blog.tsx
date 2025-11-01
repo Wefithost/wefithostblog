@@ -36,7 +36,7 @@ const AboutBlog = ({ className_override }: aboutProps) => {
 		setSubscribing(true);
 		setError('');
 		await apiRequest({
-			url: '/api/subscribe',
+			url: '/api/subscriptions/subscribe',
 			method: 'POST',
 			body: { email },
 			onSuccess: (res) => {

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import SidebarList from './sidebar-lists';
 import { MdApps, MdArticle } from 'react-icons/md';
-import { FaUsers } from 'react-icons/fa';
+import { FaEnvelope, FaUsers } from 'react-icons/fa';
 import { LuLogs } from 'react-icons/lu';
 interface SidebarProps {
 	hidden: boolean;
@@ -32,6 +32,13 @@ const Sidebar = ({ hidden }: SidebarProps) => {
 			href: '/admin/logs',
 			icon: <LuLogs className="text-black" />,
 			activeIcon: <LuLogs className="text-purple" />,
+		},
+		{
+			id: 4,
+			dir: 'Subscriptions',
+			href: '/admin/subscriptions',
+			icon: <FaEnvelope className="text-black" />,
+			activeIcon: <FaEnvelope className="text-purple" />,
 		},
 	];
 	return (

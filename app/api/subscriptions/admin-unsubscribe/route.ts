@@ -7,12 +7,7 @@ import User from '~/lib/models/user';
 export async function POST(req: Request) {
 	try {
 		await connectMongo();
-		const emailObject = await req.json();
-
-		const email =
-			typeof emailObject.email === 'object'
-				? emailObject.email.email
-				: emailObject.email;
+		const { adminId, email } = await req.json();
 
 		if (!email) {
 			return NextResponse.json(
@@ -21,26 +16,41 @@ export async function POST(req: Request) {
 			);
 		}
 
+		if (!adminId) {
+			return NextResponse.json(
+				{ error: 'Admin Id not provided' },
+				{ status: 400 },
+			);
+		}
+
+		const admin = await User.findById(adminId);
+		if (!admin) {
+			return NextResponse.json(
+				{ error: 'Only super admins can perform this action' },
+				{ status: 400 },
+			);
+		}
+
 		const subscriber = await NewsletterSubscription.findOne({ email });
 		if (!subscriber) {
 			return NextResponse.json(
-				{ message: 'You’re already unsubscribed.' },
+				{ message: 'Account already unsubscribed.' },
 				{ status: 200 },
 			);
 		}
 		const member = await User.findOne({ email: email });
 		if (member) {
 			await Alert.create({
-				type: 'unsubscribed_from_newsletter',
-				message: `${member?.first_name} unsubscribed from the newsletter`,
-				triggered_by: member._id,
+				type: 'unsubscribed_by_admin',
+				message: `${admin?.first_name} unsubscribed ${member?.first_name} from the newsletter`,
+				triggered_by: admin?._id,
 				status: 'delete',
 			});
 		} else {
 			await Alert.create({
-				type: 'unsubscribed_from_newsletter',
-				message: `${email} unsubscribed from the newsletter`,
-				triggered_by: null,
+				type: 'unsubscribed_by_admin',
+				message: `${admin?.first_name} unsubscribed ${email} from the newsletter`,
+				triggered_by: admin?._id,
 				status: 'delete',
 			});
 		}

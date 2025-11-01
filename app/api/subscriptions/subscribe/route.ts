@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectMongo from '~/lib/connect-mongo';
+import Alert from '~/lib/models/alerts';
 import NewsletterSubscription from '~/lib/models/newsletter_subscriptions';
+import User from '~/lib/models/user';
 
 export async function POST(req: NextRequest) {
 	try {
@@ -23,8 +25,24 @@ export async function POST(req: NextRequest) {
 				{ status: 409 },
 			);
 		}
-
+		const member = await User.findOne({ email: email });
+		if (member) {
+			await Alert.create({
+				type: 'subscribed_to_newsletter',
+				message: `${member?.first_name} subscribed to the newsletter`,
+				triggered_by: member._id,
+				status: 'create',
+			});
+		} else {
+			await Alert.create({
+				type: 'subscribed_to_newsletter',
+				message: `${email} subscribed to the newsletter`,
+				triggered_by: null,
+				status: 'create',
+			});
+		}
 		await NewsletterSubscription.create({ email: email });
+
 		return NextResponse.json(
 			{ message: 'Thanks for subscribing to our newsletter' },
 			{ status: 200 },

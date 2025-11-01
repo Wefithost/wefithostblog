@@ -39,6 +39,9 @@ const AlertSchema = new Schema<IAlert>(
 				'member_unblocked',
 				'ip_blocked',
 				'ip_unblocked',
+				'subscribed_to_newsletter',
+				'unsubscribed_from_newsletter',
+				'unsubscribed_by_admin',
 			],
 		},
 
