@@ -37,7 +37,7 @@ const Header = () => {
 
 				<div className="flex items-center gap-5 text-[20px] font-light max-2xl:text-base  max-xs:text-sm max-2xs:hidden">
 					<TopicsDropdown />
-					<Link href="https://www.wefithost.com/" className="link-style-dark">
+					<Link href="https://wefithost.com" className="link-style-dark">
 						Visit Wefithost
 					</Link>
 					{user ? (
