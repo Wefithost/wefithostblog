@@ -11,6 +11,7 @@ import { usePopup } from '~/utils/toggle-popups';
 import { IoImageSharp } from 'react-icons/io5';
 import { useParams, usePathname } from 'next/navigation';
 import { useTopicsContext } from '~/app/context/topics-context';
+
 const NewArticle = () => {
 	const {
 		isActive: newArticlePrompt,
@@ -34,6 +35,10 @@ const NewArticle = () => {
 	const [imageUrl, setImageUrl] = useState<string | null>(null);
 	const [selectedTopic, setSelectedTopic] = useState('');
 	const { topics } = useTopicsContext();
+
+	// Find the selected topic object to display its title
+	const selectedTopicObj = topics.find(t => t.slug === selectedTopic);
+
 	const createArticle = async () => {
 		if (!user || loading) {
 			return;
@@ -51,9 +56,17 @@ const NewArticle = () => {
 			setError('An image is required');
 			return;
 		}
+		
+		// IMPORTANT: Check if a topic is selected
+		if (!selectedTopic) {
+			setError('Please select a topic');
+			return;
+		}
+
 		setLoading(true);
 		setError('');
 		disableNewArticlePrompt(true);
+		
 		const formData = new FormData();
 
 		formData.append('adminId', user._id);
@@ -62,8 +75,9 @@ const NewArticle = () => {
 		formData.append('selected_topic', selectedTopic);
 		formData.append('uploaded_image', imageBlob as Blob);
 
+		// FIXED: Use selectedTopic from dropdown, not topic from params
 		await apiRequest({
-			url: `/api/topics/${topic}/create-article`,
+			url: `/api/topics/${selectedTopic}/create-article`,
 			method: 'POST',
 			body: formData,
 			onSuccess: (response) => {
@@ -90,8 +104,11 @@ const NewArticle = () => {
 			},
 		});
 	};
+	
 	const inputImageRef = useRef<HTMLInputElement | null>(null);
+	
 	const handleClickSelect = () => inputImageRef.current?.click();
+	
 	const handleImageFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
 		if (!file) return;
@@ -115,14 +132,18 @@ const NewArticle = () => {
 		setImageBlob(null);
 		setImagePreview(null);
 		setImageUrl(null);
+		setSelectedTopic('');
 	};
+	
 	const {
 		isVisible: topicPromptVisible,
 		isActive: topicPrompt,
 		togglePopup: toggleTopicPrompt,
 		ref: topicPromptRef,
 	} = usePopup();
+	
 	const linkname = usePathname();
+	
 	return (
 		<>
 			<button
@@ -179,7 +200,9 @@ const NewArticle = () => {
 									className="py-2 px-2 bg-white border border-gray-300 text-center text-sm flex items-center gap-1 rounded-sm relative cursor-pointer w-full justify-between"
 									onClick={toggleTopicPrompt}
 								>
-									<span className="capitalize">Topic: {selectedTopic}</span>{' '}
+									<span className="capitalize">
+										Topic: {selectedTopicObj?.title || selectedTopic || 'Select a topic'}
+									</span>
 									<FaAngleDown
 										className={`${
 											topicPrompt ? 'rotate-180' : ''
@@ -255,7 +278,7 @@ const NewArticle = () => {
 								<AsyncButton
 									classname_override="!h-[40px] !rounded-md"
 									action="Create"
-									disabled={!title || !desc || !imageUrl}
+									disabled={!title || !desc || !imageUrl || !selectedTopic}
 									loading={loading}
 									success={successful}
 									onClick={createArticle}
@@ -285,4 +308,3 @@ const NewArticle = () => {
 };
 
 export default NewArticle;
-
