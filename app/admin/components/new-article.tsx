@@ -34,10 +34,12 @@ const NewArticle = () => {
 	const [imagePreview, setImagePreview] = useState<string | null>(null);
 	const [imageUrl, setImageUrl] = useState<string | null>(null);
 	const [selectedTopic, setSelectedTopic] = useState('');
-	const { topics } = useTopicsContext();
-
-	// Find the selected topic object to display its title
-	const selectedTopicObj = topics.find(t => t.slug === selectedTopic);
+	
+	// FIXED: Provide default empty array to prevent null error
+	const { topics = [] } = useTopicsContext();
+	
+	// FIXED: Safe navigation with optional chaining
+	const selectedTopicObj = topics?.find(t => t?.slug === selectedTopic);
 
 	const createArticle = async () => {
 		if (!user || loading) {
@@ -57,7 +59,7 @@ const NewArticle = () => {
 			return;
 		}
 		
-		// IMPORTANT: Check if a topic is selected
+		// Check if a topic is selected
 		if (!selectedTopic) {
 			setError('Please select a topic');
 			return;
@@ -215,23 +217,29 @@ const NewArticle = () => {
 											}`}
 											ref={topicPromptRef}
 										>
-											{topics &&
+											{/* FIXED: Safe check for topics array */}
+											{Array.isArray(topics) && topics.length > 0 ? (
 												topics.map((data) => (
 													<button
-														key={data.title}
+														key={data?.title || Math.random()}
 														className={`py-2 w-full text-[13px] flex items-center gap-3 px-3 duration-150  ${
-															selectedTopic === data.slug
+															selectedTopic === data?.slug
 																? 'bg-gray-50'
 																: 'hover:bg-gray-50'
 														}`}
 														onClick={() => {
 															toggleTopicPrompt();
-															setSelectedTopic(data.slug);
+															if (data?.slug) setSelectedTopic(data.slug);
 														}}
 													>
-														<span className="capitalize">{data.title}</span>
+														<span className="capitalize">{data?.title || 'Untitled'}</span>
 													</button>
-												))}
+												))
+											) : (
+												<div className="py-2 px-3 text-gray-500 text-center">
+													No topics available
+												</div>
+											)}
 										</div>
 									)}
 								</div>
