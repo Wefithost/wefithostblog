@@ -9,7 +9,7 @@ import { useAuthContext } from '~/app/context/auth-context';
 import { apiRequest } from '~/utils/api-request';
 import { usePopup } from '~/utils/toggle-popups';
 import { IoImageSharp } from 'react-icons/io5';
-import { useParams, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation'; // Removed useParams since it's not used
 import { useTopicsContext } from '~/app/context/topics-context';
 
 const NewArticle = () => {
@@ -21,7 +21,6 @@ const NewArticle = () => {
 		togglePopup: toggleNewArticlePrompt,
 	} = usePopup();
 	const { user } = useAuthContext();
-	const { topic } = useParams();
 	const [title, setTitle] = useState('');
 	const [desc, setDesc] = useState('');
 
