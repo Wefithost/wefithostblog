@@ -9,7 +9,7 @@ import { useAuthContext } from '~/app/context/auth-context';
 import { apiRequest } from '~/utils/api-request';
 import { usePopup } from '~/utils/toggle-popups';
 import { IoImageSharp } from 'react-icons/io5';
-import { usePathname } from 'next/navigation'; // Removed useParams since it's not used
+import { usePathname } from 'next/navigation';
 import { useTopicsContext } from '~/app/context/topics-context';
 
 const NewArticle = () => {
@@ -32,19 +32,19 @@ const NewArticle = () => {
 	const [imageBlob, setImageBlob] = useState<Blob | null>(null);
 	const [imagePreview, setImagePreview] = useState<string | null>(null);
 	const [imageUrl, setImageUrl] = useState<string | null>(null);
-	const [selectedTopic, setSelectedTopic] = useState('');
+	const [selectedTopicSlug, setSelectedTopicSlug] = useState('');
 	
-	// FIXED: Provide default empty array to prevent null error
 	const { topics = [] } = useTopicsContext();
 	
-	// FIXED: Safe navigation with optional chaining
-	const selectedTopicObj = topics?.find(t => t?.slug === selectedTopic);
+	// Find the selected topic object to display its title
+	const selectedTopicObj = topics?.find(t => t?.slug === selectedTopicSlug);
 
 	const createArticle = async () => {
 		if (!user || loading) {
 			return;
 		}
 
+		// Validate all fields
 		if (desc.trim() === '') {
 			setError('Description is required');
 			return;
@@ -57,9 +57,7 @@ const NewArticle = () => {
 			setError('An image is required');
 			return;
 		}
-		
-		// Check if a topic is selected
-		if (!selectedTopic) {
+		if (!selectedTopicSlug) {
 			setError('Please select a topic');
 			return;
 		}
@@ -73,16 +71,16 @@ const NewArticle = () => {
 		formData.append('adminId', user._id);
 		formData.append('title', title);
 		formData.append('description', desc);
-		formData.append('selected_topic', selectedTopic);
+		formData.append('selected_topic', selectedTopicSlug); // Send the slug
 		formData.append('uploaded_image', imageBlob as Blob);
 
-		// FIXED: Use selectedTopic from dropdown, not topic from params
+		// Use the slug in the URL
 		await apiRequest({
-			url: `/api/topics/${selectedTopic}/create-article`,
+			url: `/api/topics/${selectedTopicSlug}/create-article`,
 			method: 'POST',
 			body: formData,
 			onSuccess: (response) => {
-				setSelectedTopic('');
+				setSelectedTopicSlug('');
 				setSuccessful(true);
 				toast.success(response.message, {
 					icon: <FaCheck color="white" />,
@@ -97,7 +95,7 @@ const NewArticle = () => {
 			},
 			onError: (error) => {
 				setError(error);
-				setSelectedTopic('');
+				setSelectedTopicSlug('');
 			},
 			onFinally: () => {
 				setLoading(false);
@@ -124,16 +122,14 @@ const NewArticle = () => {
 		toggleNewArticlePrompt();
 		setTitle('');
 		setDesc('');
-
 		setError('');
 		setLoading(false);
 		setSuccessful(false);
-
 		setSelecting(false);
 		setImageBlob(null);
 		setImagePreview(null);
 		setImageUrl(null);
-		setSelectedTopic('');
+		setSelectedTopicSlug('');
 	};
 	
 	const {
@@ -158,7 +154,7 @@ const NewArticle = () => {
 			</button>
 
 			{newArticlePrompt && (
-				<div className="fixed top-[0px]  h-full w-full  z-50 left-0 flex  justify-center  items-center        backdrop-brightness-50  px-8     xs:px-0">
+				<div className="fixed top-[0px] h-full w-full z-50 left-0 flex justify-center items-center backdrop-brightness-50 px-8 xs:px-0">
 					{selecting ? (
 						<CropImage
 							selecting={selecting}
@@ -172,25 +168,25 @@ const NewArticle = () => {
 						/>
 					) : (
 						<div
-							className={`w-[350px]     mid-popup   duration-300 ease-in-out flex flex-col py-6 px-6  gap-4   rounded-lg bg-white   items-center font-normal     ${
+							className={`w-[350px] mid-popup duration-300 ease-in-out flex flex-col py-6 px-6 gap-4 rounded-lg bg-white items-center font-normal ${
 								newArticlePromptVisible ? '' : 'mid-popup-hidden'
 							}`}
 							ref={newArticlePromptRef}
 						>
 							<div className="flex items-center flex-col gap-0 w-full leading-none">
-								<h1 className="text-2xl  text-center text-black">
+								<h1 className="text-2xl text-center text-black">
 									Create a new Article
 								</h1>
 							</div>
 							<div className="flex flex-col gap-0 items-center justify-center w-full">
 								{imagePreview ? (
 									// eslint-disable-next-line
-									<img src={imagePreview} alt="icon" className="w-full   " />
+									<img src={imagePreview} alt="icon" className="w-full" />
 								) : (
-									<IoImageSharp className="text-9xl  text-gray-500 object-cover" />
+									<IoImageSharp className="text-9xl text-gray-500 object-cover" />
 								)}
 								<button
-									className=" text-black link-style-dark text-xs"
+									className="text-black link-style-dark text-xs"
 									onClick={handleClickSelect}
 								>
 									{imageUrl ? 'Choose another' : 'Select Image'}
@@ -202,7 +198,7 @@ const NewArticle = () => {
 									onClick={toggleTopicPrompt}
 								>
 									<span className="capitalize">
-										Topic: {selectedTopicObj?.title || selectedTopic || 'Select a topic'}
+										Topic: {selectedTopicObj?.title || selectedTopicSlug || 'Select a topic'}
 									</span>
 									<FaAngleDown
 										className={`${
@@ -216,19 +212,18 @@ const NewArticle = () => {
 											}`}
 											ref={topicPromptRef}
 										>
-											{/* FIXED: Safe check for topics array */}
 											{Array.isArray(topics) && topics.length > 0 ? (
 												topics.map((data) => (
 													<button
 														key={data?.title || Math.random()}
-														className={`py-2 w-full text-[13px] flex items-center gap-3 px-3 duration-150  ${
-															selectedTopic === data?.slug
+														className={`py-2 w-full text-[13px] flex items-center gap-3 px-3 duration-150 ${
+															selectedTopicSlug === data?.slug
 																? 'bg-gray-50'
 																: 'hover:bg-gray-50'
 														}`}
 														onClick={() => {
 															toggleTopicPrompt();
-															if (data?.slug) setSelectedTopic(data.slug);
+															if (data?.slug) setSelectedTopicSlug(data.slug);
 														}}
 													>
 														<span className="capitalize">{data?.title || 'Untitled'}</span>
@@ -285,13 +280,13 @@ const NewArticle = () => {
 								<AsyncButton
 									classname_override="!h-[40px] !rounded-md"
 									action="Create"
-									disabled={!title || !desc || !imageUrl || !selectedTopic}
+									disabled={!title || !desc || !imageUrl || !selectedTopicSlug}
 									loading={loading}
 									success={successful}
 									onClick={createArticle}
 								/>
 								<button
-									className="bg-gray-600 text-center w-full  hover:outline outline-gray-600   !rounded-md text-sm text-white duration-150"
+									className="bg-gray-600 text-center w-full hover:outline outline-gray-600 !rounded-md text-sm text-white duration-150"
 									onClick={cancelCreation}
 									disabled={loading}
 								>
